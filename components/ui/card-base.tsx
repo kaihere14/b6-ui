@@ -5,4 +5,4 @@
  * copies into a consumer's project. This site imports through here so that the
  * documentation renders exactly the code we ship.
  */
-export * from "@/registry/card-base/card-base";
+export * from "@/registry/card/card-base/card-base";

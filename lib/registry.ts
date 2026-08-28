@@ -4,8 +4,9 @@ import type { ComponentMeta } from "@/types";
  * Documentation metadata for every B6 UI registry item.
  *
  * `slug` is the contract: it is the registry item name, the docs URL segment,
- * the folder under `registry/`, and the argument to `shadcn add`. Adding a
- * component means adding one entry here and one entry in `registry.json`.
+ * the component folder under `registry/<family>/`, and the argument to
+ * `shadcn add`. Adding a component means adding one entry here and one entry
+ * in `registry.json`.
  */
 export const components: ComponentMeta[] = [
   {
@@ -13,7 +14,7 @@ export const components: ComponentMeta[] = [
     title: "Button Base",
     description:
       "The foundation button of the B6 system: six variants, four sizes, a built-in loading state and icon slots.",
-    source: "registry/button-base/button-base.tsx",
+    source: "registry/button/button-base/button-base.tsx",
     dependencies: ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
     props: [
       {
@@ -112,7 +113,7 @@ export const components: ComponentMeta[] = [
     title: "Card Base",
     description:
       "A composable surface with header, content and footer slots, in flat, elevated and muted variants.",
-    source: "registry/card-base/card-base.tsx",
+    source: "registry/card/card-base/card-base.tsx",
     dependencies: ["class-variance-authority", "@radix-ui/react-slot"],
     props: [
       {
@@ -181,7 +182,7 @@ export const components: ComponentMeta[] = [
     slug: "badge",
     title: "Badge",
     description: "A compact status marker in five tones and two sizes.",
-    source: "registry/badge/badge.tsx",
+    source: "registry/badge/badge/badge.tsx",
     dependencies: ["class-variance-authority"],
     props: [
       {
@@ -227,7 +228,7 @@ export const components: ComponentMeta[] = [
     title: "Input",
     description:
       "A single-line text field with size and tone tokens, icon slots and a wired-up invalid state.",
-    source: "registry/input/input.tsx",
+    source: "registry/input/input/input.tsx",
     dependencies: ["class-variance-authority"],
     props: [
       {
@@ -290,7 +291,7 @@ export const components: ComponentMeta[] = [
     slug: "separator",
     title: "Separator",
     description: "A one-pixel rule — horizontal or vertical, optionally captioned.",
-    source: "registry/separator/separator.tsx",
+    source: "registry/separator/separator/separator.tsx",
     dependencies: [],
     props: [
       {

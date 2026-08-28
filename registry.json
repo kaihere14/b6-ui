@@ -79,7 +79,7 @@
       "registryDependencies": ["@b6-ui/tokens"],
       "files": [
         {
-          "path": "registry/button-base/button-base.tsx",
+          "path": "registry/button/button-base/button-base.tsx",
           "type": "registry:ui",
           "target": "components/ui/button-base.tsx"
         }
@@ -94,7 +94,7 @@
       "registryDependencies": ["@b6-ui/tokens"],
       "files": [
         {
-          "path": "registry/card-base/card-base.tsx",
+          "path": "registry/card/card-base/card-base.tsx",
           "type": "registry:ui",
           "target": "components/ui/card-base.tsx"
         }
@@ -109,7 +109,7 @@
       "registryDependencies": ["@b6-ui/tokens"],
       "files": [
         {
-          "path": "registry/badge/badge.tsx",
+          "path": "registry/badge/badge/badge.tsx",
           "type": "registry:ui",
           "target": "components/ui/badge.tsx"
         }
@@ -124,7 +124,7 @@
       "registryDependencies": ["@b6-ui/tokens"],
       "files": [
         {
-          "path": "registry/input/input.tsx",
+          "path": "registry/input/input/input.tsx",
           "type": "registry:ui",
           "target": "components/ui/input.tsx"
         }
@@ -139,7 +139,7 @@
       "registryDependencies": ["@b6-ui/tokens"],
       "files": [
         {
-          "path": "registry/separator/separator.tsx",
+          "path": "registry/separator/separator/separator.tsx",
           "type": "registry:ui",
           "target": "components/ui/separator.tsx"
         }

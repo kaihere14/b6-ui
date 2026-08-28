@@ -5,4 +5,4 @@
  * copies into a consumer's project. This site imports through here so that the
  * documentation renders exactly the code we ship.
  */
-export * from "@/registry/separator/separator";
+export * from "@/registry/separator/separator/separator";

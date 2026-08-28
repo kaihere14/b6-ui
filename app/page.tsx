@@ -42,14 +42,14 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-b border-border">
         <div aria-hidden className="absolute inset-0 b6-grid-bg opacity-60" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
-          <Badge size="sm" variant="outline" className="animate-fade">
+          <Badge size="sm" variant="muted" className="animate-fade">
             v0.1.0 · Registry preview
           </Badge>
           <h1 className="mt-5 max-w-3xl animate-slide text-display">{siteConfig.tagline}</h1>
           <p className="mt-5 max-w-xl text-muted-foreground">{siteConfig.description}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonBase asChild size="lg" rightIcon={<ArrowRight />}>
+            <ButtonBase  variant={"primary"} size="lg" rightIcon={<ArrowRight />}>
               <Link href="/components">Browse components</Link>
             </ButtonBase>
             <ButtonBase asChild size="lg" variant="outline">
