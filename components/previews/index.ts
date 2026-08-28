@@ -26,6 +26,10 @@ import {
   MagneticButtonStrengthExample,
 } from "@/components/previews/examples/magnetic-button-examples";
 import {
+  StatefulButtonDefaultExample,
+  StatefulButtonLoadingExample,
+} from "@/components/previews/examples/stateful-button-examples";
+import {
   SeparatorCaptionedExample,
   SeparatorHorizontalExample,
   SeparatorVerticalExample,
@@ -37,11 +41,13 @@ import { CardBasePreview } from "@/components/previews/card-base-preview";
 import { InputPreview } from "@/components/previews/input-preview";
 import { MagneticButtonPreview } from "@/components/previews/magnetic-button-preview";
 import { SeparatorPreview } from "@/components/previews/separator-preview";
+import { StatefulButtonPreview } from "@/components/previews/stateful-button-preview";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
 export const previews: Record<string, ComponentType> = {
   "button-base": ButtonBasePreview,
   "magnetic-button": MagneticButtonPreview,
+  "stateful-button": StatefulButtonPreview,
   "card-base": CardBasePreview,
   badge: BadgePreview,
   input: InputPreview,
@@ -63,6 +69,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "magnetic-button/strength": MagneticButtonStrengthExample,
   "magnetic-button/as-child": MagneticButtonAsChildExample,
   "magnetic-button/opt-out": MagneticButtonOptOutExample,
+  "stateful-button/default": StatefulButtonDefaultExample,
+  "stateful-button/loading": StatefulButtonLoadingExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,
   "badge/tones": BadgeTonesExample,

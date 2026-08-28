@@ -247,6 +247,26 @@
       "registryDependencies": []
     },
     {
+      "name": "stateful-button",
+      "type": "registry:ui",
+      "title": "Stateful Button",
+      "description": "A standalone motion-driven button with stateful visual feedback.",
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/button/stateful-button/stateful-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/stateful-button.tsx"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
       "name": "card-base",
       "type": "registry:ui",
       "title": "Card Base",

@@ -231,6 +231,76 @@ export const components: ComponentMeta[] = [
       "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off, but the press dip stays, so a tap is still confirmed.",
   },
   {
+    slug: "stateful-button",
+    category: "Buttons",
+    isNew: true,
+    title: "Stateful Button",
+    description:
+      "A standalone motion-driven button with stateful visual feedback.",
+    source: "registry/button/stateful-button/stateful-button.tsx",
+    dependencies: [
+      "motion",
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "lucide-react",
+    ],
+    props: [
+      {
+        name: "variant",
+        type: '"primary" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
+        defaultValue: '"primary"',
+        description: "Visual tone, matching the Button Base scale.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "icon"',
+        defaultValue: '"md"',
+        description: "Control height and padding.",
+      },
+      {
+        name: "loading",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Swap the leading icon for a spinner, mark the control busy and hold it at rest.",
+      },
+      {
+        name: "asChild",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Render the child element instead of a `<button>`, keeping all styling and motion.",
+      },
+      {
+        name: "leftIcon / rightIcon",
+        type: "React.ReactNode",
+        description: "Icons rendered either side of the label.",
+      },
+    ],
+    examples: [
+      {
+        title: "Default",
+        preview: "stateful-button/default",
+        description: "The primary B6 button styling with stateful feedback.",
+        code: `<StatefulButton>Get started</StatefulButton>`,
+      },
+      {
+        title: "Loading",
+        preview: "stateful-button/loading",
+        description: "The button disables itself and reports `aria-busy` while loading.",
+        code: `<StatefulButton loading loadingLabel="Saving changes">Save</StatefulButton>`,
+      },
+    ],
+    accessibility: [
+      "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
+      "Motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`.",
+      "Held at rest while `disabled` or `loading`, so a non-interactive control never invites a click.",
+      "Motion carries no meaning — every state is already conveyed by colour, the spinner and `aria-busy`.",
+    ],
+    responsive:
+      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",
+  },
+  {
     slug: "card-base",
     category: "Layout",
     title: "Card Base",
