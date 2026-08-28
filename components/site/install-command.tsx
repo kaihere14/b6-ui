@@ -14,6 +14,34 @@ import {
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
+/**
+ * A shadcn command, coloured the way Shiki's vitesse themes colour bash in the
+ * source panels: the runner as a command, `--flags` as options, everything else
+ * as an argument.
+ *
+ * The grammar's own classification for these commands is exactly this simple —
+ * first word, then anything leading with a dash, then arguments — so the site
+ * reproduces it from the string instead of shipping a highlighter to the
+ * browser for one line that changes on every click.
+ */
+function CommandLine({ command }: { command: string }) {
+  return command.split(" ").map((word, index) => (
+    <span
+      key={index}
+      className={
+        index === 0
+          ? "text-terminal-command"
+          : word.startsWith("-")
+            ? "text-terminal-option"
+            : "text-terminal-argument"
+      }
+    >
+      {index > 0 ? " " : null}
+      {word}
+    </span>
+  ));
+}
+
 interface CommandShellProps {
   command: string;
   packageManager: PackageManager;
@@ -46,7 +74,11 @@ function CommandShell({
         <span aria-hidden className="font-mono text-code text-muted-foreground select-none">
           $
         </span>
-        {body ?? <code className="font-mono text-code whitespace-nowrap">{command}</code>}
+        {body ?? (
+          <code className="font-mono text-code whitespace-nowrap">
+            <CommandLine command={command} />
+          </code>
+        )}
       </div>
     </div>
   );
@@ -114,9 +146,9 @@ interface RotatingInstallCommandProps {
  * character at a time — each character rises into place from below while the
  * outgoing name lifts away.
  *
- * Only the `<slug>.json` tail moves — the runner and the registry origin are
- * fixed and muted, so the eye stays on the part that changes, which carries the
- * brand colour from the mark. Rotation pauses while the
+ * Only the `<slug>.json` tail moves. The command around it is coloured like any
+ * other bash sample on the site, and the tail itself carries the brand colour
+ * from the mark, so the part that changes is the part that stands out. Rotation pauses while the
  * pointer is over the block, so the command cannot change out from under a
  * click on copy, and the clipboard always gets the command on screen.
  *
@@ -160,8 +192,8 @@ export function RotatingInstallCommand({ slugs, className }: RotatingInstallComm
         body={
           <code className="font-mono text-code whitespace-nowrap">
             <span className="sr-only">{command}</span>
-            <span aria-hidden className="text-muted-foreground">
-              {prefix}
+            <span aria-hidden>
+              <CommandLine command={prefix} />
             </span>
             <AnimatePresence initial={false} mode="wait">
               <motion.span

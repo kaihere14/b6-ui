@@ -76,7 +76,7 @@ export default function HomePage() {
           {pillars.map(({ icon: Icon, title, description }) => (
             <CardBase key={title}>
               <CardBaseHeader>
-                <Icon aria-hidden className="size-5 text-primary" />
+                <Icon aria-hidden className="size-5 text-brand" />
                 <CardBaseTitle as="h3">{title}</CardBaseTitle>
                 <CardBaseDescription>{description}</CardBaseDescription>
               </CardBaseHeader>

@@ -58,7 +58,7 @@ export function Hero({ componentCount }: HeroProps) {
           rel="noreferrer noopener"
           className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-small font-medium shadow-b6-xs transition-colors duration-150 ease-b6 hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
-          <span aria-hidden className="size-1.5 rounded-full bg-primary" />
+          <span aria-hidden className="size-1.5 rounded-full bg-brand" />
           {componentCount} components · {siteConfig.heroStack}
           <ArrowUpRight
             aria-hidden

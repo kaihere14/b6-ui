@@ -30,7 +30,7 @@ export default function ComponentsIndexPage() {
 
       {groups.map(({ category, items }) => (
         <section key={category} className="mt-12">
-          <h2 className="text-caption text-muted-foreground uppercase">{category}</h2>
+          <h2 className="text-caption text-brand uppercase">{category}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {items.map((component) => (
               <li key={component.slug}>

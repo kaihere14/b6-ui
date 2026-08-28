@@ -62,7 +62,7 @@ export function Navbar() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "rounded-sm px-3 py-1.5 text-small transition-colors duration-150 ease-b6",
-                    active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                    active ? "text-brand" : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {item.title}

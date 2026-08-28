@@ -28,7 +28,7 @@ export function SectionHeader({
       )}
     >
       <div className="max-w-xl">
-        <p className="text-caption text-muted-foreground uppercase">{eyebrow}</p>
+        <p className="text-caption text-brand uppercase">{eyebrow}</p>
         <h2 className="mt-3 text-h1">{title}</h2>
         {description ? <p className="mt-3 text-muted-foreground">{description}</p> : null}
       </div>

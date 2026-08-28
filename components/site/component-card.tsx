@@ -55,7 +55,7 @@ export function ComponentCard({ component, className }: ComponentCardProps) {
           </div>
           <ArrowUpRight
             aria-hidden
-            className="size-4 shrink-0 -translate-x-1 text-muted-foreground opacity-0 transition duration-200 ease-b6-out group-hover/card:translate-x-0 group-hover/card:opacity-100"
+            className="size-4 shrink-0 -translate-x-1 text-brand opacity-0 transition duration-200 ease-b6-out group-hover/card:translate-x-0 group-hover/card:opacity-100"
           />
         </div>
       </div>
