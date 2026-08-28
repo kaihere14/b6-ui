@@ -236,7 +236,7 @@ export const components: ComponentMeta[] = [
     isNew: true,
     title: "Stateful Button",
     description:
-      "A standalone motion-driven button with stateful visual feedback.",
+      "A button that progresses through visual states — idle, loading, success and error — with animated icon transitions and an error shake.",
     source: "registry/button/stateful-button/stateful-button.tsx",
     dependencies: [
       "motion",
@@ -245,6 +245,26 @@ export const components: ComponentMeta[] = [
       "lucide-react",
     ],
     props: [
+      {
+        name: "status",
+        type: '"idle" | "loading" | "success" | "error"',
+        defaultValue: '"idle"',
+        description:
+          "Current lifecycle state. The button disables itself in any state other than `idle`.",
+      },
+      {
+        name: "resetDelay",
+        type: "number",
+        defaultValue: "2000",
+        description:
+          "Milliseconds before auto-resetting from `success` or `error` back to `idle`. Set `0` to disable.",
+      },
+      {
+        name: "onReset",
+        type: "() => void",
+        description:
+          "Fired when the auto-reset timer completes. Use it to set `status` back to `idle`.",
+      },
       {
         name: "variant",
         type: '"primary" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
@@ -258,13 +278,6 @@ export const components: ComponentMeta[] = [
         description: "Control height and padding.",
       },
       {
-        name: "loading",
-        type: "boolean",
-        defaultValue: "false",
-        description:
-          "Swap the leading icon for a spinner, mark the control busy and hold it at rest.",
-      },
-      {
         name: "asChild",
         type: "boolean",
         defaultValue: "false",
@@ -272,30 +285,102 @@ export const components: ComponentMeta[] = [
           "Render the child element instead of a `<button>`, keeping all styling and motion.",
       },
       {
+        name: "loadingText / successText / errorText",
+        type: "React.ReactNode",
+        description:
+          "Visible label shown during the corresponding state. When set, replaces `children` so the label transitions alongside the icon (e.g. \"Save\" → \"Saving…\" → \"Saved!\").",
+      },
+      {
+        name: "loadingLabel",
+        type: "string",
+        defaultValue: '"Loading"',
+        description:
+          "Screen-reader-only announcement while loading. Only rendered when `loadingText` is not set, so readers never hear duplicate labels.",
+      },
+      {
+        name: "successLabel",
+        type: "string",
+        defaultValue: '"Success"',
+        description:
+          "Screen-reader-only announcement on success. Only rendered when `successText` is not set.",
+      },
+      {
+        name: "errorLabel",
+        type: "string",
+        defaultValue: '"Error"',
+        description:
+          "Screen-reader-only announcement on error. Only rendered when `errorText` is not set.",
+      },
+      {
         name: "leftIcon / rightIcon",
         type: "React.ReactNode",
-        description: "Icons rendered either side of the label.",
+        description:
+          "Icons rendered either side of the label. The left icon is replaced by status icons during loading, success and error.",
+      },
+      {
+        name: "successIcon / errorIcon",
+        type: "React.ReactNode",
+        description:
+          "Custom icons for the success and error states. Default to `Check` and `X` from lucide-react.",
       },
     ],
     examples: [
       {
         title: "Default",
         preview: "stateful-button/default",
-        description: "The primary B6 button styling with stateful feedback.",
-        code: `<StatefulButton>Get started</StatefulButton>`,
+        description:
+          "Click to trigger the full lifecycle: idle → loading → success → idle.",
+        code: `const [status, setStatus] = useState<ButtonStatus>("idle");
+
+<StatefulButton
+  status={status}
+  onReset={() => setStatus("idle")}
+  onClick={() => {
+    setStatus("loading");
+    setTimeout(() => setStatus("success"), 1500);
+  }}
+  loadingText="Saving…"
+  successText="Saved!"
+>
+  Save changes
+</StatefulButton>`,
       },
       {
-        title: "Loading",
-        preview: "stateful-button/loading",
-        description: "The button disables itself and reports `aria-busy` while loading.",
-        code: `<StatefulButton loading loadingLabel="Saving changes">Save</StatefulButton>`,
+        title: "Error with shake",
+        preview: "stateful-button/error",
+        description:
+          "When the status reaches `error`, the button shakes horizontally and shows an X icon.",
+        code: `<StatefulButton
+  variant="outline"
+  status={status}
+  onReset={() => setStatus("idle")}
+  onClick={() => {
+    setStatus("loading");
+    setTimeout(() => setStatus("error"), 1500);
+  }}
+  loadingText="Sending…"
+  errorText="Failed!"
+>
+  Try again
+</StatefulButton>`,
+      },
+      {
+        title: "Variants",
+        preview: "stateful-button/variants",
+        description:
+          "The status lifecycle works with every variant. Click each to see the transition.",
+        code: `<StatefulButton status={s} onReset={reset} onClick={go}>Primary</StatefulButton>
+<StatefulButton variant="secondary" status={s} ...>Secondary</StatefulButton>
+<StatefulButton variant="destructive" status={s} ...>Delete</StatefulButton>`,
       },
     ],
     accessibility: [
       "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
-      "Motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`.",
-      "Held at rest while `disabled` or `loading`, so a non-interactive control never invites a click.",
-      "Motion carries no meaning — every state is already conveyed by colour, the spinner and `aria-busy`.",
+      "Icons and labels cross-fade via AnimatePresence; all motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`.",
+      "`status=\"loading\"` sets `aria-busy`. When no `loadingText` is provided, `loadingLabel` is announced through a visually hidden span; when `loadingText` is visible the sr-only span is omitted so readers never hear \"Loading Saving…\". The same logic applies to success and error.",
+      "The error shake is a horizontal displacement that carries no meaning — the X icon and `errorLabel` convey the failure.",
+      "Held at rest while `disabled` or in any non-idle state, so a non-interactive control never invites a click.",
+      "A `data-status` attribute is exposed for consumer styling hooks without hard-coding colours in the component.",
     ],
     responsive:
       "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",

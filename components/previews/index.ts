@@ -27,7 +27,8 @@ import {
 } from "@/components/previews/examples/magnetic-button-examples";
 import {
   StatefulButtonDefaultExample,
-  StatefulButtonLoadingExample,
+  StatefulButtonErrorExample,
+  StatefulButtonVariantsExample,
 } from "@/components/previews/examples/stateful-button-examples";
 import {
   SeparatorCaptionedExample,
@@ -70,7 +71,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "magnetic-button/as-child": MagneticButtonAsChildExample,
   "magnetic-button/opt-out": MagneticButtonOptOutExample,
   "stateful-button/default": StatefulButtonDefaultExample,
-  "stateful-button/loading": StatefulButtonLoadingExample,
+  "stateful-button/error": StatefulButtonErrorExample,
+  "stateful-button/variants": StatefulButtonVariantsExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,
   "badge/tones": BadgeTonesExample,

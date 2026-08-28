@@ -3,9 +3,12 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2, X } from "lucide-react";
 import {
+  animate,
+  AnimatePresence,
   motion,
+  useMotionValue,
   useReducedMotion,
 } from "motion/react";
 
@@ -14,7 +17,16 @@ import { cn } from "@/lib/utils";
 /**
  * B6 UI — Stateful Button
  *
- * TODO: Core design and behaviour — provided in the next prompt.
+ * A button that progresses through visual states — idle, loading, success and
+ * error — with animated content transitions. The consumer drives the state
+ * via the `status` prop; the button handles all motion internally.
+ *
+ * Entering the `error` state triggers a horizontal shake. Icons cross-fade
+ * between states via AnimatePresence, and the button auto-resets to `idle`
+ * after `resetDelay` milliseconds.
+ *
+ * All motion honours `useReducedMotion()`. On reduced-motion systems the icons
+ * swap instantly and the shake is suppressed.
  *
  * This file is standalone by design. It repeats the B6 button styling rather
  * than importing Button Base, because a registry item has to work in a project
@@ -44,7 +56,7 @@ const statefulButtonVariants = cva(
   [
     "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2",
     "font-medium whitespace-nowrap will-change-transform select-none",
-    "transition-[background-color,color,border-color,box-shadow] duration-150 ease-b6",
+    "transition-[background-color,color,border-color,box-shadow] duration-200 ease-b6",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -90,7 +102,15 @@ const statefulButtonVariants = cva(
 /* Constants                                                                   */
 /* -------------------------------------------------------------------------- */
 
-// TODO: Add stateful-button-specific motion constants here.
+/** Slide-fade for the content swap. Quick enough to read as a ticker, not a morph. */
+const CONTENT_TRANSITION = { duration: 0.15, ease: [0.2, 0, 0, 1] as const };
+
+/** Error shake: a quick horizontal rattle that decays. */
+const SHAKE_KEYFRAMES = [0, -6, 6, -4, 4, -2, 2, 0];
+const SHAKE_DURATION = 0.4;
+
+/** Default time before auto-resetting from success/error to idle, in ms. */
+const DEFAULT_RESET_DELAY = 2000;
 
 /**
  * Slot, driven by Motion. `asChild` still has to animate a transform, and the
@@ -101,8 +121,11 @@ const statefulButtonVariants = cva(
 const MotionSlot = motion.create(Slot);
 
 /* -------------------------------------------------------------------------- */
-/* Component                                                                   */
+/* Types                                                                       */
 /* -------------------------------------------------------------------------- */
+
+/** The four lifecycle states the button progresses through. */
+export type ButtonStatus = "idle" | "loading" | "success" | "error";
 
 /**
  * Native button props, minus the handlers Motion redefines and the `style` this
@@ -120,20 +143,46 @@ type NativeButtonProps = Omit<
 >;
 
 export interface StatefulButtonProps
-  extends NativeButtonProps, VariantProps<typeof statefulButtonVariants> {
+  extends NativeButtonProps,
+    VariantProps<typeof statefulButtonVariants> {
   /** Render the child element instead of a `<button>`, keeping all styling and motion. */
   asChild?: boolean;
-  /** Show a spinner, block interaction and mark the control busy. */
-  loading?: boolean;
-  /** Accessible label announced while `loading` is true. */
+  /** Current lifecycle state. @default "idle" */
+  status?: ButtonStatus;
+  /** Milliseconds before auto-resetting from `success` or `error` back to `idle`. Set `0` to disable. @default 2000 */
+  resetDelay?: number;
+  /** Fired when the auto-reset timer completes. Use it to set `status` back to `"idle"`. */
+  onReset?: () => void;
+  /** Visible label shown during loading. When set, replaces `children` in the loading state. */
+  loadingText?: React.ReactNode;
+  /** Visible label shown on success. When set, replaces `children` in the success state. */
+  successText?: React.ReactNode;
+  /** Visible label shown on error. When set, replaces `children` in the error state. */
+  errorText?: React.ReactNode;
+  /** Screen-reader-only label announced while loading. @default "Loading" */
   loadingLabel?: string;
-  /** Icon rendered before the label. Replaced by the spinner while loading. */
+  /** Screen-reader-only label announced on success. @default "Success" */
+  successLabel?: string;
+  /** Screen-reader-only label announced on error. @default "Error" */
+  errorLabel?: string;
+  /** Icon rendered before the label in idle state. Replaced by status icons during transitions. */
   leftIcon?: React.ReactNode;
-  /** Icon rendered after the label. */
+  /** Icon rendered after the label. Visible in all states. */
   rightIcon?: React.ReactNode;
+  /** Custom icon for the success state. @default Check from lucide-react */
+  successIcon?: React.ReactNode;
+  /** Custom icon for the error state. @default X from lucide-react */
+  errorIcon?: React.ReactNode;
 }
 
-export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButtonProps>(
+/* -------------------------------------------------------------------------- */
+/* Component                                                                   */
+/* -------------------------------------------------------------------------- */
+
+export const StatefulButton = React.forwardRef<
+  HTMLButtonElement,
+  StatefulButtonProps
+>(
   function StatefulButton(
     {
       className,
@@ -141,10 +190,19 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
       size,
       block,
       asChild = false,
-      loading = false,
+      status = "idle",
+      resetDelay = DEFAULT_RESET_DELAY,
+      onReset,
+      loadingText,
+      successText,
+      errorText,
       loadingLabel = "Loading",
+      successLabel = "Success",
+      errorLabel = "Error",
       leftIcon,
       rightIcon,
+      successIcon,
+      errorIcon,
       disabled,
       children,
       type,
@@ -154,36 +212,153 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
     forwardedRef,
   ) {
     const reducedMotion = useReducedMotion();
-    const isDisabled = disabled || loading;
+    const isIdle = status === "idle";
+    const isDisabled = disabled || !isIdle;
+    const shakeX = useMotionValue(0);
+    const ref = React.useRef<HTMLButtonElement>(null);
 
-    // TODO: Core stateful logic goes here.
+    React.useImperativeHandle(
+      forwardedRef,
+      () => ref.current as HTMLButtonElement,
+      [ref],
+    );
 
-    // TODO: Replace with final render once core design is provided.
-    const Comp = asChild ? MotionSlot : motion.button;
+    /* ---- Error shake ---------------------------------------------------- */
+    React.useEffect(() => {
+      if (status === "error" && !reducedMotion) {
+        animate(shakeX, SHAKE_KEYFRAMES, {
+          duration: SHAKE_DURATION,
+          ease: "easeOut",
+        });
+      }
+    }, [status, reducedMotion, shakeX]);
+
+    /* ---- Auto-reset timer ----------------------------------------------- */
+    React.useEffect(() => {
+      if (
+        (status === "success" || status === "error") &&
+        resetDelay > 0 &&
+        onReset
+      ) {
+        const timer = setTimeout(onReset, resetDelay);
+        return () => clearTimeout(timer);
+      }
+    }, [status, resetDelay, onReset]);
+
+    /* ---- Content resolution --------------------------------------------- */
+    const contentTransition = reducedMotion
+      ? { duration: 0 }
+      : CONTENT_TRANSITION;
+
+    /**
+     * Resolve the icon for the current status.
+     *
+     * idle shows the consumer's `leftIcon` (if any), while the three active
+     * states each show their own indicator.
+     */
+    const currentIcon =
+      status === "loading" ? (
+        <Loader2 aria-hidden className="animate-spin" />
+      ) : status === "success" ? (
+        (successIcon ?? <Check aria-hidden />)
+      ) : status === "error" ? (
+        (errorIcon ?? <X aria-hidden />)
+      ) : (
+        leftIcon ?? null
+      );
+
+    /**
+     * Rendered content: the entire icon + label block animates as one unit so
+     * the label can transition alongside the icon (e.g. "Save" → "Saving…" →
+     * "Saved!"). A vertical slide-fade gives a ticker feel.
+     *
+     * When no `loadingText` / `successText` / `errorText` is provided the
+     * consumer's `children` stay visible and only the icon swaps.
+     */
+    const layer = (label: React.ReactNode) => {
+      const resolvedLabel =
+        status === "loading"
+          ? (loadingText ?? label)
+          : status === "success"
+            ? (successText ?? label)
+            : status === "error"
+              ? (errorText ?? label)
+              : label;
+
+      /**
+       * Screen-reader-only status announcement. Only rendered when the visible
+       * text does NOT already convey the state (i.e. when no status-specific
+       * text was supplied), so readers never hear "Loading Saving…".
+       */
+      const srLabel =
+        status === "loading" && loadingText == null ? loadingLabel :
+        status === "success" && successText == null ? successLabel :
+        status === "error" && errorText == null ? errorLabel :
+        null;
+
+      return (
+        <>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={status}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={contentTransition}
+              className="inline-flex items-center gap-2"
+            >
+              {currentIcon}
+              {srLabel && <span className="sr-only">{srLabel}</span>}
+              {resolvedLabel}
+            </motion.span>
+          </AnimatePresence>
+          {rightIcon}
+        </>
+      );
+    };
+
+    /** Props shared across both render paths. */
+    const shared = {
+      className: cn(
+        statefulButtonVariants({ variant, size, block }),
+        className,
+      ),
+      style: { x: shakeX },
+      "aria-busy": status === "loading" || undefined,
+      "data-status": status,
+      onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (!isIdle) return;
+        onClick?.(event);
+      },
+    };
+
+    if (asChild) {
+      const child = React.Children.only(children) as React.ReactElement<{
+        children?: React.ReactNode;
+      }>;
+
+      return (
+        <MotionSlot
+          ref={ref}
+          aria-disabled={isDisabled || undefined}
+          {...shared}
+          {...props}
+        >
+          {React.cloneElement(child, undefined, layer(child.props.children))}
+        </MotionSlot>
+      );
+    }
 
     return (
-      <Comp
-        ref={forwardedRef}
-        type={asChild ? undefined : (type ?? "button")}
-        className={cn(statefulButtonVariants({ variant, size, block }), className)}
-        disabled={asChild ? undefined : isDisabled}
-        aria-disabled={asChild ? isDisabled || undefined : undefined}
-        aria-busy={loading || undefined}
-        data-loading={loading ? "" : undefined}
-        onClick={onClick}
+      <motion.button
+        ref={ref}
+        type={type ?? "button"}
+        disabled={isDisabled}
+        {...shared}
         {...props}
       >
-        {loading ? (
-          <>
-            <Loader2 aria-hidden className="animate-spin" />
-            <span className="sr-only">{loadingLabel}</span>
-          </>
-        ) : (
-          leftIcon
-        )}
-        {children}
-        {rightIcon}
-      </Comp>
+        {layer(children)}
+      </motion.button>
     );
   },
 );

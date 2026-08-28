@@ -1,15 +1,107 @@
 "use client";
 
-import { StatefulButton } from "@/components/ui/stateful-button";
+import { useCallback, useState } from "react";
+
+import {
+  StatefulButton,
+  type ButtonStatus,
+} from "@/components/ui/stateful-button";
 
 export function StatefulButtonDefaultExample() {
-  return <StatefulButton>Get started</StatefulButton>;
+  const [status, setStatus] = useState<ButtonStatus>("idle");
+
+  const handleClick = useCallback(() => {
+    setStatus("loading");
+    setTimeout(() => setStatus("success"), 1500);
+  }, []);
+
+  return (
+    <StatefulButton
+      status={status}
+      onReset={() => setStatus("idle")}
+      onClick={handleClick}
+      loadingText="Saving…"
+      successText="Saved!"
+    >
+      Save changes
+    </StatefulButton>
+  );
 }
 
-export function StatefulButtonLoadingExample() {
+export function StatefulButtonErrorExample() {
+  const [status, setStatus] = useState<ButtonStatus>("idle");
+
+  const handleClick = useCallback(() => {
+    setStatus("loading");
+    setTimeout(() => setStatus("error"), 1500);
+  }, []);
+
   return (
-    <StatefulButton loading loadingLabel="Saving changes">
-      Save
+    <StatefulButton
+      variant="outline"
+      status={status}
+      onReset={() => setStatus("idle")}
+      onClick={handleClick}
+      loadingText="Sending…"
+      errorText="Failed!"
+    >
+      Try again
     </StatefulButton>
+  );
+}
+
+export function StatefulButtonVariantsExample() {
+  const [statuses, setStatuses] = useState<Record<string, ButtonStatus>>({
+    primary: "idle",
+    secondary: "idle",
+    destructive: "idle",
+  });
+
+  const handleClick = useCallback((key: string) => {
+    setStatuses((prev) => ({ ...prev, [key]: "loading" }));
+    setTimeout(() => {
+      setStatuses((prev) => ({
+        ...prev,
+        [key]: key === "destructive" ? "error" : "success",
+      }));
+    }, 1500);
+  }, []);
+
+  const handleReset = useCallback((key: string) => {
+    setStatuses((prev) => ({ ...prev, [key]: "idle" }));
+  }, []);
+
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <StatefulButton
+        status={statuses.primary}
+        onReset={() => handleReset("primary")}
+        onClick={() => handleClick("primary")}
+        loadingText="Publishing…"
+        successText="Published!"
+      >
+        Publish
+      </StatefulButton>
+      <StatefulButton
+        variant="secondary"
+        status={statuses.secondary}
+        onReset={() => handleReset("secondary")}
+        onClick={() => handleClick("secondary")}
+        loadingText="Saving…"
+        successText="Saved!"
+      >
+        Save draft
+      </StatefulButton>
+      <StatefulButton
+        variant="destructive"
+        status={statuses.destructive}
+        onReset={() => handleReset("destructive")}
+        onClick={() => handleClick("destructive")}
+        loadingText="Deleting…"
+        errorText="Failed!"
+      >
+        Delete
+      </StatefulButton>
+    </div>
   );
 }
