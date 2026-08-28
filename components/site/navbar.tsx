@@ -18,9 +18,8 @@ export function Navbar() {
         aria-label="Main"
         className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6"
       >
-        <Link href="/" className="rounded-sm">
+        <Link href="/" className="flex">
           <Logo />
-          <span className="sr-only">{siteConfig.name} home</span>
         </Link>
 
         <ul className="hidden items-center gap-1 md:flex">
