@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "title": "Badge",
+  "description": "A compact status marker in five tones and two sizes.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "@b6-ui/tokens"
+  ],
+  "files": [
+    {
+      "path": "registry/badge/badge.tsx",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * B6 UI — Badge\n *\n * A compact status marker. Badges are labels, not controls: render an\n * interactive element inside a badge only when it is genuinely clickable.\n */\nconst badgeVariants = cva(\n  [\n    \"inline-flex items-center gap-1.5 rounded-full border font-medium whitespace-nowrap\",\n    \"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3\",\n  ],\n  {\n    variants: {\n      variant: {\n        primary: \"border-transparent bg-primary text-primary-foreground\",\n        secondary: \"border-transparent bg-secondary text-secondary-foreground\",\n        muted: \"border-transparent bg-muted text-muted-foreground\",\n        outline: \"border-border bg-transparent text-foreground\",\n        destructive: \"border-transparent bg-destructive text-destructive-foreground\",\n      },\n      size: {\n        sm: \"h-5 px-2 text-caption uppercase\",\n        md: \"h-6 px-2.5 text-small\",\n      },\n    },\n    defaultVariants: {\n      variant: \"secondary\",\n      size: \"md\",\n    },\n  },\n);\n\nexport interface BadgeProps\n  extends React.ComponentPropsWithoutRef<\"span\">, VariantProps<typeof badgeVariants> {}\n\nexport const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(\n  { className, variant, size, ...props },\n  ref,\n) {\n  return (\n    <span\n      ref={ref}\n      data-slot=\"badge\"\n      className={cn(badgeVariants({ variant, size }), className)}\n      {...props}\n    />\n  );\n});\n\nexport { badgeVariants };\n",
+      "type": "registry:ui",
+      "target": "components/ui/badge.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

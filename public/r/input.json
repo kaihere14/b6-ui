@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "title": "Input",
+  "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "@b6-ui/tokens"
+  ],
+  "files": [
+    {
+      "path": "registry/input/input.tsx",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * B6 UI — Input\n *\n * A single-line text field. The native `size` attribute is deliberately not\n * forwarded: `size` here selects a B6 sizing token instead.\n */\nconst inputVariants = cva(\n  [\n    \"flex w-full min-w-0 rounded-md border bg-background text-foreground\",\n    \"placeholder:text-muted-foreground\",\n    \"transition-[border-color,box-shadow,background-color] duration-150 ease-b6\",\n    \"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring\",\n    \"disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-50\",\n    \"aria-invalid:border-destructive aria-invalid:focus-visible:outline-destructive\",\n    \"file:mr-3 file:border-0 file:bg-transparent file:text-small file:font-medium\",\n  ],\n  {\n    variants: {\n      size: {\n        sm: \"h-8 px-2.5 text-small\",\n        md: \"h-10 px-3 text-body\",\n        lg: \"h-12 px-4 text-body\",\n      },\n      tone: {\n        default: \"border-input\",\n        subtle: \"border-transparent bg-muted\",\n      },\n    },\n    defaultVariants: {\n      size: \"md\",\n      tone: \"default\",\n    },\n  },\n);\n\nexport interface InputProps\n  extends\n    Omit<React.ComponentPropsWithoutRef<\"input\">, \"size\">,\n    VariantProps<typeof inputVariants> {\n  /** Marks the field invalid and wires up `aria-invalid` for screen readers. */\n  invalid?: boolean;\n  /** Icon rendered inside the leading edge of the field. */\n  leftIcon?: React.ReactNode;\n  /** Icon or affordance rendered inside the trailing edge of the field. */\n  rightIcon?: React.ReactNode;\n}\n\nexport const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(\n  { className, size, tone, invalid, leftIcon, rightIcon, type = \"text\", ...props },\n  ref,\n) {\n  const control = (\n    <input\n      ref={ref}\n      type={type}\n      data-slot=\"input\"\n      aria-invalid={invalid || undefined}\n      className={cn(\n        inputVariants({ size, tone }),\n        leftIcon && \"pl-9\",\n        rightIcon && \"pr-9\",\n        className,\n      )}\n      {...props}\n    />\n  );\n\n  if (!leftIcon && !rightIcon) return control;\n\n  return (\n    <div className=\"relative w-full\">\n      {leftIcon ? (\n        <span\n          aria-hidden\n          className=\"pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground [&_svg]:size-4\"\n        >\n          {leftIcon}\n        </span>\n      ) : null}\n      {control}\n      {rightIcon ? (\n        <span className=\"absolute inset-y-0 right-3 flex items-center text-muted-foreground [&_svg]:size-4\">\n          {rightIcon}\n        </span>\n      ) : null}\n    </div>\n  );\n});\n\nexport { inputVariants };\n",
+      "type": "registry:ui",
+      "target": "components/ui/input.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

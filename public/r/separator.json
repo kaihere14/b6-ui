@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "title": "Separator",
+  "description": "A one-pixel rule, horizontal or vertical, optionally captioned.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@b6-ui/tokens"
+  ],
+  "files": [
+    {
+      "path": "registry/separator/separator.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface SeparatorProps extends React.ComponentPropsWithoutRef<\"div\"> {\n  orientation?: \"horizontal\" | \"vertical\";\n  /**\n   * Purely visual separators are hidden from assistive technology. Set this to\n   * `false` when the rule genuinely divides two groups of content.\n   */\n  decorative?: boolean;\n  /** Optional label rendered inside a horizontal rule. */\n  label?: React.ReactNode;\n}\n\n/**\n * B6 UI — Separator\n *\n * A one-pixel rule in the shared border colour, optionally captioned.\n */\nexport const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(function Separator(\n  { className, orientation = \"horizontal\", decorative = true, label, ...props },\n  ref,\n) {\n  const semantics = decorative\n    ? ({ role: \"none\" } as const)\n    : ({ role: \"separator\", \"aria-orientation\": orientation } as const);\n\n  if (label && orientation === \"horizontal\") {\n    return (\n      <div\n        ref={ref}\n        data-slot=\"separator\"\n        className={cn(\"flex w-full items-center gap-3\", className)}\n        {...semantics}\n        {...props}\n      >\n        <span className=\"h-px flex-1 bg-border\" />\n        <span className=\"text-caption text-muted-foreground uppercase\">{label}</span>\n        <span className=\"h-px flex-1 bg-border\" />\n      </div>\n    );\n  }\n\n  return (\n    <div\n      ref={ref}\n      data-slot=\"separator\"\n      className={cn(\n        \"shrink-0 bg-border\",\n        orientation === \"horizontal\" ? \"h-px w-full\" : \"h-full w-px self-stretch\",\n        className,\n      )}\n      {...semantics}\n      {...props}\n    />\n  );\n});\n",
+      "type": "registry:ui",
+      "target": "components/ui/separator.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

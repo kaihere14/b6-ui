@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+ * B6 UI — design tokens
+ *
+ * Everything visual in B6 UI resolves to a token defined here. Components never
+ * hard-code a colour, radius, shadow or easing curve; they reference a semantic
+ * token so that a theme change is a one-file change.
+ * ------------------------------------------------------------------------ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Surfaces & text */
+  --b6-background: oklch(0.99 0.004 95);
+  --b6-foreground: oklch(0.18 0.012 75);
+  --b6-card: oklch(1 0 0);
+  --b6-card-foreground: oklch(0.18 0.012 75);
+  --b6-popover: oklch(1 0 0);
+  --b6-popover-foreground: oklch(0.18 0.012 75);
+
+  /* Intent */
+  --b6-primary: oklch(0.68 0.165 58);
+  --b6-primary-foreground: oklch(0.16 0.03 60);
+  --b6-secondary: oklch(0.94 0.01 95);
+  --b6-secondary-foreground: oklch(0.24 0.014 75);
+  --b6-muted: oklch(0.96 0.008 95);
+  --b6-muted-foreground: oklch(0.5 0.014 80);
+  --b6-accent: oklch(0.93 0.03 90);
+  --b6-accent-foreground: oklch(0.24 0.02 70);
+  --b6-destructive: oklch(0.55 0.2 27);
+  --b6-destructive-foreground: oklch(0.99 0.005 95);
+
+  /* Lines */
+  --b6-border: oklch(0.9 0.01 90);
+  --b6-input: oklch(0.93 0.008 90);
+  --b6-ring: oklch(0.68 0.165 58);
+
+  /* Radius scale — every component derives from this base. */
+  --b6-radius: 0.5rem;
+}
+
+.dark {
+  --b6-background: oklch(0.16 0.008 75);
+  --b6-foreground: oklch(0.95 0.006 95);
+  --b6-card: oklch(0.19 0.009 75);
+  --b6-card-foreground: oklch(0.95 0.006 95);
+  --b6-popover: oklch(0.19 0.009 75);
+  --b6-popover-foreground: oklch(0.95 0.006 95);
+
+  --b6-primary: oklch(0.76 0.155 62);
+  --b6-primary-foreground: oklch(0.17 0.03 60);
+  --b6-secondary: oklch(0.24 0.012 75);
+  --b6-secondary-foreground: oklch(0.93 0.008 95);
+  --b6-muted: oklch(0.22 0.01 75);
+  --b6-muted-foreground: oklch(0.66 0.012 85);
+  --b6-accent: oklch(0.27 0.02 70);
+  --b6-accent-foreground: oklch(0.94 0.01 90);
+  --b6-destructive: oklch(0.62 0.19 27);
+  --b6-destructive-foreground: oklch(0.99 0.005 95);
+
+  --b6-border: oklch(0.28 0.012 78);
+  --b6-input: oklch(0.26 0.012 78);
+  --b6-ring: oklch(0.76 0.155 62);
+}
+
+@theme inline {
+  /* ---- Colour -------------------------------------------------------- */
+  --color-background: var(--b6-background);
+  --color-foreground: var(--b6-foreground);
+  --color-card: var(--b6-card);
+  --color-card-foreground: var(--b6-card-foreground);
+  --color-popover: var(--b6-popover);
+  --color-popover-foreground: var(--b6-popover-foreground);
+  --color-primary: var(--b6-primary);
+  --color-primary-foreground: var(--b6-primary-foreground);
+  --color-secondary: var(--b6-secondary);
+  --color-secondary-foreground: var(--b6-secondary-foreground);
+  --color-muted: var(--b6-muted);
+  --color-muted-foreground: var(--b6-muted-foreground);
+  --color-accent: var(--b6-accent);
+  --color-accent-foreground: var(--b6-accent-foreground);
+  --color-destructive: var(--b6-destructive);
+  --color-destructive-foreground: var(--b6-destructive-foreground);
+  --color-border: var(--b6-border);
+  --color-input: var(--b6-input);
+  --color-ring: var(--b6-ring);
+
+  /* ---- Typography ---------------------------------------------------- */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --text-display: 3.25rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.032em;
+  --text-display--font-weight: 600;
+
+  --text-h1: 2.25rem;
+  --text-h1--line-height: 1.12;
+  --text-h1--letter-spacing: -0.026em;
+  --text-h1--font-weight: 600;
+
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 1.25;
+  --text-h2--letter-spacing: -0.018em;
+  --text-h2--font-weight: 600;
+
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.35;
+  --text-h3--letter-spacing: -0.012em;
+  --text-h3--font-weight: 600;
+
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.65;
+
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.55;
+
+  --text-caption: 0.6875rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.06em;
+  --text-caption--font-weight: 500;
+
+  --text-code: 0.8125rem;
+  --text-code--line-height: 1.6;
+
+  /* ---- Radius -------------------------------------------------------- */
+  --radius-xs: calc(var(--b6-radius) - 0.25rem);
+  --radius-sm: calc(var(--b6-radius) - 0.125rem);
+  --radius-md: var(--b6-radius);
+  --radius-lg: calc(var(--b6-radius) + 0.25rem);
+  --radius-xl: calc(var(--b6-radius) + 0.5rem);
+
+  /* ---- Elevation ----------------------------------------------------- */
+  --shadow-b6-xs: 0 1px 1px oklch(0 0 0 / 0.04);
+  --shadow-b6-sm: 0 1px 2px oklch(0 0 0 / 0.06), 0 1px 6px oklch(0 0 0 / 0.04);
+  --shadow-b6-md: 0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07);
+  --shadow-b6-lg: 0 4px 8px oklch(0 0 0 / 0.07), 0 18px 44px oklch(0 0 0 / 0.1);
+
+  /* ---- Motion -------------------------------------------------------- */
+  --ease-b6: cubic-bezier(0.2, 0, 0, 1);
+  --ease-b6-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade: b6-fade 200ms var(--ease-b6) both;
+  --animate-slide: b6-slide 240ms var(--ease-b6-out) both;
+  --animate-scale: b6-scale 180ms var(--ease-b6-out) both;
+  --animate-expand: b6-expand 220ms var(--ease-b6) both;
+  --animate-collapse: b6-collapse 180ms var(--ease-b6) both;
+
+  @keyframes b6-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes b6-slide {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes b6-scale {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes b6-expand {
+    from {
+      opacity: 0;
+      grid-template-rows: 0fr;
+    }
+    to {
+      opacity: 1;
+      grid-template-rows: 1fr;
+    }
+  }
+  @keyframes b6-collapse {
+    from {
+      opacity: 1;
+      grid-template-rows: 1fr;
+    }
+    to {
+      opacity: 0;
+      grid-template-rows: 0fr;
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* B6 UI uses a single, visible focus treatment everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility b6-grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 100%);
+}
