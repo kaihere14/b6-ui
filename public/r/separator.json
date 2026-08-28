@@ -5,7 +5,8 @@
   "description": "A one-pixel rule, horizontal or vertical, optionally captioned.",
   "dependencies": [],
   "registryDependencies": [
-    "@b6-ui/tokens"
+    "@b6-ui/tokens",
+    "@b6-ui/utils"
   ],
   "files": [
     {

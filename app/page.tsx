@@ -49,7 +49,7 @@ export default function HomePage() {
           <p className="mt-5 max-w-xl text-muted-foreground">{siteConfig.description}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonBase  variant={"primary"} size="lg" rightIcon={<ArrowRight />}>
+            <ButtonBase variant={"primary"} size="lg" rightIcon={<ArrowRight />}>
               <Link href="/components">Browse components</Link>
             </ButtonBase>
             <ButtonBase asChild size="lg" variant="outline">

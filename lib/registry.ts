@@ -109,6 +109,78 @@ export const components: ComponentMeta[] = [
       "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",
   },
   {
+    slug: "magnetic-button",
+    title: "Magnetic Button",
+    description:
+      "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
+    source: "registry/button/magnetic-button/magnetic-button.tsx",
+    dependencies: ["motion"],
+    props: [
+      {
+        name: "strength",
+        type: "number",
+        defaultValue: "0.3",
+        description:
+          "Fraction of the pointer's offset from the centre that the button travels.",
+      },
+      {
+        name: "maxTravel",
+        type: "number",
+        defaultValue: "24",
+        description: "Hard cap on travel in pixels, in any direction.",
+      },
+      {
+        name: "contentStrength",
+        type: "number",
+        defaultValue: "0.4",
+        description:
+          "Extra fraction the label travels on top of the button's own pull, for parallax.",
+      },
+      {
+        name: "magnetic",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Hold the button at rest without removing it from the layout.",
+      },
+      {
+        name: "...ButtonBaseProps",
+        type: "ButtonBaseProps",
+        description:
+          "Every Button Base prop except `asChild` — `variant`, `size`, `block`, `loading`, `leftIcon`, `rightIcon`.",
+      },
+    ],
+    examples: [
+      {
+        title: "Default",
+        description: "Inherits the primary Button Base styling and adds the pull.",
+        code: `<MagneticButton>Get started</MagneticButton>`,
+      },
+      {
+        title: "Tuning the pull",
+        description:
+          "`strength` sets how closely the button follows the pointer; `maxTravel` caps how far it can go.",
+        code: `<MagneticButton variant="outline" strength={0.5} maxTravel={40}>
+  Stronger pull
+</MagneticButton>`,
+      },
+      {
+        title: "Opting out",
+        description:
+          "`magnetic={false}` parks the button at rest — useful inside dense or scrolling layouts.",
+        code: `<MagneticButton magnetic={false}>Magnet off</MagneticButton>`,
+      },
+    ],
+    accessibility: [
+      "Renders the same real `<button>` as Button Base, with the same focus ring and keyboard behaviour.",
+      "Magnetism is a hover affordance only: it never moves under keyboard focus, so focus order is stable.",
+      "Suppressed entirely under `prefers-reduced-motion: reduce` (via Motion\'s `useReducedMotion`) and on coarse pointers, where it behaves exactly like Button Base.",
+      "Held at rest while `disabled` or `loading`, so a non-interactive control never invites a click.",
+      "Motion carries no meaning — every state is already conveyed by the underlying Button Base.",
+    ],
+    responsive:
+      "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off and the button falls back to Button Base sizing.",
+  },
+  {
     slug: "card-base",
     title: "Card Base",
     description:

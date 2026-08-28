@@ -8,7 +8,8 @@
     "@radix-ui/react-slot"
   ],
   "registryDependencies": [
-    "@b6-ui/tokens"
+    "@b6-ui/tokens",
+    "@b6-ui/utils"
   ],
   "files": [
     {

@@ -12,56 +12,67 @@
 
 :root {
   /* Surfaces & text */
-  --b6-background: oklch(0.99 0.004 95);
-  --b6-foreground: oklch(0.18 0.012 75);
+  --b6-background: oklch(0.985 0.001 17.5);
+  --b6-foreground: oklch(0.166 0.0034 17.5);
   --b6-card: oklch(1 0 0);
-  --b6-card-foreground: oklch(0.18 0.012 75);
+  --b6-card-foreground: oklch(0.166 0.0034 17.5);
   --b6-popover: oklch(1 0 0);
-  --b6-popover-foreground: oklch(0.18 0.012 75);
+  --b6-popover-foreground: oklch(0.166 0.0034 17.5);
 
-  /* Intent */
-  --b6-primary: oklch(0.68 0.165 58);
-  --b6-primary-foreground: oklch(0.16 0.03 60);
-  --b6-secondary: oklch(0.94 0.01 95);
-  --b6-secondary-foreground: oklch(0.24 0.014 75);
-  --b6-muted: oklch(0.96 0.008 95);
-  --b6-muted-foreground: oklch(0.5 0.014 80);
-  --b6-accent: oklch(0.93 0.03 90);
-  --b6-accent-foreground: oklch(0.24 0.02 70);
-  --b6-destructive: oklch(0.55 0.2 27);
-  --b6-destructive-foreground: oklch(0.99 0.005 95);
+  /* Intent — primary is ink on paper. */
+  --b6-primary: oklch(0.166 0.0034 17.5);
+  --b6-primary-hover: oklch(0.26 0.005 17.5);
+  --b6-primary-active: oklch(0.12 0.003 17.5);
+  --b6-primary-foreground: oklch(0.985 0.001 17.5);
+  --b6-secondary: oklch(0.945 0.003 17.5);
+  --b6-secondary-foreground: oklch(0.2 0.004 17.5);
+  --b6-muted: oklch(0.955 0.003 17.5);
+  --b6-muted-foreground: oklch(0.52 0.005 17.5);
+  --b6-accent: oklch(0.9 0.005 17.5);
+  --b6-accent-foreground: oklch(0.18 0.004 17.5);
+  --b6-destructive: oklch(0.55 0.19 27);
+  --b6-destructive-hover: oklch(0.6 0.2 27);
+  --b6-destructive-active: oklch(0.5 0.18 27);
+  --b6-destructive-foreground: oklch(0.99 0.002 17.5);
 
   /* Lines */
-  --b6-border: oklch(0.9 0.01 90);
-  --b6-input: oklch(0.93 0.008 90);
-  --b6-ring: oklch(0.68 0.165 58);
+  --b6-border: oklch(0.895 0.004 17.5);
+  --b6-input: oklch(0.93 0.004 17.5);
+  --b6-ring: oklch(0.166 0.0034 17.5);
 
   /* Radius scale — every component derives from this base. */
   --b6-radius: 0.5rem;
 }
 
 .dark {
-  --b6-background: oklch(0.16 0.008 75);
-  --b6-foreground: oklch(0.95 0.006 95);
-  --b6-card: oklch(0.19 0.009 75);
-  --b6-card-foreground: oklch(0.95 0.006 95);
-  --b6-popover: oklch(0.19 0.009 75);
-  --b6-popover-foreground: oklch(0.95 0.006 95);
+  /* Surfaces & text */
+  --b6-background: oklch(0.166 0.0034 17.5);
+  --b6-foreground: oklch(0.965 0.002 17.5);
+  --b6-card: oklch(0.205 0.004 17.5);
+  --b6-card-foreground: oklch(0.965 0.002 17.5);
+  --b6-popover: oklch(0.205 0.004 17.5);
+  --b6-popover-foreground: oklch(0.965 0.002 17.5);
 
-  --b6-primary: oklch(0.76 0.155 62);
-  --b6-primary-foreground: oklch(0.17 0.03 60);
-  --b6-secondary: oklch(0.24 0.012 75);
-  --b6-secondary-foreground: oklch(0.93 0.008 95);
-  --b6-muted: oklch(0.22 0.01 75);
-  --b6-muted-foreground: oklch(0.66 0.012 85);
-  --b6-accent: oklch(0.27 0.02 70);
-  --b6-accent-foreground: oklch(0.94 0.01 90);
-  --b6-destructive: oklch(0.62 0.19 27);
-  --b6-destructive-foreground: oklch(0.99 0.005 95);
+  /* Intent inverts: primary is paper on ink. */
+  --b6-primary: oklch(0.965 0.002 17.5);
+  --b6-primary-hover: oklch(0.885 0.003 17.5);
+  --b6-primary-active: oklch(0.82 0.004 17.5);
+  --b6-primary-foreground: oklch(0.166 0.0034 17.5);
+  --b6-secondary: oklch(0.26 0.005 17.5);
+  --b6-secondary-foreground: oklch(0.95 0.002 17.5);
+  --b6-muted: oklch(0.235 0.005 17.5);
+  --b6-muted-foreground: oklch(0.7 0.006 17.5);
+  --b6-accent: oklch(0.325 0.006 17.5);
+  --b6-accent-foreground: oklch(0.97 0.002 17.5);
+  --b6-destructive: oklch(0.62 0.185 27);
+  --b6-destructive-hover: oklch(0.67 0.195 27);
+  --b6-destructive-active: oklch(0.57 0.175 27);
+  --b6-destructive-foreground: oklch(0.99 0.002 17.5);
 
-  --b6-border: oklch(0.28 0.012 78);
-  --b6-input: oklch(0.26 0.012 78);
-  --b6-ring: oklch(0.76 0.155 62);
+  /* Lines */
+  --b6-border: oklch(0.3 0.006 17.5);
+  --b6-input: oklch(0.27 0.006 17.5);
+  --b6-ring: oklch(0.965 0.002 17.5);
 }
 
 @theme inline {
@@ -73,6 +84,8 @@
   --color-popover: var(--b6-popover);
   --color-popover-foreground: var(--b6-popover-foreground);
   --color-primary: var(--b6-primary);
+  --color-primary-hover: var(--b6-primary-hover);
+  --color-primary-active: var(--b6-primary-active);
   --color-primary-foreground: var(--b6-primary-foreground);
   --color-secondary: var(--b6-secondary);
   --color-secondary-foreground: var(--b6-secondary-foreground);
@@ -81,6 +94,8 @@
   --color-accent: var(--b6-accent);
   --color-accent-foreground: var(--b6-accent-foreground);
   --color-destructive: var(--b6-destructive);
+  --color-destructive-hover: var(--b6-destructive-hover);
+  --color-destructive-active: var(--b6-destructive-active);
   --color-destructive-foreground: var(--b6-destructive-foreground);
   --color-border: var(--b6-border);
   --color-input: var(--b6-input);

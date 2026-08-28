@@ -33,10 +33,10 @@ const componentsJson = `{
 }`;
 
 const tokens = `:root {
-  --b6-background: oklch(0.99 0.004 95);
-  --b6-foreground: oklch(0.18 0.012 75);
-  --b6-primary: oklch(0.68 0.165 58);
-  --b6-primary-foreground: oklch(0.16 0.03 60);
+  --b6-background: oklch(0.985 0.001 17.5);
+  --b6-foreground: oklch(0.166 0.0034 17.5);
+  --b6-primary: oklch(0.166 0.0034 17.5);
+  --b6-primary-foreground: oklch(0.985 0.001 17.5);
   /* …the full set lives in this repository's app/globals.css */
 }`;
 

@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
  */
 const buttonBaseVariants = cva(
   [
-    "relative inline-flex shrink-0 items-center justify-center gap-2",
+    "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2",
     "font-medium whitespace-nowrap select-none",
     "transition-[background-color,color,border-color,box-shadow,transform] duration-150 ease-b6",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
@@ -29,8 +29,6 @@ const buttonBaseVariants = cva(
       variant: {
         primary: [
           "bg-primary text-primary-foreground shadow-b6-sm",
-          "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px",
-          "before:rounded-t-[inherit] before:bg-white/35",
           "hover:brightness-[1.06] active:brightness-[0.97]",
         ],
         secondary:
