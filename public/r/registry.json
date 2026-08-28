@@ -8,7 +8,10 @@
       "type": "registry:base",
       "title": "B6 Base",
       "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -20,6 +23,10 @@
         "theme": {
           "--ease-b6": "cubic-bezier(0.2, 0, 0, 1)",
           "--ease-b6-out": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "--text-hero": "clamp(2.75rem, 7.5vw, 4.75rem)",
+          "--text-hero--line-height": "0.95",
+          "--text-hero--letter-spacing": "-0.042em",
+          "--text-hero--font-weight": "600",
           "--text-display": "3.25rem",
           "--text-display--line-height": "1.04",
           "--text-display--letter-spacing": "-0.032em",
@@ -113,6 +120,10 @@
         "theme": {
           "--ease-b6": "cubic-bezier(0.2, 0, 0, 1)",
           "--ease-b6-out": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "--text-hero": "clamp(2.75rem, 7.5vw, 4.75rem)",
+          "--text-hero--line-height": "0.95",
+          "--text-hero--letter-spacing": "-0.042em",
+          "--text-hero--font-weight": "600",
           "--text-display": "3.25rem",
           "--text-display--line-height": "1.04",
           "--text-display--letter-spacing": "-0.032em",
@@ -202,7 +213,10 @@
       "type": "registry:lib",
       "title": "B6 Utils",
       "description": "The cn() class merger, configured for B6's named type scale so a size utility never overwrites a colour utility.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -216,7 +230,11 @@
       "type": "registry:ui",
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -271,7 +289,10 @@
       "type": "registry:ui",
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -286,7 +307,9 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -301,7 +324,9 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {

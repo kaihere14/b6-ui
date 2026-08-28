@@ -9,7 +9,22 @@ export const siteConfig = {
   github: "https://github.com/kaihere14/b6-ui",
   /** Namespace consumers register in their own components.json. */
   registryNamespace: "@b6-ui",
+  /**
+   * Landing headline, one array entry per rendered line. The hero reveals it a
+   * word at a time, so the line break is a content decision, not a wrap.
+   */
+  heroHeadline: ["Components you own,", "not a dependency."],
+  /** Stack line shown in the hero pill beside the registry count. */
+  heroStack: "Tailwind v4 + React 19",
 } as const;
+
+/**
+ * `--ease-b6-out` as a cubic-bezier tuple, for `motion` transitions on the
+ * documentation site. CSS transitions read the token through `ease-b6-out`;
+ * `motion` cannot resolve a custom property, so the same curve is spelled out
+ * here once instead of at every call site.
+ */
+export const easeB6Out = [0.16, 1, 0.3, 1] as const;
 
 /** Path template consumers point their `registries` entry at. */
 export const registryUrlTemplate = `${siteConfig.url}/r/{name}.json`;

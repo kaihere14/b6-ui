@@ -143,8 +143,7 @@ type NativeButtonProps = Omit<
 >;
 
 export interface StatefulButtonProps
-  extends NativeButtonProps,
-    VariantProps<typeof statefulButtonVariants> {
+  extends NativeButtonProps, VariantProps<typeof statefulButtonVariants> {
   /** Render the child element instead of a `<button>`, keeping all styling and motion. */
   asChild?: boolean;
   /** Current lifecycle state. @default "idle" */
@@ -179,10 +178,7 @@ export interface StatefulButtonProps
 /* Component                                                                   */
 /* -------------------------------------------------------------------------- */
 
-export const StatefulButton = React.forwardRef<
-  HTMLButtonElement,
-  StatefulButtonProps
->(
+export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButtonProps>(
   function StatefulButton(
     {
       className,
@@ -217,11 +213,7 @@ export const StatefulButton = React.forwardRef<
     const shakeX = useMotionValue(0);
     const ref = React.useRef<HTMLButtonElement>(null);
 
-    React.useImperativeHandle(
-      forwardedRef,
-      () => ref.current as HTMLButtonElement,
-      [ref],
-    );
+    React.useImperativeHandle(forwardedRef, () => ref.current as HTMLButtonElement, [ref]);
 
     /* ---- Error shake ---------------------------------------------------- */
     React.useEffect(() => {
@@ -235,20 +227,14 @@ export const StatefulButton = React.forwardRef<
 
     /* ---- Auto-reset timer ----------------------------------------------- */
     React.useEffect(() => {
-      if (
-        (status === "success" || status === "error") &&
-        resetDelay > 0 &&
-        onReset
-      ) {
+      if ((status === "success" || status === "error") && resetDelay > 0 && onReset) {
         const timer = setTimeout(onReset, resetDelay);
         return () => clearTimeout(timer);
       }
     }, [status, resetDelay, onReset]);
 
     /* ---- Content resolution --------------------------------------------- */
-    const contentTransition = reducedMotion
-      ? { duration: 0 }
-      : CONTENT_TRANSITION;
+    const contentTransition = reducedMotion ? { duration: 0 } : CONTENT_TRANSITION;
 
     /**
      * Resolve the icon for the current status.
@@ -264,7 +250,7 @@ export const StatefulButton = React.forwardRef<
       ) : status === "error" ? (
         (errorIcon ?? <X aria-hidden />)
       ) : (
-        leftIcon ?? null
+        (leftIcon ?? null)
       );
 
     /**
@@ -291,10 +277,13 @@ export const StatefulButton = React.forwardRef<
        * text was supplied), so readers never hear "Loading Saving…".
        */
       const srLabel =
-        status === "loading" && loadingText == null ? loadingLabel :
-        status === "success" && successText == null ? successLabel :
-        status === "error" && errorText == null ? errorLabel :
-        null;
+        status === "loading" && loadingText == null
+          ? loadingLabel
+          : status === "success" && successText == null
+            ? successLabel
+            : status === "error" && errorText == null
+              ? errorLabel
+              : null;
 
       const staggerContainer = {
         initial: {},
@@ -337,10 +326,7 @@ export const StatefulButton = React.forwardRef<
               className="inline-flex items-center gap-2"
             >
               {currentIcon && (
-                <motion.span
-                  variants={staggerItem}
-                  className="inline-flex items-center"
-                >
+                <motion.span variants={staggerItem} className="inline-flex items-center">
                   {currentIcon}
                 </motion.span>
               )}
@@ -357,16 +343,11 @@ export const StatefulButton = React.forwardRef<
                     </motion.span>
                   ))
                 ) : (
-                  <motion.span variants={staggerItem}>
-                    {resolvedLabel}
-                  </motion.span>
+                  <motion.span variants={staggerItem}>{resolvedLabel}</motion.span>
                 )}
               </span>
               {isIdle && rightIcon && (
-                <motion.span
-                  variants={staggerItem}
-                  className="inline-flex items-center"
-                >
+                <motion.span variants={staggerItem} className="inline-flex items-center">
                   {rightIcon}
                 </motion.span>
               )}
@@ -378,10 +359,7 @@ export const StatefulButton = React.forwardRef<
 
     /** Props shared across both render paths. */
     const shared = {
-      className: cn(
-        statefulButtonVariants({ variant, size, block }),
-        className,
-      ),
+      className: cn(statefulButtonVariants({ variant, size, block }), className),
       style: { x: shakeX },
       "aria-busy": status === "loading" || undefined,
       "data-status": status,
@@ -397,12 +375,7 @@ export const StatefulButton = React.forwardRef<
       }>;
 
       return (
-        <MotionSlot
-          ref={ref}
-          aria-disabled={isDisabled || undefined}
-          {...shared}
-          {...props}
-        >
+        <MotionSlot ref={ref} aria-disabled={isDisabled || undefined} {...shared} {...props}>
           {React.cloneElement(child, undefined, layer(child.props.children))}
         </MotionSlot>
       );

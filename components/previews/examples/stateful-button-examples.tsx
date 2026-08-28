@@ -2,10 +2,7 @@
 
 import { useCallback, useState } from "react";
 
-import {
-  StatefulButton,
-  type ButtonStatus,
-} from "@/components/ui/stateful-button";
+import { StatefulButton, type ButtonStatus } from "@/components/ui/stateful-button";
 
 export function StatefulButtonDefaultExample() {
   const [status, setStatus] = useState<ButtonStatus>("idle");

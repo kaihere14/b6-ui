@@ -108,6 +108,11 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
+  --text-hero: clamp(2.75rem, 7.5vw, 4.75rem);
+  --text-hero--line-height: 0.95;
+  --text-hero--letter-spacing: -0.042em;
+  --text-hero--font-weight: 600;
+
   --text-display: 3.25rem;
   --text-display--line-height: 1.04;
   --text-display--letter-spacing: -0.032em;

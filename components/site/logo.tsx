@@ -18,7 +18,7 @@ export function Logo({ className }: { className?: string }) {
         priority
         className="h-7 w-auto"
       />
-      <span className="font-semibold tracking-tight self-end">B6 UI</span>
+      <span className="self-end font-semibold tracking-tight">B6 UI</span>
     </span>
   );
 }

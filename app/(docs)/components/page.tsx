@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { InstallCommand } from "@/components/site/install-command";
-import { Badge } from "@/components/ui/badge";
-import {
-  CardBase,
-  CardBaseContent,
-  CardBaseDescription,
-  CardBaseHeader,
-  CardBaseTitle,
-} from "@/components/ui/card-base";
+import { ComponentCard } from "@/components/site/component-card";
 import { components } from "@/lib/registry";
+import { componentCategories } from "@/types";
 
 export const metadata: Metadata = {
   title: "Components",
@@ -18,6 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default function ComponentsIndexPage() {
+  /** Categories in their declared order, minus the ones nothing sits in yet. */
+  const groups = componentCategories
+    .map((category) => ({
+      category,
+      items: components.filter((component) => component.category === category),
+    }))
+    .filter((group) => group.items.length > 0);
+
   return (
     <article className="min-w-0 pb-16 lg:py-12">
       <header className="max-w-2xl">
@@ -28,33 +28,18 @@ export default function ComponentsIndexPage() {
         </p>
       </header>
 
-      <ul className="mt-10 grid gap-4 sm:grid-cols-2">
-        {components.map((component) => (
-          <li key={component.slug}>
-            <CardBase className="h-full">
-              <CardBaseHeader>
-                <div className="flex items-center gap-2">
-                  <CardBaseTitle as="h2">
-                    <Link
-                      href={`/components/${component.slug}`}
-                      className="rounded-sm hover:text-primary"
-                    >
-                      {component.title}
-                    </Link>
-                  </CardBaseTitle>
-                  <Badge size="sm" variant="muted">
-                    {component.slug}
-                  </Badge>
-                </div>
-                <CardBaseDescription>{component.description}</CardBaseDescription>
-              </CardBaseHeader>
-              <CardBaseContent>
-                <InstallCommand slug={component.slug} />
-              </CardBaseContent>
-            </CardBase>
-          </li>
-        ))}
-      </ul>
+      {groups.map(({ category, items }) => (
+        <section key={category} className="mt-12">
+          <h2 className="text-caption text-muted-foreground uppercase">{category}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {items.map((component) => (
+              <li key={component.slug}>
+                <ComponentCard component={component} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </article>
   );
 }

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, Boxes, PackageCheck, Terminal } from "lucide-react";
 
-import { ButtonBasePreview } from "@/components/previews/button-base-preview";
-import { ComponentPreview } from "@/components/site/component-preview";
+import { ComponentCard } from "@/components/site/component-card";
+import { Hero } from "@/components/site/hero";
 import { InstallCommand } from "@/components/site/install-command";
-import { Badge } from "@/components/ui/badge";
+import { SectionHeader } from "@/components/site/section-header";
 import { ButtonBase } from "@/components/ui/button-base";
 import {
   CardBase,
@@ -13,8 +13,6 @@ import {
   CardBaseTitle,
 } from "@/components/ui/card-base";
 import { components } from "@/lib/registry";
-import { siteConfig } from "@/lib/constants";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 
 const pillars = [
   {
@@ -40,75 +38,51 @@ const pillars = [
 export default function HomePage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border">
-        <div aria-hidden className="absolute inset-0 b6-grid-bg opacity-60" />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
-          <Badge size="sm" variant="muted" className="animate-fade">
-            v0.1.0 · Registry preview
-          </Badge>
-          <h1 className="mt-5 max-w-3xl animate-slide text-display">{siteConfig.tagline}</h1>
-          <p className="mt-5 max-w-xl text-muted-foreground">{siteConfig.description}</p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <MagneticButton asChild maxTravel={10} variant="primary" size="lg" rightIcon={<ArrowRight />}>
-              <Link href="/components">Browse components</Link>
-            </MagneticButton>
-            <ButtonBase asChild size="lg" variant="outline">
-              <Link href="/docs/installation">Installation</Link>
-            </ButtonBase>
-          </div>
-
-          <InstallCommand slug="button-base" className="mt-8 max-w-md" />
-        </div>
+      <section className="relative isolate overflow-hidden px-4 pt-20 pb-16 sm:px-6 md:pt-28">
+        <div aria-hidden className="absolute inset-0 -z-10 b6-grid-bg opacity-60" />
+        <Hero componentCount={components.length} />
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section className="mx-auto max-w-2xl px-4 pb-24 sm:px-6">
+        <p className="mb-4 text-center text-small text-muted-foreground">
+          Install the base once, then add a component. Nothing else to wire up.
+        </p>
+        <InstallCommand slug="button-base" />
+      </section>
+
+      <section className="mx-auto max-w-6xl border-t border-border px-4 pt-14 pb-16 sm:px-6">
+        <SectionHeader
+          eyebrow="Components"
+          title="Everything in the registry"
+          description={`${components.length} components, each one installable on its own and yours to edit once it lands.`}
+          action={
+            <ButtonBase asChild variant="ghost" size="sm" rightIcon={<ArrowRight />}>
+              <Link href="/components">Browse all components</Link>
+            </ButtonBase>
+          }
+        />
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {components.map((component) => (
+            <li key={component.slug}>
+              <ComponentCard component={component} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mx-auto max-w-6xl border-t border-border px-4 pt-14 pb-20 sm:px-6">
+        <SectionHeader eyebrow="Why B6" title="Yours the moment it lands" />
         <div className="grid gap-4 md:grid-cols-3">
           {pillars.map(({ icon: Icon, title, description }) => (
             <CardBase key={title}>
               <CardBaseHeader>
                 <Icon aria-hidden className="size-5 text-primary" />
-                <CardBaseTitle as="h2">{title}</CardBaseTitle>
+                <CardBaseTitle as="h3">{title}</CardBaseTitle>
                 <CardBaseDescription>{description}</CardBaseDescription>
               </CardBaseHeader>
             </CardBase>
           ))}
         </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-h2">Button Base</h2>
-            <p className="mt-1 text-small text-muted-foreground">
-              The first B6 component, end to end: source, registry entry, docs, install command.
-            </p>
-          </div>
-          <ButtonBase asChild variant="ghost" size="sm" rightIcon={<ArrowRight />}>
-            <Link href="/components/button-base">View</Link>
-          </ButtonBase>
-        </div>
-        <ComponentPreview>
-          <ButtonBasePreview />
-        </ComponentPreview>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
-        <h2 className="text-h2">In the registry</h2>
-        <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {components.map((component) => (
-            <li key={component.slug}>
-              <CardBase asChild variant="elevated" interactive className="h-full">
-                <Link href={`/components/${component.slug}`}>
-                  <CardBaseHeader>
-                    <CardBaseTitle as="h3">{component.title}</CardBaseTitle>
-                    <CardBaseDescription>{component.description}</CardBaseDescription>
-                  </CardBaseHeader>
-                </Link>
-              </CardBase>
-            </li>
-          ))}
-        </ul>
       </section>
     </>
   );

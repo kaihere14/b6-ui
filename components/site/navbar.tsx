@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CommandMenu } from "@/components/site/command-menu";
@@ -9,11 +10,40 @@ import { ThemeToggle } from "@/components/site/theme-toggle";
 import { mainNav, siteConfig } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
+/** Pixels of scroll before the bar separates itself from the page. */
+const SCROLL_THRESHOLD = 8;
+
 export function Navbar() {
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /**
+   * The landing hero runs under the bar, so the bar stays invisible over it and
+   * only draws its surface and rule once the page has scrolled. Every other
+   * route starts against content, where the separation is needed immediately.
+   *
+   * `scrolled` is false on the server and on the first client render, so a docs
+   * page would flash an unseparated bar for one frame — hence the route check
+   * rather than scroll position alone.
+   */
+  const separated = pathname !== "/" || scrolled;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b transition-colors duration-200 ease-b6",
+        separated
+          ? "border-border bg-background/80 backdrop-blur"
+          : "border-transparent bg-transparent",
+      )}
+    >
       <nav
         aria-label="Main"
         className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6"
@@ -58,7 +88,12 @@ export function Navbar() {
       </nav>
 
       {/* Compact nav for narrow viewports. */}
-      <ul className="flex items-center gap-1 overflow-x-auto border-t border-border px-4 py-2 md:hidden">
+      <ul
+        className={cn(
+          "flex items-center gap-1 overflow-x-auto border-t px-4 py-2 transition-colors duration-200 ease-b6 md:hidden",
+          separated ? "border-border" : "border-transparent",
+        )}
+      >
         {mainNav.map((item) => (
           <li key={item.href}>
             <Link

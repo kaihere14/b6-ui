@@ -288,7 +288,7 @@ export const components: ComponentMeta[] = [
         name: "loadingText / successText / errorText",
         type: "React.ReactNode",
         description:
-          "Visible label shown during the corresponding state. When set, replaces `children` so the label transitions alongside the icon (e.g. \"Save\" → \"Saving…\" → \"Saved!\").",
+          'Visible label shown during the corresponding state. When set, replaces `children` so the label transitions alongside the icon (e.g. "Save" → "Saving…" → "Saved!").',
       },
       {
         name: "loadingLabel",
@@ -328,8 +328,7 @@ export const components: ComponentMeta[] = [
       {
         title: "Default",
         preview: "stateful-button/default",
-        description:
-          "Click to trigger the full lifecycle: idle → loading → success → idle.",
+        description: "Click to trigger the full lifecycle: idle → loading → success → idle.",
         code: `const [status, setStatus] = useState<ButtonStatus>("idle");
 
 <StatefulButton
@@ -377,7 +376,7 @@ export const components: ComponentMeta[] = [
     accessibility: [
       "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
       "Icons and labels transition via AnimatePresence; all motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`.",
-      "`status=\"loading\"` sets `aria-busy`. When no `loadingText` is provided, `loadingLabel` is announced through a visually hidden span; when `loadingText` is visible the sr-only span is omitted so readers never hear \"Loading Saving…\". The same logic applies to success and error.",
+      '`status="loading"` sets `aria-busy`. When no `loadingText` is provided, `loadingLabel` is announced through a visually hidden span; when `loadingText` is visible the sr-only span is omitted so readers never hear "Loading Saving…". The same logic applies to success and error.',
       "The error shake is a horizontal displacement that carries no meaning — the X icon and `errorLabel` convey the failure.",
       "Held at rest while `disabled` or in any non-idle state, so a non-interactive control never invites a click.",
       "A `data-status` attribute is exposed for consumer styling hooks without hard-coding colours in the component.",

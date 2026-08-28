@@ -442,12 +442,7 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
       }>;
 
       return (
-        <MotionSlot
-          ref={ref}
-          aria-disabled={isDisabled || undefined}
-          {...shared}
-          {...props}
-        >
+        <MotionSlot ref={ref} aria-disabled={isDisabled || undefined} {...shared} {...props}>
           {React.cloneElement(child, undefined, layer(child.props.children))}
         </MotionSlot>
       );
