@@ -51,7 +51,17 @@ bun run verify         # registry check + typecheck + lint + tests + build
 You need a React project on Tailwind CSS v4 with a `components.json` (run
 `bunx --bun shadcn@latest init` if you do not have one).
 
-**1. Register the namespace once**
+**1. Add a component**
+
+```bash
+bunx --bun shadcn@latest add https://ui.armandev.space/r/button-base.json
+```
+
+Nothing to configure — the item URL is self-contained.
+
+**2. Optional: register the namespace**
+
+Installing several components? Register `@b6-ui` once and drop the URL:
 
 ```bash
 bunx --bun shadcn@latest registry add @b6-ui=https://ui.armandev.space/r/{name}.json
@@ -67,7 +77,8 @@ or add it to `components.json` by hand:
 }
 ```
 
-**2. Add a component**
+Then the short form resolves. Without that entry the CLI exits with
+`Unknown registry "@b6-ui"`.
 
 ```bash
 bunx --bun shadcn add @b6-ui/button-base
@@ -259,4 +270,5 @@ Repository rules for humans and AI agents alike live in [AGENTS.md](./AGENTS.md)
 ## License
 
 [MIT](./LICENSE)
+
 # b6-ui

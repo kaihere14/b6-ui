@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { CodeBlock } from "@/components/site/code-block";
-import { InstallCommand } from "@/components/site/install-command";
+import { InstallCommand, RegisterNamespaceCommand } from "@/components/site/install-command";
 import { Separator } from "@/components/ui/separator";
 import { registryUrlTemplate, siteConfig } from "@/lib/constants";
 
@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   title: "Installation",
   description: "Register the B6 UI namespace and install components with the shadcn CLI.",
 };
-
-const registerCli = `bunx --bun shadcn@latest registry add ${siteConfig.registryNamespace}=${registryUrlTemplate}`;
 
 const componentsJson = `{
   "$schema": "https://ui.shadcn.com/schema.json",
@@ -46,8 +44,9 @@ export default function InstallationPage() {
       <header>
         <h1 className="text-h1">Installation</h1>
         <p className="mt-3 text-muted-foreground">
-          B6 UI is a shadcn-compatible registry. You register the namespace once, then install
-          any component by name.
+          B6 UI is a shadcn-compatible registry. Install any component straight from its URL —
+          no setup beyond the <code className="font-mono text-code">components.json</code> you
+          already have.
         </p>
       </header>
 
@@ -72,11 +71,28 @@ export default function InstallationPage() {
         </ul>
       </section>
 
+      <section className="mt-12" aria-labelledby="add-heading">
+        <h2 id="add-heading" className="text-h2">
+          1. Add a component
+        </h2>
+        <InstallCommand slug="button-base" className="mt-4" />
+        <p className="mt-3 text-small text-muted-foreground">
+          The CLI writes the source to{" "}
+          <code className="font-mono text-code">components/ui/button-base.tsx</code> and
+          installs any npm dependencies the item declares.
+        </p>
+      </section>
+
       <section className="mt-12" aria-labelledby="register-heading">
         <h2 id="register-heading" className="text-h2">
-          1. Register the namespace
+          2. Optional: register the namespace
         </h2>
-        <CodeBlock className="mt-4" code={registerCli} filename="terminal" language="bash" />
+        <p className="mt-2 text-small text-muted-foreground">
+          Installing lots of components? Register{" "}
+          <code className="font-mono text-code">{siteConfig.registryNamespace}</code> once and
+          drop the URL from every command.
+        </p>
+        <RegisterNamespaceCommand className="mt-4" />
         <p className="mt-3 text-small text-muted-foreground">
           Or add it to <code className="font-mono text-code">components.json</code> by hand:
         </p>
@@ -86,18 +102,14 @@ export default function InstallationPage() {
           filename="components.json"
           language="json"
         />
-      </section>
-
-      <section className="mt-12" aria-labelledby="add-heading">
-        <h2 id="add-heading" className="text-h2">
-          2. Add a component
-        </h2>
-        <InstallCommand slug="button-base" className="mt-4" />
         <p className="mt-3 text-small text-muted-foreground">
-          The CLI writes the source to{" "}
-          <code className="font-mono text-code">components/ui/button-base.tsx</code> and
-          installs any npm dependencies the item declares.
+          Then the short form works. Without this entry the CLI fails with{" "}
+          <code className="font-mono text-code">
+            Unknown registry &quot;{siteConfig.registryNamespace}&quot;
+          </code>
+          .
         </p>
+        <InstallCommand slug="button-base" variant="namespace" className="mt-3" />
       </section>
 
       <section className="mt-12" aria-labelledby="tokens-heading">
