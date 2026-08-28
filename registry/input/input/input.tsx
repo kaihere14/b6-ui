@@ -9,6 +9,21 @@ import { cn } from "@/lib/utils";
  * A single-line text field. The native `size` attribute is deliberately not
  * forwarded: `size` here selects a B6 sizing token instead.
  */
+/**
+ * B6 type steps, written as direct token reads.
+ *
+ * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
+ * class group unless cn() has been told the B6 scale is a font size, so under a
+ * stock shadcn cn() the size silently deletes the colour and the label renders
+ * in whatever colour it inherits — invisible on a solid button. Reading the
+ * token directly lands the step in the font-size group for every cn(), extended
+ * or not, and still loses to a consumer's own `text-lg`.
+ */
+const TYPE = {
+  small: "text-(length:--text-small) leading-(--text-small--line-height)",
+  body: "text-(length:--text-body) leading-(--text-body--line-height)",
+} as const;
+
 const inputVariants = cva(
   [
     "flex w-full min-w-0 rounded-md border bg-background text-foreground",
@@ -17,14 +32,15 @@ const inputVariants = cva(
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-50",
     "aria-invalid:border-destructive aria-invalid:focus-visible:outline-destructive",
-    "file:mr-3 file:border-0 file:bg-transparent file:text-small file:font-medium",
+    "file:mr-3 file:border-0 file:bg-transparent file:font-medium",
+    "file:text-(length:--text-small) file:leading-(--text-small--line-height)",
   ],
   {
     variants: {
       size: {
-        sm: "h-8 px-2.5 text-small",
-        md: "h-10 px-3 text-body",
-        lg: "h-12 px-4 text-body",
+        sm: `h-8 px-2.5 ${TYPE.small}`,
+        md: `h-10 px-3 ${TYPE.body}`,
+        lg: `h-12 px-4 ${TYPE.body}`,
       },
       tone: {
         default: "border-input",

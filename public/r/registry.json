@@ -8,7 +8,10 @@
       "type": "registry:base",
       "title": "B6 Base",
       "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -21,13 +24,31 @@
           "--ease-b6": "cubic-bezier(0.2, 0, 0, 1)",
           "--ease-b6-out": "cubic-bezier(0.16, 1, 0.3, 1)",
           "--text-display": "3.25rem",
+          "--text-display--line-height": "1.04",
+          "--text-display--letter-spacing": "-0.032em",
+          "--text-display--font-weight": "600",
           "--text-h1": "2.25rem",
+          "--text-h1--line-height": "1.12",
+          "--text-h1--letter-spacing": "-0.026em",
+          "--text-h1--font-weight": "600",
           "--text-h2": "1.5rem",
+          "--text-h2--line-height": "1.25",
+          "--text-h2--letter-spacing": "-0.018em",
+          "--text-h2--font-weight": "600",
           "--text-h3": "1.125rem",
+          "--text-h3--line-height": "1.35",
+          "--text-h3--letter-spacing": "-0.012em",
+          "--text-h3--font-weight": "600",
           "--text-body": "0.9375rem",
+          "--text-body--line-height": "1.65",
           "--text-small": "0.8125rem",
+          "--text-small--line-height": "1.55",
           "--text-caption": "0.6875rem",
+          "--text-caption--line-height": "1.4",
+          "--text-caption--letter-spacing": "0.06em",
+          "--text-caption--font-weight": "500",
           "--text-code": "0.8125rem",
+          "--text-code--line-height": "1.6",
           "--shadow-b6-xs": "0 1px 1px oklch(0 0 0 / 0.04)",
           "--shadow-b6-sm": "0 1px 2px oklch(0 0 0 / 0.06), 0 1px 6px oklch(0 0 0 / 0.04)",
           "--shadow-b6-md": "0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07)",
@@ -96,13 +117,31 @@
           "--ease-b6": "cubic-bezier(0.2, 0, 0, 1)",
           "--ease-b6-out": "cubic-bezier(0.16, 1, 0.3, 1)",
           "--text-display": "3.25rem",
+          "--text-display--line-height": "1.04",
+          "--text-display--letter-spacing": "-0.032em",
+          "--text-display--font-weight": "600",
           "--text-h1": "2.25rem",
+          "--text-h1--line-height": "1.12",
+          "--text-h1--letter-spacing": "-0.026em",
+          "--text-h1--font-weight": "600",
           "--text-h2": "1.5rem",
+          "--text-h2--line-height": "1.25",
+          "--text-h2--letter-spacing": "-0.018em",
+          "--text-h2--font-weight": "600",
           "--text-h3": "1.125rem",
+          "--text-h3--line-height": "1.35",
+          "--text-h3--letter-spacing": "-0.012em",
+          "--text-h3--font-weight": "600",
           "--text-body": "0.9375rem",
+          "--text-body--line-height": "1.65",
           "--text-small": "0.8125rem",
+          "--text-small--line-height": "1.55",
           "--text-caption": "0.6875rem",
+          "--text-caption--line-height": "1.4",
+          "--text-caption--letter-spacing": "0.06em",
+          "--text-caption--font-weight": "500",
           "--text-code": "0.8125rem",
+          "--text-code--line-height": "1.6",
           "--shadow-b6-xs": "0 1px 1px oklch(0 0 0 / 0.04)",
           "--shadow-b6-sm": "0 1px 2px oklch(0 0 0 / 0.06), 0 1px 6px oklch(0 0 0 / 0.04)",
           "--shadow-b6-md": "0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07)",
@@ -166,7 +205,10 @@
       "type": "registry:lib",
       "title": "B6 Utils",
       "description": "The cn() class merger, configured for B6's named type scale so a size utility never overwrites a colour utility.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -180,7 +222,11 @@
       "type": "registry:ui",
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -195,7 +241,11 @@
       "type": "registry:ui",
       "title": "Magnetic Button",
       "description": "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
-      "dependencies": ["motion", "class-variance-authority", "lucide-react"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority",
+        "lucide-react"
+      ],
       "files": [
         {
           "path": "registry/button/magnetic-button/magnetic-button.tsx",
@@ -210,7 +260,10 @@
       "type": "registry:ui",
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -225,7 +278,9 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -240,7 +295,9 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {

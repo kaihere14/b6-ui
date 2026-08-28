@@ -9,6 +9,21 @@ import { cn } from "@/lib/utils";
  * A compact status marker. Badges are labels, not controls: render an
  * interactive element inside a badge only when it is genuinely clickable.
  */
+/**
+ * B6 type steps, written as direct token reads.
+ *
+ * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
+ * class group unless cn() has been told the B6 scale is a font size, so under a
+ * stock shadcn cn() the size silently deletes the colour and the label renders
+ * in whatever colour it inherits — invisible on a solid button. Reading the
+ * token directly lands the step in the font-size group for every cn(), extended
+ * or not, and still loses to a consumer's own `text-lg`.
+ */
+const TYPE = {
+  small: "text-(length:--text-small) leading-(--text-small--line-height)",
+  caption: "text-(length:--text-caption) leading-(--text-caption--line-height) tracking-(--text-caption--letter-spacing) font-(weight:--text-caption--font-weight)",
+} as const;
+
 const badgeVariants = cva(
   [
     "inline-flex items-center gap-1.5 rounded-full border font-medium whitespace-nowrap",
@@ -24,8 +39,8 @@ const badgeVariants = cva(
         destructive: "border-transparent bg-destructive text-destructive-foreground",
       },
       size: {
-        sm: "h-5 px-2 text-caption uppercase",
-        md: "h-6 px-2.5 text-small",
+        sm: `h-5 px-2 uppercase ${TYPE.caption}`,
+        md: `h-6 px-2.5 ${TYPE.small}`,
       },
     },
     defaultVariants: {

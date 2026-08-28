@@ -84,12 +84,30 @@ for (const item of registry.items) {
 // consumer's project, where that file was never installed.
 const forbiddenImport = /from\s+"@\/(?!lib\/utils")[^"]+"/g;
 
+// A distributed component may not name a B6 type step (`text-body`, `text-h3`, …)
+// as a class. Stock `tailwind-merge` files those under `text-color`, so a size
+// from one cva variant deletes the colour from another and the label renders in
+// the colour it inherits — invisible on a solid button. Only B6's own extended
+// cn() knows better, and a consumer who already had `lib/utils.ts` never got it.
+// Read the token instead: `text-(length:--text-body) leading-(--text-body--line-height)`.
+const forbiddenTypeClass = /(?<![\w-])text-(display|h1|h2|h3|body|small|caption|code)(?![\w-])/g;
+
 for (const component of components) {
   const sourcePath = path.join(root, component.source);
   if (existsSync(sourcePath)) {
     for (const match of readFileSync(sourcePath, "utf8").matchAll(forbiddenImport)) {
       errors.push(
         `${component.source} imports ${match[0].replace(/^from\s+/, "")} — a registry component may only import npm packages and "@/lib/utils"`,
+      );
+    }
+
+    const code = readFileSync(sourcePath, "utf8")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/.*$/gm, "");
+
+    for (const match of code.matchAll(forbiddenTypeClass)) {
+      errors.push(
+        `${component.source} uses the class "${match[0]}" — a registry component reads the type token directly (text-(length:--text-${match[1]})), because stock tailwind-merge treats a named step as a colour`,
       );
     }
   }

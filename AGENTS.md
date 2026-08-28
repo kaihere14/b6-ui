@@ -175,7 +175,8 @@ Rules:
   `orange-500`.
 - Typography uses the eight named steps (`text-display`, `text-h1`, `text-h2`, `text-h3`,
   `text-body`, `text-small`, `text-caption`, `text-code`). Each carries its own line-height and
-  tracking, so one class is a complete type decision.
+  tracking, so one class is a complete type decision. That holds on the documentation site.
+  **A distributed component never writes a named step** — see the type-step rule below.
 - Radius derives from `--b6-radius`. Use `rounded-xs|sm|md|lg|xl`, never arbitrary values.
 - Elevation is `shadow-b6-xs|sm|md|lg`. A surface rises only when it is interactive or
   overlaying.
@@ -200,6 +201,23 @@ Rules:
   `text-*` into either `font-size` or `text-color`, and it cannot tell which `text-body` is —
   unregistered, it guesses colour, and a later size utility silently deletes an earlier
   `text-primary-foreground`.
+- **A registry component reads the type token instead of naming the step**, because that
+  registration only exists in B6's `cn()`. `shadcn add` will not overwrite a `lib/utils.ts`
+  the consumer already has, so most consumers keep the stock one-line `twMerge` — under it
+  `cn("bg-primary text-primary-foreground", "text-body")` returns `bg-primary text-body` and
+  the label renders in the inherited colour, invisible on a solid button. So a component
+  writes the step as an explicit token read, which lands in the `font-size` group for every
+  `cn()`, extended or not, and still loses to a consumer's own `text-lg`:
+
+  ```tsx
+  const TYPE = {
+    body: "text-(length:--text-body) leading-(--text-body--line-height)",
+  } as const;
+  ```
+
+  Include the modifiers the step defines (`--line-height`, `--letter-spacing`,
+  `--font-weight`) — the token read carries none of them on its own. `bun run registry:check`
+  fails on any named step in a registry source.
 
 ---
 

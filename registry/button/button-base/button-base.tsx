@@ -14,6 +14,21 @@ import { cn } from "@/lib/utils";
  * inset highlight along their top edge, which is the recurring B6 signature for
  * raised, pressable surfaces.
  */
+/**
+ * B6 type steps, written as direct token reads.
+ *
+ * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
+ * class group unless cn() has been told the B6 scale is a font size, so under a
+ * stock shadcn cn() the size silently deletes the colour and the label renders
+ * in whatever colour it inherits — invisible on a solid button. Reading the
+ * token directly lands the step in the font-size group for every cn(), extended
+ * or not, and still loses to a consumer's own `text-lg`.
+ */
+const TYPE = {
+  small: "text-(length:--text-small) leading-(--text-small--line-height)",
+  body: "text-(length:--text-body) leading-(--text-body--line-height)",
+} as const;
+
 const buttonBaseVariants = cva(
   [
     "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2",
@@ -43,9 +58,9 @@ const buttonBaseVariants = cva(
         link: "text-primary underline-offset-4 hover:underline active:translate-y-0",
       },
       size: {
-        sm: "h-8 rounded-sm px-3 text-small",
-        md: "h-10 rounded-md px-4 text-body",
-        lg: "h-12 rounded-md px-6 text-body",
+        sm: `h-8 rounded-sm px-3 ${TYPE.small}`,
+        md: `h-10 rounded-md px-4 ${TYPE.body}`,
+        lg: `h-12 rounded-md px-6 ${TYPE.body}`,
         icon: "size-10 rounded-md p-0",
       },
       block: {

@@ -45,6 +45,21 @@ export interface CardBaseProps
   asChild?: boolean;
 }
 
+/**
+ * B6 type steps, written as direct token reads.
+ *
+ * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
+ * class group unless cn() has been told the B6 scale is a font size, so under a
+ * stock shadcn cn() the size silently deletes the colour and the label renders
+ * in whatever colour it inherits — invisible on a solid button. Reading the
+ * token directly lands the step in the font-size group for every cn(), extended
+ * or not, and still loses to a consumer's own `text-lg`.
+ */
+const TYPE = {
+  small: "text-(length:--text-small) leading-(--text-small--line-height)",
+  h3: "text-(length:--text-h3) leading-(--text-h3--line-height) tracking-(--text-h3--letter-spacing) font-(weight:--text-h3--font-weight)",
+} as const;
+
 export const CardBase = React.forwardRef<HTMLDivElement, CardBaseProps>(function CardBase(
   { className, variant, padding, interactive, asChild = false, ...props },
   ref,
@@ -82,7 +97,7 @@ export interface CardBaseTitleProps extends React.ComponentPropsWithoutRef<"h3">
 export const CardBaseTitle = React.forwardRef<HTMLHeadingElement, CardBaseTitleProps>(
   function CardBaseTitle({ className, as: Comp = "h3", ...props }, ref) {
     return (
-      <Comp ref={ref} data-slot="card-title" className={cn("text-h3", className)} {...props} />
+      <Comp ref={ref} data-slot="card-title" className={cn(TYPE.h3, className)} {...props} />
     );
   },
 );
@@ -95,7 +110,7 @@ export const CardBaseDescription = React.forwardRef<
     <p
       ref={ref}
       data-slot="card-description"
-      className={cn("text-small text-muted-foreground", className)}
+      className={cn(TYPE.small, "text-muted-foreground", className)}
       {...props}
     />
   );
