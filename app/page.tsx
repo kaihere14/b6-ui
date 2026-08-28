@@ -3,7 +3,7 @@ import { ArrowRight, Boxes, PackageCheck, Terminal } from "lucide-react";
 
 import { ComponentCard } from "@/components/site/component-card";
 import { Hero } from "@/components/site/hero";
-import { InstallCommand } from "@/components/site/install-command";
+import { RotatingInstallCommand } from "@/components/site/install-command";
 import { SectionHeader } from "@/components/site/section-header";
 import { ButtonBase } from "@/components/ui/button-base";
 import {
@@ -47,7 +47,7 @@ export default function HomePage() {
         <p className="mb-4 text-center text-small text-muted-foreground">
           Install the base once, then add a component. Nothing else to wire up.
         </p>
-        <InstallCommand slug="button-base" />
+        <RotatingInstallCommand slugs={components.map((component) => component.slug)} />
       </section>
 
       <section className="mx-auto max-w-6xl border-t border-border px-4 pt-14 pb-16 sm:px-6">

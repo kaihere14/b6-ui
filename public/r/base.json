@@ -75,6 +75,7 @@
       "destructive-hover": "oklch(0.6 0.2 27)",
       "destructive-active": "oklch(0.5 0.18 27)",
       "destructive-foreground": "oklch(0.99 0.002 17.5)",
+      "brand": "oklch(0.58 0.19 40)",
       "border": "oklch(0.895 0.004 17.5)",
       "input": "oklch(0.93 0.004 17.5)",
       "ring": "oklch(0.166 0.0034 17.5)",
@@ -101,6 +102,7 @@
       "destructive-hover": "oklch(0.67 0.195 27)",
       "destructive-active": "oklch(0.57 0.175 27)",
       "destructive-foreground": "oklch(0.99 0.002 17.5)",
+      "brand": "oklch(0.76 0.175 48)",
       "border": "oklch(0.24 0 0)",
       "input": "oklch(0.22 0 0)",
       "ring": "oklch(0.97 0 0)"
