@@ -20,6 +20,7 @@ import {
   InputSearchExample,
 } from "@/components/previews/examples/input-examples";
 import {
+  MagneticButtonAsChildExample,
   MagneticButtonDefaultExample,
   MagneticButtonOptOutExample,
   MagneticButtonStrengthExample,
@@ -60,6 +61,7 @@ export const exampleDemos: Record<string, ComponentType> = {
   "button-base/as-link": ButtonBaseAsLinkExample,
   "magnetic-button/default": MagneticButtonDefaultExample,
   "magnetic-button/strength": MagneticButtonStrengthExample,
+  "magnetic-button/as-child": MagneticButtonAsChildExample,
   "magnetic-button/opt-out": MagneticButtonOptOutExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,

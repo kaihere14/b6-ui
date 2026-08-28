@@ -1,9 +1,17 @@
 "use client";
 
 import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -13,6 +21,10 @@ import { cn } from "@/lib/utils";
  * A button that leans toward the pointer while the pointer is over it, and
  * springs back to rest the moment it leaves. Pointer tracking drives motion
  * values rather than React state, so following the cursor never re-renders.
+ *
+ * Clicking it dips the button a couple of pixels along y and eases it back, so
+ * an activation reads as a press. That dip is summed with the magnet's own
+ * offset into one transform.
  *
  * Magnetism is an enhancement, never a requirement: it is switched off for
  * `prefers-reduced-motion` and for coarse pointers, where the button is an
@@ -93,6 +105,20 @@ const BUTTON_SPRING = { stiffness: 260, damping: 22, mass: 0.6 } as const;
 
 /** Spring that carries the label. Looser than the button's, which is what reads as parallax. */
 const CONTENT_SPRING = { stiffness: 180, damping: 20, mass: 0.5 } as const;
+
+/** How far the button dips along y when it is clicked, in pixels. */
+const PRESS_TRAVEL = 2;
+
+/** How long the dip takes to ease back to rest, in seconds. */
+const PRESS_DURATION = 0.24;
+
+/**
+ * Slot, driven by Motion. `asChild` still has to animate a transform, and the
+ * only element Motion can reach is the one Slot renders — so Motion wraps Slot
+ * rather than the other way round, and follows Slot's ref down to the real DOM
+ * node.
+ */
+const MotionSlot = motion.create(Slot);
 
 /* -------------------------------------------------------------------------- */
 /* Geometry                                                                    */
@@ -303,6 +329,8 @@ type NativeButtonProps = Omit<
 
 export interface MagneticButtonProps
   extends NativeButtonProps, VariantProps<typeof magneticButtonVariants> {
+  /** Render the child element instead of a `<button>`, keeping all styling and motion. */
+  asChild?: boolean;
   /** Show a spinner, block interaction and mark the control busy. */
   loading?: boolean;
   /** Accessible label announced while `loading` is true. */
@@ -331,6 +359,7 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
       strength,
       maxTravel,
       contentStrength,
+      asChild = false,
       magnetic = true,
       loading = false,
       loadingLabel = "Loading",
@@ -339,6 +368,7 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
       disabled,
       children,
       type,
+      onClick,
       ...props
     },
     forwardedRef,
@@ -356,31 +386,82 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
       enabled: magnetic && finePointer && !reducedMotion && !isDisabled,
     });
 
+    // The press dip rides on top of the magnet rather than replacing it: both
+    // are a y offset, so they are summed into the single transform Motion
+    // writes. A CSS `active:translate-y-px` could not work here — Motion owns
+    // the element's transform and would overwrite it on the next frame.
+    const press = useMotionValue(0);
+    const y = useTransform([style.y, press], ([pull, dip]: number[]) => pull + dip);
+
+    // One handler covers every activation: a button fires `click` for Enter and
+    // Space as well as for the pointer, so the dip follows the keyboard for
+    // free. It drops the button and eases it back in a single pass.
+    const dip = React.useCallback(() => {
+      if (reducedMotion) return;
+      animate(press, [PRESS_TRAVEL, 0], { duration: PRESS_DURATION, ease: "easeOut" });
+    }, [press, reducedMotion]);
+
     React.useImperativeHandle(forwardedRef, () => ref.current as HTMLButtonElement, [ref]);
+
+    /** Everything both renderings share. `type` and `disabled` belong to a real
+     * `<button>` alone, so they stay out of here. */
+    const shared = {
+      className: cn(magneticButtonVariants({ variant, size, block }), className),
+      style: { x: style.x, y },
+      "aria-busy": loading || undefined,
+      "data-loading": loading ? "" : undefined,
+      onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+        dip();
+        onClick?.(event);
+      },
+    };
+
+    /** The parallax layer. Whatever ends up inside the element goes in here. */
+    const layer = (label: React.ReactNode) => (
+      <motion.span style={contentStyle} className="inline-flex items-center gap-2">
+        {loading ? (
+          <>
+            <Loader2 aria-hidden className="animate-spin" />
+            <span className="sr-only">{loadingLabel}</span>
+          </>
+        ) : (
+          leftIcon
+        )}
+        {label}
+        {rightIcon}
+      </motion.span>
+    );
+
+    if (asChild) {
+      // Radix's <Slottable> only scans Slot's *direct* children, and the label
+      // has to sit one level deeper, inside the parallax layer. So the child is
+      // rebuilt here instead: same element, same props, with its own children
+      // moved into that layer.
+      const child = React.Children.only(children) as React.ReactElement<{
+        children?: React.ReactNode;
+      }>;
+
+      return (
+        <MotionSlot
+          ref={ref}
+          aria-disabled={isDisabled || undefined}
+          {...shared}
+          {...props}
+        >
+          {React.cloneElement(child, undefined, layer(child.props.children))}
+        </MotionSlot>
+      );
+    }
 
     return (
       <motion.button
         ref={ref}
         type={type ?? "button"}
         disabled={isDisabled}
-        aria-busy={loading || undefined}
-        data-loading={loading ? "" : undefined}
-        style={style}
-        className={cn(magneticButtonVariants({ variant, size, block }), className)}
+        {...shared}
         {...props}
       >
-        <motion.span style={contentStyle} className="inline-flex items-center gap-2">
-          {loading ? (
-            <>
-              <Loader2 aria-hidden className="animate-spin" />
-              <span className="sr-only">{loadingLabel}</span>
-            </>
-          ) : (
-            leftIcon
-          )}
-          {children}
-          {rightIcon}
-        </motion.span>
+        {layer(children)}
       </motion.button>
     );
   },

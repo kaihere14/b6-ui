@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card-base";
 import { components } from "@/lib/registry";
 import { siteConfig } from "@/lib/constants";
+import { MagneticButton } from "@/components/ui/magnetic-button";
 
 const pillars = [
   {
@@ -49,9 +50,9 @@ export default function HomePage() {
           <p className="mt-5 max-w-xl text-muted-foreground">{siteConfig.description}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonBase variant={"primary"} size="lg" rightIcon={<ArrowRight />}>
+            <MagneticButton asChild maxTravel={10} variant="primary" size="lg" rightIcon={<ArrowRight />}>
               <Link href="/components">Browse components</Link>
-            </ButtonBase>
+            </MagneticButton>
             <ButtonBase asChild size="lg" variant="outline">
               <Link href="/docs/installation">Installation</Link>
             </ButtonBase>

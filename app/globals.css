@@ -45,34 +45,37 @@
 }
 
 .dark {
-  /* Surfaces & text */
-  --b6-background: oklch(0.166 0.0034 17.5);
-  --b6-foreground: oklch(0.965 0.002 17.5);
-  --b6-card: oklch(0.205 0.004 17.5);
-  --b6-card-foreground: oklch(0.965 0.002 17.5);
-  --b6-popover: oklch(0.205 0.004 17.5);
-  --b6-popover-foreground: oklch(0.965 0.002 17.5);
+  /* Surfaces & text — a pure, neutral black ground. Every dark surface is
+   * achromatic (chroma 0), so nothing carries a colour cast, and the page
+   * itself sits at true black with the surfaces above it stepping up in
+   * lightness only. */
+  --b6-background: oklch(0 0 0);
+  --b6-foreground: oklch(0.97 0 0);
+  --b6-card: oklch(0.145 0 0);
+  --b6-card-foreground: oklch(0.97 0 0);
+  --b6-popover: oklch(0.145 0 0);
+  --b6-popover-foreground: oklch(0.97 0 0);
 
   /* Intent inverts: primary is paper on ink. */
-  --b6-primary: oklch(0.965 0.002 17.5);
-  --b6-primary-hover: oklch(0.885 0.003 17.5);
-  --b6-primary-active: oklch(0.82 0.004 17.5);
-  --b6-primary-foreground: oklch(0.166 0.0034 17.5);
-  --b6-secondary: oklch(0.26 0.005 17.5);
-  --b6-secondary-foreground: oklch(0.95 0.002 17.5);
-  --b6-muted: oklch(0.235 0.005 17.5);
-  --b6-muted-foreground: oklch(0.7 0.006 17.5);
-  --b6-accent: oklch(0.325 0.006 17.5);
-  --b6-accent-foreground: oklch(0.97 0.002 17.5);
+  --b6-primary: oklch(0.97 0 0);
+  --b6-primary-hover: oklch(0.89 0 0);
+  --b6-primary-active: oklch(0.82 0 0);
+  --b6-primary-foreground: oklch(0 0 0);
+  --b6-secondary: oklch(0.2 0 0);
+  --b6-secondary-foreground: oklch(0.95 0 0);
+  --b6-muted: oklch(0.17 0 0);
+  --b6-muted-foreground: oklch(0.68 0 0);
+  --b6-accent: oklch(0.27 0 0);
+  --b6-accent-foreground: oklch(0.97 0 0);
   --b6-destructive: oklch(0.62 0.185 27);
   --b6-destructive-hover: oklch(0.67 0.195 27);
   --b6-destructive-active: oklch(0.57 0.175 27);
   --b6-destructive-foreground: oklch(0.99 0.002 17.5);
 
   /* Lines */
-  --b6-border: oklch(0.3 0.006 17.5);
-  --b6-input: oklch(0.27 0.006 17.5);
-  --b6-ring: oklch(0.965 0.002 17.5);
+  --b6-border: oklch(0.24 0 0);
+  --b6-input: oklch(0.22 0 0);
+  --b6-ring: oklch(0.97 0 0);
 }
 
 @theme inline {

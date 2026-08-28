@@ -22,6 +22,17 @@ export const metadata: Metadata = {
 /**
  * Applies the stored theme before first paint so the page never flashes the
  * wrong palette. Kept inline and dependency-free on purpose.
+ *
+ * It stays a raw `<script>` rather than `next/script`: `beforeInteractive`
+ * queues an inline script onto `self.__next_s`, which is drained by an `async`
+ * chunk, so the class would land after the first paint and the flash would be
+ * back. A parse-blocking tag in `<head>` is the only thing that runs early
+ * enough.
+ *
+ * React logs "Encountered a script tag while rendering React component" for
+ * this in development. That warning is about client rendering, where React
+ * never executes a script it creates — this one only ever has to run from the
+ * server-rendered HTML, where the browser does execute it.
  */
 const themeScript = `(function(){try{var s=localStorage.getItem("b6-ui-theme");var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
 

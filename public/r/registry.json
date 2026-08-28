@@ -8,10 +8,7 @@
       "type": "registry:base",
       "title": "B6 Base",
       "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -81,29 +78,29 @@
           "radius": "0.5rem"
         },
         "dark": {
-          "background": "oklch(0.166 0.0034 17.5)",
-          "foreground": "oklch(0.965 0.002 17.5)",
-          "card": "oklch(0.205 0.004 17.5)",
-          "card-foreground": "oklch(0.965 0.002 17.5)",
-          "popover": "oklch(0.205 0.004 17.5)",
-          "popover-foreground": "oklch(0.965 0.002 17.5)",
-          "primary": "oklch(0.965 0.002 17.5)",
-          "primary-hover": "oklch(0.885 0.003 17.5)",
-          "primary-active": "oklch(0.82 0.004 17.5)",
-          "primary-foreground": "oklch(0.166 0.0034 17.5)",
-          "secondary": "oklch(0.26 0.005 17.5)",
-          "secondary-foreground": "oklch(0.95 0.002 17.5)",
-          "muted": "oklch(0.235 0.005 17.5)",
-          "muted-foreground": "oklch(0.7 0.006 17.5)",
-          "accent": "oklch(0.325 0.006 17.5)",
-          "accent-foreground": "oklch(0.97 0.002 17.5)",
+          "background": "oklch(0 0 0)",
+          "foreground": "oklch(0.97 0 0)",
+          "card": "oklch(0.145 0 0)",
+          "card-foreground": "oklch(0.97 0 0)",
+          "popover": "oklch(0.145 0 0)",
+          "popover-foreground": "oklch(0.97 0 0)",
+          "primary": "oklch(0.97 0 0)",
+          "primary-hover": "oklch(0.89 0 0)",
+          "primary-active": "oklch(0.82 0 0)",
+          "primary-foreground": "oklch(0 0 0)",
+          "secondary": "oklch(0.2 0 0)",
+          "secondary-foreground": "oklch(0.95 0 0)",
+          "muted": "oklch(0.17 0 0)",
+          "muted-foreground": "oklch(0.68 0 0)",
+          "accent": "oklch(0.27 0 0)",
+          "accent-foreground": "oklch(0.97 0 0)",
           "destructive": "oklch(0.62 0.185 27)",
           "destructive-hover": "oklch(0.67 0.195 27)",
           "destructive-active": "oklch(0.57 0.175 27)",
           "destructive-foreground": "oklch(0.99 0.002 17.5)",
-          "border": "oklch(0.3 0.006 17.5)",
-          "input": "oklch(0.27 0.006 17.5)",
-          "ring": "oklch(0.965 0.002 17.5)"
+          "border": "oklch(0.24 0 0)",
+          "input": "oklch(0.22 0 0)",
+          "ring": "oklch(0.97 0 0)"
         }
       }
     },
@@ -174,29 +171,29 @@
           "radius": "0.5rem"
         },
         "dark": {
-          "background": "oklch(0.166 0.0034 17.5)",
-          "foreground": "oklch(0.965 0.002 17.5)",
-          "card": "oklch(0.205 0.004 17.5)",
-          "card-foreground": "oklch(0.965 0.002 17.5)",
-          "popover": "oklch(0.205 0.004 17.5)",
-          "popover-foreground": "oklch(0.965 0.002 17.5)",
-          "primary": "oklch(0.965 0.002 17.5)",
-          "primary-hover": "oklch(0.885 0.003 17.5)",
-          "primary-active": "oklch(0.82 0.004 17.5)",
-          "primary-foreground": "oklch(0.166 0.0034 17.5)",
-          "secondary": "oklch(0.26 0.005 17.5)",
-          "secondary-foreground": "oklch(0.95 0.002 17.5)",
-          "muted": "oklch(0.235 0.005 17.5)",
-          "muted-foreground": "oklch(0.7 0.006 17.5)",
-          "accent": "oklch(0.325 0.006 17.5)",
-          "accent-foreground": "oklch(0.97 0.002 17.5)",
+          "background": "oklch(0 0 0)",
+          "foreground": "oklch(0.97 0 0)",
+          "card": "oklch(0.145 0 0)",
+          "card-foreground": "oklch(0.97 0 0)",
+          "popover": "oklch(0.145 0 0)",
+          "popover-foreground": "oklch(0.97 0 0)",
+          "primary": "oklch(0.97 0 0)",
+          "primary-hover": "oklch(0.89 0 0)",
+          "primary-active": "oklch(0.82 0 0)",
+          "primary-foreground": "oklch(0 0 0)",
+          "secondary": "oklch(0.2 0 0)",
+          "secondary-foreground": "oklch(0.95 0 0)",
+          "muted": "oklch(0.17 0 0)",
+          "muted-foreground": "oklch(0.68 0 0)",
+          "accent": "oklch(0.27 0 0)",
+          "accent-foreground": "oklch(0.97 0 0)",
           "destructive": "oklch(0.62 0.185 27)",
           "destructive-hover": "oklch(0.67 0.195 27)",
           "destructive-active": "oklch(0.57 0.175 27)",
           "destructive-foreground": "oklch(0.99 0.002 17.5)",
-          "border": "oklch(0.3 0.006 17.5)",
-          "input": "oklch(0.27 0.006 17.5)",
-          "ring": "oklch(0.965 0.002 17.5)"
+          "border": "oklch(0.24 0 0)",
+          "input": "oklch(0.22 0 0)",
+          "ring": "oklch(0.97 0 0)"
         }
       }
     },
@@ -205,10 +202,7 @@
       "type": "registry:lib",
       "title": "B6 Utils",
       "description": "The cn() class merger, configured for B6's named type scale so a size utility never overwrites a colour utility.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -222,11 +216,7 @@
       "type": "registry:ui",
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot",
-        "lucide-react"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -243,6 +233,7 @@
       "description": "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
       "dependencies": [
         "motion",
+        "@radix-ui/react-slot",
         "class-variance-authority",
         "lucide-react"
       ],
@@ -260,10 +251,7 @@
       "type": "registry:ui",
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
       "registryDependencies": [],
       "files": [
         {
@@ -278,9 +266,7 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -295,9 +281,7 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {

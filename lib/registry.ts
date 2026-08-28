@@ -121,7 +121,12 @@ export const components: ComponentMeta[] = [
     description:
       "A standalone button that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
     source: "registry/button/magnetic-button/magnetic-button.tsx",
-    dependencies: ["motion", "class-variance-authority", "lucide-react"],
+    dependencies: [
+      "motion",
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "lucide-react",
+    ],
     props: [
       {
         name: "strength",
@@ -148,6 +153,13 @@ export const components: ComponentMeta[] = [
         type: "boolean",
         defaultValue: "true",
         description: "Hold the button at rest without removing it from the layout.",
+      },
+      {
+        name: "asChild",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Render the child element instead of a `<button>`, keeping the styling, the pull and the press dip. Use it to make a link magnetic.",
       },
       {
         name: "variant",
@@ -191,6 +203,15 @@ export const components: ComponentMeta[] = [
 </MagneticButton>`,
       },
       {
+        title: "As a link",
+        preview: "magnetic-button/as-child",
+        description:
+          "`asChild` hands the styling and the motion to the child element, so a navigation target stays a real `<a>` — middle-click and open-in-new-tab keep working.",
+        code: `<MagneticButton asChild rightIcon={<ArrowRight />}>
+  <Link href="/components">Browse components</Link>
+</MagneticButton>`,
+      },
+      {
         title: "Opting out",
         preview: "magnetic-button/opt-out",
         description:
@@ -201,12 +222,13 @@ export const components: ComponentMeta[] = [
     accessibility: [
       "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
       "Magnetism is a hover affordance only: it never moves under keyboard focus, so focus order is stable.",
-      "Suppressed entirely under `prefers-reduced-motion: reduce` (via Motion\'s `useReducedMotion`) and on coarse pointers, where it is an ordinary B6 button.",
+      "Clicking the button dips it 2px along y and eases it back. It hangs off `click`, which a button also fires for Enter and Space, so keyboard activation is confirmed the same way as a pointer one.",
+      "Magnetism is suppressed entirely under `prefers-reduced-motion: reduce` (via Motion\'s `useReducedMotion`) and on coarse pointers, where it is an ordinary B6 button. The press dip is dropped under reduced motion as well; colour and focus still confirm the press.",
       "Held at rest while `disabled` or `loading`, so a non-interactive control never invites a click.",
       "Motion carries no meaning — every state is already conveyed by colour, the spinner and `aria-busy`.",
     ],
     responsive:
-      "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off and only the sizing variants apply.",
+      "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off, but the press dip stays, so a tap is still confirmed.",
   },
   {
     slug: "card-base",
