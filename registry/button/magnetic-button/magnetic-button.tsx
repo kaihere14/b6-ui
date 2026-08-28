@@ -109,8 +109,11 @@ const CONTENT_SPRING = { stiffness: 180, damping: 20, mass: 0.5 } as const;
 /** How far the button dips along y when it is clicked, in pixels. */
 const PRESS_TRAVEL = 2;
 
-/** How long the dip takes to ease back to rest, in seconds. */
+/** How long the whole dip lasts — down and back — in seconds. */
 const PRESS_DURATION = 0.24;
+
+/** Fraction of the press spent travelling down. The rest is the return. */
+const PRESS_DROP = 0.25;
 
 /**
  * Slot, driven by Motion. `asChild` still has to animate a transform, and the
@@ -271,10 +274,25 @@ export function useMagnetic<T extends HTMLElement>({
     }
 
     const handlePointerMove = (event: PointerEvent) => {
+      // Read per move: the resting box shifts with scroll and layout. But
+      // getBoundingClientRect() reports the box *including* the transform the
+      // spring is currently writing, and feeding that back in would make the
+      // pull chase its own output — the centre it leans away from moves with
+      // it, so the spring hunts around the answer instead of settling on it,
+      // and the follow reads as a wobble. Subtracting the offset applied right
+      // now recovers the resting box, leaving the target a function of the
+      // pointer alone.
+      const moved = element.getBoundingClientRect();
+      const rect = new DOMRect(
+        moved.left - x.get(),
+        moved.top - y.get(),
+        moved.width,
+        moved.height,
+      );
+
       set(
         magneticOffset({
-          // Read per move: the resting box shifts with scroll and layout.
-          rect: element.getBoundingClientRect(),
+          rect,
           pointer: { x: event.clientX, y: event.clientY },
           strength,
           maxTravel,
@@ -303,6 +321,8 @@ export function useMagnetic<T extends HTMLElement>({
     targetY,
     contentTargetX,
     contentTargetY,
+    x,
+    y,
   ]);
 
   return { ref, style: { x, y }, contentStyle: { x: contentX, y: contentY } };
@@ -395,10 +415,18 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
 
     // One handler covers every activation: a button fires `click` for Enter and
     // Space as well as for the pointer, so the dip follows the keyboard for
-    // free. It drops the button and eases it back in a single pass.
+    // free. The dip travels down and back in a single pass — starting the
+    // keyframes at 0 rather than at full travel matters: jumping straight to
+    // the bottom and easing up is a discontinuity, and it is felt as a snap
+    // rather than as a press. Down takes a quarter of the pass, the return the
+    // rest, so the button gives way quickly and recovers gently.
     const dip = React.useCallback(() => {
       if (reducedMotion) return;
-      animate(press, [PRESS_TRAVEL, 0], { duration: PRESS_DURATION, ease: "easeOut" });
+      animate(press, [0, PRESS_TRAVEL, 0], {
+        duration: PRESS_DURATION,
+        times: [0, PRESS_DROP, 1],
+        ease: ["easeOut", "easeOut"],
+      });
     }, [press, reducedMotion]);
 
     React.useImperativeHandle(forwardedRef, () => ref.current as HTMLButtonElement, [ref]);

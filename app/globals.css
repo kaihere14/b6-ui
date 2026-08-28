@@ -54,6 +54,24 @@
   --b6-input: oklch(0.93 0.004 17.5);
   --b6-ring: oklch(0.166 0.0034 17.5);
 
+  /* Depth — the solid ledge a pressable surface sits on. Not an elevation
+   * shadow: it is an opaque block with no blur, so it reads as the side of a
+   * physical key rather than as light falling past an edge.
+   *
+   * One ledge colour per surface, because a ledge is the *same material* as the
+   * face it carries, in shade. A single grey under every button reads as a
+   * shadow dropped behind unrelated objects — worst of all under a white or a
+   * red one, which have no grey in them at all.
+   *
+   * The base value is the ledge of a surface with no colour of its own, so it
+   * follows the line rather than the fill: an outline button is defined by its
+   * border, and its ledge is that border given depth. A filled surface carries
+   * a solid ledge instead, one shade off its own fill. */
+  --b6-depth: oklch(0.87 0.004 17.5);
+  --b6-depth-secondary: oklch(0.78 0.004 17.5);
+  --b6-depth-primary: oklch(0.09 0.002 17.5);
+  --b6-depth-destructive: oklch(0.4 0.155 27);
+
   /* Radius scale — every component derives from this base. */
   --b6-radius: 0.5rem;
 }
@@ -99,6 +117,16 @@
   --b6-border: oklch(0.24 0 0);
   --b6-input: oklch(0.22 0 0);
   --b6-ring: oklch(0.97 0 0);
+
+  /* Depth — the pale surfaces invert: on a black ground a ledge darker than
+   * the page cannot be seen, so a dark face is carried by a lifted edge rather
+   * than by a shade of itself — the outline ledge sits exactly on the border
+   * tone, the filled one a step above it. The white and red faces keep the
+   * shading model, since there is room below them for it. */
+  --b6-depth: oklch(0.24 0 0);
+  --b6-depth-secondary: oklch(0.34 0 0);
+  --b6-depth-primary: oklch(0.74 0 0);
+  --b6-depth-destructive: oklch(0.42 0.15 27);
 }
 
 @theme inline {
@@ -186,6 +214,28 @@
   --shadow-b6-sm: 0 1px 2px oklch(0 0 0 / 0.06), 0 1px 6px oklch(0 0 0 / 0.04);
   --shadow-b6-md: 0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07);
   --shadow-b6-lg: 0 4px 8px oklch(0 0 0 / 0.07), 0 18px 44px oklch(0 0 0 / 0.1);
+
+  /* Depth — a hard, unblurred ledge. `depth` is the resting height of a
+   * pressable surface, `depth-sm` the same surface half-pressed, `depth-flush`
+   * the same surface pressed all the way down. `flush` is a zero-offset shadow
+   * rather than `none`, because CSS cannot interpolate a shadow to `none` — it
+   * would snap the ledge away instead of collapsing it. All three read the raw
+   * colour token, so the ledge follows the theme. */
+  --shadow-b6-depth: 0 4px 0 0 var(--b6-depth);
+  --shadow-b6-depth-sm: 0 2px 0 0 var(--b6-depth);
+  --shadow-b6-depth-flush: 0 0 0 0 var(--b6-depth);
+
+  --shadow-b6-depth-secondary: 0 4px 0 0 var(--b6-depth-secondary);
+  --shadow-b6-depth-secondary-sm: 0 2px 0 0 var(--b6-depth-secondary);
+  --shadow-b6-depth-secondary-flush: 0 0 0 0 var(--b6-depth-secondary);
+
+  --shadow-b6-depth-primary: 0 4px 0 0 var(--b6-depth-primary);
+  --shadow-b6-depth-primary-sm: 0 2px 0 0 var(--b6-depth-primary);
+  --shadow-b6-depth-primary-flush: 0 0 0 0 var(--b6-depth-primary);
+
+  --shadow-b6-depth-destructive: 0 4px 0 0 var(--b6-depth-destructive);
+  --shadow-b6-depth-destructive-sm: 0 2px 0 0 var(--b6-depth-destructive);
+  --shadow-b6-depth-destructive-flush: 0 0 0 0 var(--b6-depth-destructive);
 
   /* ---- Motion -------------------------------------------------------- */
   --ease-b6: cubic-bezier(0.2, 0, 0, 1);

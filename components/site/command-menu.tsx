@@ -115,8 +115,8 @@ export function CommandMenu() {
         <Search aria-hidden className="size-4 shrink-0" />
         <span className="hidden sm:inline">Search docs</span>
         <span className="sr-only sm:hidden">Search documentation</span>
-        <kbd className="ml-auto hidden items-center justify-center rounded-sm border p-[2] sm:flex bg-primary/5">
-          <kbd className="ml-auto hidden rounded border px-2 font-mono text-caption text-muted-foreground drop-shadow-sm drop-shadow-neutral-600 dark:drop-shadow-neutral-950 sm:inline bg-primary-foreground">
+        <kbd className="ml-auto hidden items-center justify-center rounded-sm border bg-primary/5 p-[2] sm:flex">
+          <kbd className="ml-auto hidden rounded border bg-primary-foreground px-2 font-mono text-caption text-muted-foreground drop-shadow-sm drop-shadow-neutral-600 sm:inline dark:drop-shadow-neutral-950">
             {isApple ? "⌘K" : "Ctrl K"}
           </kbd>
         </kbd>

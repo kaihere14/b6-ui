@@ -58,8 +58,8 @@ export default function InstallationPage() {
             <li>A React project with Tailwind CSS v4.</li>
             <li>
               A <code className="font-mono text-code">components.json</code> — run{" "}
-              <code className="font-mono text-code">npx shadcn@latest init</code> if you
-              do not have one.
+              <code className="font-mono text-code">npx shadcn@latest init</code> if you do not
+              have one.
             </li>
             <li>
               Nothing else — the B6 base below installs the{" "}

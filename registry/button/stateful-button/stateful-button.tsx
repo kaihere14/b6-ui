@@ -387,10 +387,7 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
       };
 
       return (
-        <motion.span
-          style={{ width }}
-          className="inline-flex justify-center overflow-hidden"
-        >
+        <motion.span style={{ width }} className="inline-flex justify-center overflow-hidden">
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
               ref={measureContent}

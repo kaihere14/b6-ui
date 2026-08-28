@@ -111,7 +111,7 @@ export const components: ComponentMeta[] = [
       "Motion is limited to a 1px press offset, and is suppressed under `prefers-reduced-motion`.",
     ],
     responsive:
-      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`. The content wrapper measures itself and animates its width, so a longer status label (\"Save\" → \"Saving…\") grows the button smoothly instead of snapping.",
+      'Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`. The content wrapper measures itself and animates its width, so a longer status label ("Save" → "Saving…") grows the button smoothly instead of snapping.',
   },
   {
     slug: "magnetic-button",
@@ -406,6 +406,120 @@ export const components: ComponentMeta[] = [
     ],
     responsive:
       "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",
+  },
+  {
+    slug: "depth-button",
+    category: "Buttons",
+    isNew: true,
+    title: "Depth Button",
+    description:
+      "A button that sits on a hard, unblurred ledge and travels down into it — half-way on hover, flush with the page on press.",
+    source: "registry/button/depth-button/depth-button.tsx",
+    dependencies: ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
+    props: [
+      {
+        name: "variant",
+        type: '"primary" | "secondary" | "outline" | "destructive"',
+        defaultValue: '"primary"',
+        description:
+          "Visual weight. Every variant is a solid surface — the depth mechanic needs a face to press, so there is no ghost or link variant.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "icon"',
+        defaultValue: '"md"',
+        description: "Control height and padding. Use `icon` for square icon-only buttons.",
+      },
+      {
+        name: "block",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Stretch the button to the full width of its container.",
+      },
+      {
+        name: "loading",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Swap the leading icon for a spinner, block interaction and set `aria-busy`. The button holds its full ledge and stops travelling.",
+      },
+      {
+        name: "loadingLabel",
+        type: "string",
+        defaultValue: '"Loading"',
+        description: "Text announced to screen readers while loading.",
+      },
+      {
+        name: "leftIcon / rightIcon",
+        type: "React.ReactNode",
+        description: "Icons either side of the label. The left one is hidden while loading.",
+      },
+      {
+        name: "asChild",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Render the child element (e.g. a `Link`) with the button's styling and the full press mechanic.",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Native disabled state. Holds the button at rest on its full ledge.",
+      },
+    ],
+    examples: [
+      {
+        title: "Variants",
+        preview: "depth-button/variants",
+        description:
+          "Hover to sink the button halfway into its ledge; press to take it all the way down.",
+        code: `<DepthButton>Get started</DepthButton>
+<DepthButton variant="secondary">Learn more</DepthButton>
+<DepthButton variant="outline">Docs</DepthButton>
+<DepthButton variant="destructive">Delete</DepthButton>`,
+      },
+      {
+        title: "Sizes",
+        preview: "depth-button/sizes",
+        description:
+          "The ledge is a fixed 4px at every size, so a small button never looks like it is on stilts.",
+        code: `<DepthButton size="sm">Small</DepthButton>
+<DepthButton size="md">Medium</DepthButton>
+<DepthButton size="lg">Large</DepthButton>
+<DepthButton size="icon" aria-label="Download"><Download /></DepthButton>`,
+      },
+      {
+        title: "Icons, loading and disabled",
+        preview: "depth-button/states",
+        description:
+          "A button that cannot be pressed keeps its full ledge and never moves — the depth is an affordance, so a non-interactive control does not offer it.",
+        code: `<DepthButton variant="outline" leftIcon={<Download />}>Install</DepthButton>
+<DepthButton loading loadingLabel="Saving changes">Saving</DepthButton>
+<DepthButton variant="secondary" disabled>Disabled</DepthButton>`,
+      },
+      {
+        title: "As a link",
+        preview: "depth-button/as-link",
+        description:
+          "`asChild` hands the styling and the press to the child, so a navigation target stays a real `<a>`.",
+        code: `import Link from "next/link";
+
+<DepthButton asChild rightIcon={<ArrowRight />}>
+  <Link href="/components">Browse components</Link>
+</DepthButton>`,
+      },
+    ],
+    accessibility: [
+      'Renders a real `<button>` with `type="button"` unless you pass a `type`.',
+      "Focus is always visible through the shared `--color-ring` outline, offset clear of the ledge; it is never removed.",
+      "The press is a CSS state, so Enter and Space activate the button exactly as a pointer does.",
+      "`loading` sets `aria-busy` and announces `loadingLabel` through a visually hidden span. `aria-disabled` is set alongside the native `disabled`, so an `asChild` link is announced as unavailable too.",
+      "Depth carries no meaning on its own — colour, the spinner and `aria-busy` already convey every state. Under `prefers-reduced-motion: reduce` the transition is dropped and the travel is instant, so the press is still confirmed.",
+      "Icons are decorative — pass an `aria-label` when a button has no text.",
+    ],
+    responsive:
+      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`. The ledge is a shadow, so it never adds to the layout box — buttons in a row stay on their baseline whether pressed or not.",
   },
   {
     slug: "card-base",

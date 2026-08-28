@@ -15,6 +15,12 @@ import {
   CardBaseInteractiveExample,
 } from "@/components/previews/examples/card-base-examples";
 import {
+  DepthButtonAsLinkExample,
+  DepthButtonSizesExample,
+  DepthButtonStatesExample,
+  DepthButtonVariantsExample,
+} from "@/components/previews/examples/depth-button-examples";
+import {
   InputInvalidExample,
   InputLabelledExample,
   InputSearchExample,
@@ -40,6 +46,7 @@ import {
 import { BadgePreview } from "@/components/previews/badge-preview";
 import { ButtonBasePreview } from "@/components/previews/button-base-preview";
 import { CardBasePreview } from "@/components/previews/card-base-preview";
+import { DepthButtonPreview } from "@/components/previews/depth-button-preview";
 import { InputPreview } from "@/components/previews/input-preview";
 import { MagneticButtonPreview } from "@/components/previews/magnetic-button-preview";
 import { SeparatorPreview } from "@/components/previews/separator-preview";
@@ -50,6 +57,7 @@ export const previews: Record<string, ComponentType> = {
   "button-base": ButtonBasePreview,
   "magnetic-button": MagneticButtonPreview,
   "stateful-button": StatefulButtonPreview,
+  "depth-button": DepthButtonPreview,
   "card-base": CardBasePreview,
   badge: BadgePreview,
   input: InputPreview,
@@ -75,6 +83,10 @@ export const exampleDemos: Record<string, ComponentType> = {
   "stateful-button/error": StatefulButtonErrorExample,
   "stateful-button/variants": StatefulButtonVariantsExample,
   "stateful-button/motion": StatefulButtonMotionExample,
+  "depth-button/variants": DepthButtonVariantsExample,
+  "depth-button/sizes": DepthButtonSizesExample,
+  "depth-button/states": DepthButtonStatesExample,
+  "depth-button/as-link": DepthButtonAsLinkExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,
   "badge/tones": BadgeTonesExample,
