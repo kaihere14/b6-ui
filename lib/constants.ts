@@ -5,7 +5,7 @@ export const siteConfig = {
   description:
     "An original React component library distributed as source code through the shadcn CLI. Copy it in, keep it, change it.",
   /** Public origin of the deployed docs site — also the registry host. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://b6-ui.dev",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://ui.armandev.space",
   github: "https://github.com/b6-ui/b6-ui",
   /** Namespace consumers register in their own components.json. */
   registryNamespace: "@b6-ui",

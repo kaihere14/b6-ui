@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "b6-ui",
-  "homepage": "https://b6-ui.dev",
+  "homepage": "https://ui.armandev.space",
   "items": [
     {
       "name": "tokens",

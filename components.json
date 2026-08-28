@@ -19,6 +19,6 @@
     "utils": "@/lib/utils"
   },
   "registries": {
-    "@b6-ui": "https://b6-ui.dev/r/{name}.json"
+    "@b6-ui": "https://ui.armandev.space/r/{name}.json"
   }
 }

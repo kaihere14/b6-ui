@@ -54,7 +54,7 @@ You need a React project on Tailwind CSS v4 with a `components.json` (run
 **1. Register the namespace once**
 
 ```bash
-bunx --bun shadcn@latest registry add @b6-ui=https://b6-ui.dev/r/{name}.json
+bunx --bun shadcn@latest registry add @b6-ui=https://ui.armandev.space/r/{name}.json
 ```
 
 or add it to `components.json` by hand:
@@ -62,7 +62,7 @@ or add it to `components.json` by hand:
 ```json
 {
   "registries": {
-    "@b6-ui": "https://b6-ui.dev/r/{name}.json"
+    "@b6-ui": "https://ui.armandev.space/r/{name}.json"
   }
 }
 ```
