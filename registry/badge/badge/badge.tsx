@@ -21,7 +21,8 @@ import { cn } from "@/lib/utils";
  */
 const TYPE = {
   small: "text-(length:--text-small) leading-(--text-small--line-height)",
-  caption: "text-(length:--text-caption) leading-(--text-caption--line-height) tracking-(--text-caption--letter-spacing) font-(weight:--text-caption--font-weight)",
+  caption:
+    "text-(length:--text-caption) leading-(--text-caption--line-height) tracking-(--text-caption--letter-spacing) font-(weight:--text-caption--font-weight)",
 } as const;
 
 const badgeVariants = cva(

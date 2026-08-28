@@ -29,7 +29,8 @@ export interface SeparatorProps extends React.ComponentPropsWithoutRef<"div"> {
  * or not, and still loses to a consumer's own `text-lg`.
  */
 const TYPE = {
-  caption: "text-(length:--text-caption) leading-(--text-caption--line-height) tracking-(--text-caption--letter-spacing) font-(weight:--text-caption--font-weight)",
+  caption:
+    "text-(length:--text-caption) leading-(--text-caption--line-height) tracking-(--text-caption--letter-spacing) font-(weight:--text-caption--font-weight)",
 } as const;
 
 export const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(function Separator(

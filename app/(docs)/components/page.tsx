@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function ComponentsIndexPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <article className="min-w-0 pb-16 lg:py-12">
       <header className="max-w-2xl">
         <h1 className="text-h1">Components</h1>
         <p className="mt-3 text-muted-foreground">
@@ -55,6 +55,6 @@ export default function ComponentsIndexPage() {
           </li>
         ))}
       </ul>
-    </div>
+    </article>
   );
 }

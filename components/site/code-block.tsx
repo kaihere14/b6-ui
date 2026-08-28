@@ -1,22 +1,57 @@
 import { CopyButton } from "@/components/site/copy-button";
+import { highlight, type CodeLanguage } from "@/lib/highlight";
 import { cn } from "@/lib/utils";
 
-interface CodeBlockProps {
+interface CodePanelProps {
   code: string;
-  /** Shown in the block header, e.g. a file path. */
-  filename?: string;
-  language?: string;
+  language?: CodeLanguage;
   className?: string;
   /** Cap the height and scroll — useful for long source files. */
   scroll?: boolean;
+  /** Render a line-number gutter. On by default. */
+  lineNumbers?: boolean;
 }
 
-export function CodeBlock({
+/**
+ * Highlighted code with no chrome around it.
+ *
+ * Server component: `highlight()` runs here, so the markup reaches the browser
+ * already coloured and no highlighter is shipped to the client. Use it when the
+ * surrounding panel already has a border and a header — `ComponentShowcase`
+ * does. Everywhere else, use `CodeBlock`.
+ */
+export async function CodePanel({
+  code,
+  language = "tsx",
+  className,
+  scroll = false,
+  lineNumbers = true,
+}: CodePanelProps) {
+  const html = await highlight(code, language);
+
+  return (
+    <div
+      className={cn("b6-code font-mono", className)}
+      data-scroll={scroll ? "" : undefined}
+      data-line-numbers={lineNumbers ? "" : undefined}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
+interface CodeBlockProps extends CodePanelProps {
+  /** Shown in the block header, e.g. a file path. */
+  filename?: string;
+}
+
+/** A framed, copyable code sample. */
+export async function CodeBlock({
   code,
   filename,
   language = "tsx",
   className,
   scroll = false,
+  lineNumbers = true,
 }: CodeBlockProps) {
   return (
     <figure
@@ -28,11 +63,7 @@ export function CodeBlock({
         </span>
         <CopyButton value={code} label={`Copy ${filename ?? "code"}`} />
       </figcaption>
-      <div className={cn("overflow-x-auto", scroll && "max-h-[32rem] overflow-y-auto")}>
-        <pre className="p-4 text-code">
-          <code className="font-mono">{code}</code>
-        </pre>
-      </div>
+      <CodePanel code={code} language={language} scroll={scroll} lineNumbers={lineNumbers} />
     </figure>
   );
 }

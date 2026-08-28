@@ -266,3 +266,60 @@
   background-size: 2.5rem 2.5rem;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 100%);
 }
+
+@utility b6-dot-canvas {
+  background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+  background-size: 1.125rem 1.125rem;
+  background-position: center;
+}
+
+/* ---------------------------------------------------------------------------
+ * Syntax highlighting
+ *
+ * `lib/highlight.ts` renders both Shiki themes at once, so every token carries a
+ * `--shiki-light` and a `--shiki-dark` custom property and nothing needs to
+ * re-highlight when the theme toggles. Shiki's own background is dropped — code
+ * blocks sit on a B6 surface token like every other panel.
+ * ------------------------------------------------------------------------ */
+
+.b6-code .shiki {
+  background-color: transparent;
+  padding: 1rem 1.125rem;
+  overflow: auto;
+  font-size: var(--text-code);
+  line-height: var(--text-code--line-height);
+}
+
+.b6-code[data-scroll] .shiki {
+  max-height: 32rem;
+}
+
+.b6-code .shiki,
+.b6-code .shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .b6-code .shiki,
+.dark .b6-code .shiki span {
+  color: var(--shiki-dark);
+}
+
+.b6-code .shiki code {
+  display: grid;
+}
+
+.b6-code[data-line-numbers] .shiki code {
+  counter-reset: b6-line;
+}
+
+.b6-code[data-line-numbers] .shiki .line::before {
+  counter-increment: b6-line;
+  content: counter(b6-line);
+  display: inline-block;
+  width: 1.75rem;
+  margin-right: 1.25rem;
+  text-align: right;
+  color: var(--color-muted-foreground);
+  opacity: 0.45;
+  user-select: none;
+}

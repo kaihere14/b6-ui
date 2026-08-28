@@ -1,4 +1,4 @@
-import type { ComponentMeta } from "@/types";
+import { componentCategories, type ComponentMeta } from "@/types";
 
 /**
  * Documentation metadata for every B6 UI registry item.
@@ -11,6 +11,7 @@ import type { ComponentMeta } from "@/types";
 export const components: ComponentMeta[] = [
   {
     slug: "button-base",
+    category: "Buttons",
     title: "Button Base",
     description:
       "The foundation button of the B6 system: six variants, four sizes, a built-in loading state and icon slots.",
@@ -70,6 +71,7 @@ export const components: ComponentMeta[] = [
     examples: [
       {
         title: "Variants",
+        preview: "button-base/variants",
         code: `<ButtonBase>Get Started</ButtonBase>
 <ButtonBase variant="secondary">Learn More</ButtonBase>
 <ButtonBase variant="outline">Docs</ButtonBase>
@@ -78,6 +80,7 @@ export const components: ComponentMeta[] = [
       },
       {
         title: "With icons",
+        preview: "button-base/icons",
         code: `import { ArrowRight, Download } from "lucide-react";
 
 <ButtonBase leftIcon={<Download />}>Install</ButtonBase>
@@ -85,11 +88,13 @@ export const components: ComponentMeta[] = [
       },
       {
         title: "Loading",
+        preview: "button-base/loading",
         description: "The button disables itself and reports `aria-busy` while loading.",
         code: `<ButtonBase loading loadingLabel="Saving changes">Save</ButtonBase>`,
       },
       {
         title: "As a link",
+        preview: "button-base/as-link",
         description: "`asChild` keeps the styling but renders your own element.",
         code: `import Link from "next/link";
 
@@ -110,6 +115,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "magnetic-button",
+    category: "Buttons",
+    isNew: true,
     title: "Magnetic Button",
     description:
       "A standalone button that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
@@ -170,11 +177,13 @@ export const components: ComponentMeta[] = [
     examples: [
       {
         title: "Default",
+        preview: "magnetic-button/default",
         description: "The primary B6 button styling, plus the pull.",
         code: `<MagneticButton>Get started</MagneticButton>`,
       },
       {
         title: "Tuning the pull",
+        preview: "magnetic-button/strength",
         description:
           "`strength` sets how closely the button follows the pointer; `maxTravel` caps how far it can go.",
         code: `<MagneticButton variant="outline" strength={0.5} maxTravel={40}>
@@ -183,6 +192,7 @@ export const components: ComponentMeta[] = [
       },
       {
         title: "Opting out",
+        preview: "magnetic-button/opt-out",
         description:
           "`magnetic={false}` parks the button at rest — useful inside dense or scrolling layouts.",
         code: `<MagneticButton magnetic={false}>Magnet off</MagneticButton>`,
@@ -200,6 +210,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "card-base",
+    category: "Layout",
     title: "Card Base",
     description:
       "A composable surface with header, content and footer slots, in flat, elevated and muted variants.",
@@ -240,6 +251,7 @@ export const components: ComponentMeta[] = [
     examples: [
       {
         title: "Anatomy",
+        preview: "card-base/anatomy",
         code: `<CardBase>
   <CardBaseHeader>
     <CardBaseTitle>Registry</CardBaseTitle>
@@ -253,10 +265,13 @@ export const components: ComponentMeta[] = [
       },
       {
         title: "Interactive card",
-        code: `<CardBase asChild variant="elevated" interactive>
-  <a href="/components/button-base">
+        preview: "card-base/interactive",
+        code: `import Link from "next/link";
+
+<CardBase asChild variant="elevated" interactive>
+  <Link href="/components/button-base">
     <CardBaseTitle>Button Base</CardBaseTitle>
-  </a>
+  </Link>
 </CardBase>`,
       },
     ],
@@ -270,6 +285,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "badge",
+    category: "Display",
     title: "Badge",
     description: "A compact status marker in five tones and two sizes.",
     source: "registry/badge/badge/badge.tsx",
@@ -291,6 +307,7 @@ export const components: ComponentMeta[] = [
     examples: [
       {
         title: "Tones",
+        preview: "badge/tones",
         code: `<Badge variant="primary">Stable</Badge>
 <Badge>Default</Badge>
 <Badge variant="outline">Outline</Badge>
@@ -298,6 +315,7 @@ export const components: ComponentMeta[] = [
       },
       {
         title: "With an icon",
+        preview: "badge/icon",
         code: `import { Check } from "lucide-react";
 
 <Badge variant="primary">
@@ -315,6 +333,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "input",
+    category: "Forms",
     title: "Input",
     description:
       "A single-line text field with size and tone tokens, icon slots and a wired-up invalid state.",
@@ -353,17 +372,20 @@ export const components: ComponentMeta[] = [
     examples: [
       {
         title: "Labelled field",
+        preview: "input/labelled",
         code: `<label className="text-small font-medium" htmlFor="email">Email</label>
 <Input id="email" type="email" placeholder="you@example.com" />`,
       },
       {
         title: "Search field",
+        preview: "input/search",
         code: `import { Search } from "lucide-react";
 
 <Input aria-label="Search" leftIcon={<Search />} placeholder="Search…" />`,
       },
       {
         title: "Invalid",
+        preview: "input/invalid",
         code: `<Input invalid aria-describedby="email-error" defaultValue="not-an-email" />
 <p id="email-error" className="text-small text-destructive">Enter a valid email.</p>`,
       },
@@ -379,6 +401,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "separator",
+    category: "Layout",
     title: "Separator",
     description: "A one-pixel rule — horizontal or vertical, optionally captioned.",
     source: "registry/separator/separator/separator.tsx",
@@ -404,10 +427,11 @@ export const components: ComponentMeta[] = [
       },
     ],
     examples: [
-      { title: "Horizontal", code: `<Separator />` },
-      { title: "Captioned", code: `<Separator label="or" />` },
+      { title: "Horizontal", preview: "separator/horizontal", code: `<Separator />` },
+      { title: "Captioned", preview: "separator/captioned", code: `<Separator label="or" />` },
       {
         title: "Vertical",
+        preview: "separator/vertical",
         description: "A vertical separator needs a parent with a resolved height.",
         code: `<div className="flex h-8 items-center gap-4">
   <span>Docs</span>
@@ -432,4 +456,19 @@ export function getComponent(slug: string): ComponentMeta | undefined {
 
 export function getComponentSlugs(): string[] {
   return components.map((component) => component.slug);
+}
+
+/**
+ * Components grouped for the sidebar, in `componentCategories` order.
+ *
+ * Categories with no components are dropped, so adding a category up front
+ * costs nothing until the first component lands in it.
+ */
+export function getComponentsByCategory() {
+  return componentCategories
+    .map((category) => ({
+      category,
+      items: components.filter((component) => component.category === category),
+    }))
+    .filter((group) => group.items.length > 0);
 }

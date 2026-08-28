@@ -2,9 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CodeBlock } from "@/components/site/code-block";
+import { DocsSection } from "@/components/site/docs-section";
+import { Toc, type TocItem } from "@/components/site/toc";
 import { ButtonBase } from "@/components/ui/button-base";
-import { Separator } from "@/components/ui/separator";
 import { siteConfig } from "@/lib/constants";
+
+/** Section index for the right-hand column. Mirrors the section ids below. */
+const tocItems: TocItem[] = [
+  { id: "tokens", label: "Design tokens" },
+  { id: "architecture", label: "Architecture" },
+  { id: "adding", label: "Adding a component" },
+  { id: "next", label: "Next" },
+];
 
 export const metadata: Metadata = {
   title: "Documentation",
@@ -68,74 +77,60 @@ bun run lint && bun run build`;
 
 export default function DocsPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <header>
-        <h1 className="text-h1">Documentation</h1>
-        <p className="mt-3 text-muted-foreground">
-          {siteConfig.name} is a component library you install as source code. This page covers
-          the design system it is built on and how to extend it.
-        </p>
-      </header>
+    <>
+      <article className="min-w-0 pb-16 lg:py-12">
+        <header>
+          <h1 className="text-h1">Documentation</h1>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            {siteConfig.name} is a component library you install as source code. This page
+            covers the design system it is built on and how to extend it.
+          </p>
+        </header>
 
-      <Separator className="my-10" decorative={false} />
+        <DocsSection
+          id="tokens"
+          title="Design tokens"
+          description="Components reference tokens, never raw values. That is the whole reason a B6 component drops into a project and immediately looks like the rest of it."
+        >
+          <dl className="flex flex-col gap-5">
+            {tokenGroups.map((group) => (
+              <div key={group.name}>
+                <dt className="text-h3">{group.name}</dt>
+                <dd className="mt-1 text-small text-muted-foreground">{group.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </DocsSection>
 
-      <section aria-labelledby="tokens-heading">
-        <h2 id="tokens-heading" className="text-h2">
-          Design tokens
-        </h2>
-        <p className="mt-2 text-muted-foreground">
-          Components reference tokens, never raw values. That is the whole reason a B6 component
-          drops into a project and immediately looks like the rest of it.
-        </p>
-        <dl className="mt-6 flex flex-col gap-5">
-          {tokenGroups.map((group) => (
-            <div key={group.name}>
-              <dt className="text-h3">{group.name}</dt>
-              <dd className="mt-1 text-small text-muted-foreground">{group.body}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+        <DocsSection
+          id="architecture"
+          title="Architecture"
+          description="Component logic exists once. Everything else points at it."
+        >
+          <CodeBlock code={architecture} filename="architecture" language="text" />
+        </DocsSection>
 
-      <section className="mt-12" aria-labelledby="architecture-heading">
-        <h2 id="architecture-heading" className="text-h2">
-          Architecture
-        </h2>
-        <p className="mt-2 text-muted-foreground">
-          Component logic exists once. Everything else points at it.
-        </p>
-        <CodeBlock
-          className="mt-4"
-          code={architecture}
-          filename="architecture"
-          language="text"
-        />
-      </section>
+        <DocsSection
+          id="adding"
+          title="Adding a component"
+          description="Five files, in this order. The slug is the contract — folder name, export path, docs URL and install argument all use it."
+        >
+          <CodeBlock code={newComponent} filename="checklist" language="text" />
+        </DocsSection>
 
-      <section className="mt-12" aria-labelledby="adding-heading">
-        <h2 id="adding-heading" className="text-h2">
-          Adding a component
-        </h2>
-        <p className="mt-2 text-muted-foreground">
-          Five files, in this order. The slug is the contract — folder name, export path, docs
-          URL and install argument all use it.
-        </p>
-        <CodeBlock className="mt-4" code={newComponent} filename="checklist" language="text" />
-      </section>
+        <DocsSection id="next" title="Next">
+          <div className="flex flex-wrap gap-3">
+            <ButtonBase asChild>
+              <Link href="/docs/installation">Installation</Link>
+            </ButtonBase>
+            <ButtonBase asChild variant="outline">
+              <Link href="/components">Components</Link>
+            </ButtonBase>
+          </div>
+        </DocsSection>
+      </article>
 
-      <section className="mt-12" aria-labelledby="next-heading">
-        <h2 id="next-heading" className="text-h2">
-          Next
-        </h2>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <ButtonBase asChild>
-            <Link href="/docs/installation">Installation</Link>
-          </ButtonBase>
-          <ButtonBase asChild variant="outline">
-            <Link href="/components">Components</Link>
-          </ButtonBase>
-        </div>
-      </section>
-    </div>
+      <Toc items={tocItems} />
+    </>
   );
 }

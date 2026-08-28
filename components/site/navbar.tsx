@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CommandMenu } from "@/components/site/command-menu";
 import { GithubMark } from "@/components/site/icons";
 import { Logo } from "@/components/site/logo";
 import { ThemeToggle } from "@/components/site/theme-toggle";
@@ -42,7 +43,8 @@ export function Navbar() {
           })}
         </ul>
 
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex items-center gap-2">
+          <CommandMenu />
           <ThemeToggle />
           <a
             href={siteConfig.github}

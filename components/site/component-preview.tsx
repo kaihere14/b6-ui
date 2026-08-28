@@ -12,7 +12,7 @@ export function ComponentPreview({ children, className }: ComponentPreviewProps)
   return (
     <div
       className={cn(
-        "flex min-h-56 w-full items-center justify-center rounded-lg border border-border bg-card p-8",
+        "flex min-h-64 w-full items-center justify-center rounded-lg border border-border bg-card b6-dot-canvas p-10",
         className,
       )}
     >

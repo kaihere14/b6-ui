@@ -90,7 +90,8 @@ const forbiddenImport = /from\s+"@\/(?!lib\/utils")[^"]+"/g;
 // the colour it inherits — invisible on a solid button. Only B6's own extended
 // cn() knows better, and a consumer who already had `lib/utils.ts` never got it.
 // Read the token instead: `text-(length:--text-body) leading-(--text-body--line-height)`.
-const forbiddenTypeClass = /(?<![\w-])text-(display|h1|h2|h3|body|small|caption|code)(?![\w-])/g;
+const forbiddenTypeClass =
+  /(?<![\w-])text-(display|h1|h2|h3|body|small|caption|code)(?![\w-])/g;
 
 for (const component of components) {
   const sourcePath = path.join(root, component.source);

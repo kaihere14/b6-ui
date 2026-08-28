@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "bun:test";
 
-import { previews } from "../components/previews";
+import { exampleDemos, previews } from "../components/previews";
 import { components, getComponent, getComponentSlugs } from "../lib/registry";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -67,6 +67,15 @@ describe("documentation metadata", () => {
     for (const component of components) {
       expect(previews[component.slug]).toBeDefined();
       expect(existsSync(path.join(root, `components/ui/${component.slug}.tsx`))).toBe(true);
+    }
+  });
+
+  test("every usage example that names a preview has a demo behind it", () => {
+    for (const component of components) {
+      for (const example of component.examples) {
+        if (!example.preview) continue;
+        expect(exampleDemos[example.preview]).toBeDefined();
+      }
     }
   });
 

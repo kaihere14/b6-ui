@@ -31,6 +31,28 @@ const shadcnRunner: Record<PackageManager, string> = {
   pnpm: "pnpm dlx shadcn@latest",
 };
 
+/**
+ * Prose pages, listed above the component groups in the documentation sidebar
+ * and searched alongside the registry in the command menu.
+ */
+export const docsNav = [
+  {
+    title: "Introduction",
+    href: "/docs",
+    description: "How B6 UI is built: design tokens, architecture, adding a component.",
+  },
+  {
+    title: "Installation",
+    href: "/docs/installation",
+    description: "Install the B6 base once, then add components with the shadcn CLI.",
+  },
+  {
+    title: "All components",
+    href: "/components",
+    description: "Every component in the B6 UI registry.",
+  },
+] as const;
+
 export const mainNav = [
   { title: "Components", href: "/components" },
   { title: "Documentation", href: "/docs" },
