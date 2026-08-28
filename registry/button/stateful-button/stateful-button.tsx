@@ -362,7 +362,7 @@ export const StatefulButton = React.forwardRef<
                   </motion.span>
                 )}
               </span>
-              {rightIcon && (
+              {isIdle && rightIcon && (
                 <motion.span
                   variants={staggerItem}
                   className="inline-flex items-center"
