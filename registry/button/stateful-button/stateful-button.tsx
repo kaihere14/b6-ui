@@ -102,8 +102,8 @@ const statefulButtonVariants = cva(
 /* Constants                                                                   */
 /* -------------------------------------------------------------------------- */
 
-/** Slide-fade for the content swap. Quick enough to read as a ticker, not a morph. */
-const CONTENT_TRANSITION = { duration: 0.15, ease: [0.2, 0, 0, 1] as const };
+/** Blur-scale-fade for the content swap. Quick enough to read as a ticker, not a morph. */
+const CONTENT_TRANSITION = { duration: 0.35, ease: [0.2, 0, 0, 1] as const };
 
 /** Error shake: a quick horizontal rattle that decays. */
 const SHAKE_KEYFRAMES = [0, -6, 6, -4, 4, -2, 2, 0];
@@ -296,23 +296,82 @@ export const StatefulButton = React.forwardRef<
         status === "error" && errorText == null ? errorLabel :
         null;
 
+      const staggerContainer = {
+        initial: {},
+        animate: {
+          transition: { staggerChildren: reducedMotion ? 0 : 0.02 },
+        },
+        exit: {
+          transition: {
+            staggerChildren: reducedMotion ? 0 : 0.01,
+            staggerDirection: -1 as const,
+          },
+        },
+      };
+
+      const staggerItem = {
+        initial: { opacity: 0, scale: 0.95, filter: "blur(4px)" },
+        animate: {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          transition: contentTransition,
+        },
+        exit: {
+          opacity: 0,
+          scale: 0.95,
+          filter: "blur(4px)",
+          transition: contentTransition,
+        },
+      };
+
       return (
         <>
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
               key={status}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={contentTransition}
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              exit="exit"
               className="inline-flex items-center gap-2"
             >
-              {currentIcon}
+              {currentIcon && (
+                <motion.span
+                  variants={staggerItem}
+                  className="inline-flex items-center"
+                >
+                  {currentIcon}
+                </motion.span>
+              )}
               {srLabel && <span className="sr-only">{srLabel}</span>}
-              {resolvedLabel}
+              <span className="inline-flex">
+                {typeof resolvedLabel === "string" ? (
+                  resolvedLabel.split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      variants={staggerItem}
+                      className="inline-block whitespace-pre"
+                    >
+                      {char}
+                    </motion.span>
+                  ))
+                ) : (
+                  <motion.span variants={staggerItem}>
+                    {resolvedLabel}
+                  </motion.span>
+                )}
+              </span>
+              {rightIcon && (
+                <motion.span
+                  variants={staggerItem}
+                  className="inline-flex items-center"
+                >
+                  {rightIcon}
+                </motion.span>
+              )}
             </motion.span>
           </AnimatePresence>
-          {rightIcon}
         </>
       );
     };
