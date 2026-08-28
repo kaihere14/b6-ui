@@ -19,22 +19,34 @@ bunx --bun shadcn@latest add https://ui.armandev.space/r/button-base.json
 The developer receives the component file inside their own project and owns it from that
 moment on.
 
-### Distribution model: one base, then single-file components
+### Distribution model: one base, then self-contained components
 
-`base` is installed once per project. It carries the design tokens and `cn()` — everything
-every component assumes is already there. After that each component is **one file with no
-registry dependencies**, exactly like a shadcn component that imports `@/lib/utils` and
-expects it to exist.
+`base` is installed once per project. It carries the design tokens and `cn()` — the two
+things a standard shadcn project already has, and the only things a component may assume.
+
+Every component after that is **one file that stands alone**:
 
 ```
-base  ->  button-base  ->  magnetic-button
-                          metallic-button, …
+base
+  └── magnetic-button.tsx    standalone
+      button-base.tsx        standalone
+      card-base.tsx          standalone
 ```
 
-A component that builds on another (a magnetic button is a `ButtonBase`) imports it from
-`@/components/ui/<slug>` and expects the consumer to have installed it. It does **not** name
-it in `registryDependencies`: naming it would reinstall and overwrite a file the consumer may
-already own and have edited.
+A distributed component imports npm packages and `@/lib/utils`. **Nothing else.** It never
+imports another B6 component, and it never names one in `registryDependencies`:
+
+- importing one breaks the install — the consumer added *this* component, so
+  `@/components/ui/button-base` is not on their disk, and their build fails at
+  `Module not found`;
+- naming one in `registryDependencies` "fixes" that by overwriting a file the consumer may
+  already own and have edited.
+
+So a magnetic button repeats the B6 button styling inside its own file rather than wrapping
+`ButtonBase`. That duplication is deliberate and is the one place the "logic exists exactly
+once" rule yields: a registry ships **source code into someone else's project**, and their
+build working is worth more than our line count. Duplicate the styling, not the behaviour —
+if two components would share real logic, the shared part belongs in `base`.
 
 Snippets on the site are written with the full item URL rather than `@b6-ui/<slug>`, because a
 namespace address only resolves once the consumer has registered it in their own
@@ -205,6 +217,9 @@ Rules:
 - No `any`. No `@ts-expect-error` without a comment explaining the exact reason.
 - Add no dependency that is not required. Every new dependency must be declared in both
   `lib/registry.ts` and `registry.json` for that component.
+- A file under `registry/` may import npm packages and `@/lib/utils`, and nothing else. No
+  import from `@/components/ui/*`, no import from another `registry/` folder — see the
+  distribution model in §1.
 
 ### Accessibility is part of the component, not a follow-up
 

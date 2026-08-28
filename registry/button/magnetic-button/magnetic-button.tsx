@@ -1,21 +1,77 @@
 "use client";
 
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 
-import { ButtonBase, type ButtonBaseProps } from "@/components/ui/button-base";
+import { cn } from "@/lib/utils";
 
 /**
  * B6 UI — Magnetic Button
  *
- * A Button Base that leans toward the pointer while the pointer is over it, and
+ * A button that leans toward the pointer while the pointer is over it, and
  * springs back to rest the moment it leaves. Pointer tracking drives motion
  * values rather than React state, so following the cursor never re-renders.
  *
  * Magnetism is an enhancement, never a requirement: it is switched off for
- * `prefers-reduced-motion` and for coarse pointers, where the button behaves
- * exactly like `ButtonBase`.
+ * `prefers-reduced-motion` and for coarse pointers, where the button is an
+ * ordinary B6 button.
+ *
+ * This file is standalone by design. It repeats the B6 button styling rather
+ * than importing Button Base, because a registry item has to work in a project
+ * that installed nothing else.
  */
+
+/* -------------------------------------------------------------------------- */
+/* Styling                                                                     */
+/* -------------------------------------------------------------------------- */
+
+const magneticButtonVariants = cva(
+  [
+    "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2",
+    "font-medium whitespace-nowrap will-change-transform select-none",
+    "transition-[background-color,color,border-color,box-shadow] duration-150 ease-b6",
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+    "disabled:pointer-events-none disabled:opacity-50",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  ],
+  {
+    variants: {
+      variant: {
+        primary: [
+          "bg-primary text-primary-foreground shadow-b6-sm",
+          "hover:brightness-[1.06] active:brightness-[0.97]",
+        ],
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-b6-xs hover:bg-accent hover:text-accent-foreground",
+        outline:
+          "border border-border bg-background text-foreground shadow-b6-xs hover:bg-muted",
+        ghost: "text-foreground hover:bg-muted",
+        destructive: [
+          "bg-destructive text-destructive-foreground shadow-b6-sm",
+          "hover:brightness-[1.06] active:brightness-[0.97]",
+        ],
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        sm: "h-8 rounded-sm px-3 text-small",
+        md: "h-10 rounded-md px-4 text-body",
+        lg: "h-12 rounded-md px-6 text-body",
+        icon: "size-10 rounded-md p-0",
+      },
+      block: {
+        true: "w-full",
+        false: "",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+      block: false,
+    },
+  },
+);
 
 /** Spring that carries the button. Slightly under-damped, so it settles with one soft overshoot. */
 const BUTTON_SPRING = { stiffness: 260, damping: 22, mass: 0.6 } as const;
@@ -215,7 +271,31 @@ export function useMagnetic<T extends HTMLElement>({
 /* Component                                                                   */
 /* -------------------------------------------------------------------------- */
 
-export interface MagneticButtonProps extends Omit<ButtonBaseProps, "asChild"> {
+/**
+ * Native button props, minus the handlers Motion redefines and the `style` this
+ * component owns.
+ */
+type NativeButtonProps = Omit<
+  React.ComponentPropsWithoutRef<"button">,
+  | "style"
+  | "onDrag"
+  | "onDragStart"
+  | "onDragEnd"
+  | "onAnimationStart"
+  | "onAnimationEnd"
+  | "onAnimationIteration"
+>;
+
+export interface MagneticButtonProps
+  extends NativeButtonProps, VariantProps<typeof magneticButtonVariants> {
+  /** Show a spinner, block interaction and mark the control busy. */
+  loading?: boolean;
+  /** Accessible label announced while `loading` is true. */
+  loadingLabel?: string;
+  /** Icon rendered before the label. Replaced by the spinner while loading. */
+  leftIcon?: React.ReactNode;
+  /** Icon rendered after the label. */
+  rightIcon?: React.ReactNode;
   /** Fraction of the pointer's offset from the centre that the button travels. */
   strength?: number;
   /** Hard cap on travel in pixels, in any direction. */
@@ -230,12 +310,18 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
   function MagneticButton(
     {
       className,
+      variant,
+      size,
+      block,
       strength,
       maxTravel,
       contentStrength,
       magnetic = true,
-      disabled,
       loading = false,
+      loadingLabel = "Loading",
+      leftIcon,
+      rightIcon,
+      disabled,
       children,
       type,
       ...props
@@ -258,25 +344,31 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
     React.useImperativeHandle(forwardedRef, () => ref.current as HTMLButtonElement, [ref]);
 
     return (
-      <ButtonBase
-        asChild
-        loading={loading}
-        disabled={disabled}
-        className={className}
+      <motion.button
+        ref={ref}
+        type={type ?? "button"}
+        disabled={isDisabled}
+        aria-busy={loading || undefined}
+        data-loading={loading ? "" : undefined}
+        style={style}
+        className={cn(magneticButtonVariants({ variant, size, block }), className)}
         {...props}
       >
-        <motion.button
-          ref={ref}
-          type={type ?? "button"}
-          disabled={isDisabled}
-          style={style}
-          className="will-change-transform"
-        >
-          <motion.span style={contentStyle} className="inline-flex items-center gap-2">
-            {children}
-          </motion.span>
-        </motion.button>
-      </ButtonBase>
+        <motion.span style={contentStyle} className="inline-flex items-center gap-2">
+          {loading ? (
+            <>
+              <Loader2 aria-hidden className="animate-spin" />
+              <span className="sr-only">{loadingLabel}</span>
+            </>
+          ) : (
+            leftIcon
+          )}
+          {children}
+          {rightIcon}
+        </motion.span>
+      </motion.button>
     );
   },
 );
+
+export { magneticButtonVariants };

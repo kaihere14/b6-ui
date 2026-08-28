@@ -112,10 +112,9 @@ export const components: ComponentMeta[] = [
     slug: "magnetic-button",
     title: "Magnetic Button",
     description:
-      "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
+      "A standalone button that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
     source: "registry/button/magnetic-button/magnetic-button.tsx",
-    dependencies: ["motion"],
-    requires: ["button-base"],
+    dependencies: ["motion", "class-variance-authority", "lucide-react"],
     props: [
       {
         name: "strength",
@@ -144,16 +143,34 @@ export const components: ComponentMeta[] = [
         description: "Hold the button at rest without removing it from the layout.",
       },
       {
-        name: "...ButtonBaseProps",
-        type: "ButtonBaseProps",
+        name: "variant",
+        type: '"primary" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
+        defaultValue: '"primary"',
+        description: "Visual tone, matching the Button Base scale.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "icon"',
+        defaultValue: '"md"',
+        description: "Control height and padding.",
+      },
+      {
+        name: "loading",
+        type: "boolean",
+        defaultValue: "false",
         description:
-          "Every Button Base prop except `asChild` — `variant`, `size`, `block`, `loading`, `leftIcon`, `rightIcon`.",
+          "Swap the leading icon for a spinner, mark the control busy and hold it at rest.",
+      },
+      {
+        name: "leftIcon / rightIcon",
+        type: "React.ReactNode",
+        description: "Icons rendered either side of the label, inside the parallax layer.",
       },
     ],
     examples: [
       {
         title: "Default",
-        description: "Inherits the primary Button Base styling and adds the pull.",
+        description: "The primary B6 button styling, plus the pull.",
         code: `<MagneticButton>Get started</MagneticButton>`,
       },
       {
@@ -172,14 +189,14 @@ export const components: ComponentMeta[] = [
       },
     ],
     accessibility: [
-      "Renders the same real `<button>` as Button Base, with the same focus ring and keyboard behaviour.",
+      "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
       "Magnetism is a hover affordance only: it never moves under keyboard focus, so focus order is stable.",
-      "Suppressed entirely under `prefers-reduced-motion: reduce` (via Motion\'s `useReducedMotion`) and on coarse pointers, where it behaves exactly like Button Base.",
+      "Suppressed entirely under `prefers-reduced-motion: reduce` (via Motion\'s `useReducedMotion`) and on coarse pointers, where it is an ordinary B6 button.",
       "Held at rest while `disabled` or `loading`, so a non-interactive control never invites a click.",
-      "Motion carries no meaning — every state is already conveyed by the underlying Button Base.",
+      "Motion carries no meaning — every state is already conveyed by colour, the spinner and `aria-busy`.",
     ],
     responsive:
-      "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off and the button falls back to Button Base sizing.",
+      "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off and only the sizing variants apply.",
   },
   {
     slug: "card-base",

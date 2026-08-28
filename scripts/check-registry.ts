@@ -79,8 +79,22 @@ for (const item of registry.items) {
   }
 }
 
+// A distributed component may import npm packages and `@/lib/utils`, nothing
+// else. An import of another B6 component compiles here and breaks in the
+// consumer's project, where that file was never installed.
+const forbiddenImport = /from\s+"@\/(?!lib\/utils")[^"]+"/g;
+
 for (const component of components) {
-  if (!existsSync(path.join(root, component.source))) {
+  const sourcePath = path.join(root, component.source);
+  if (existsSync(sourcePath)) {
+    for (const match of readFileSync(sourcePath, "utf8").matchAll(forbiddenImport)) {
+      errors.push(
+        `${component.source} imports ${match[0].replace(/^from\s+/, "")} — a registry component may only import npm packages and "@/lib/utils"`,
+      );
+    }
+  }
+
+  if (!existsSync(sourcePath)) {
     errors.push(
       `lib/registry.ts "${component.slug}" points at missing source ${component.source}`,
     );
@@ -92,13 +106,6 @@ for (const component of components) {
     errors.push(
       `"${component.slug}" has no preview at components/previews/${component.slug}-preview.tsx`,
     );
-  }
-  for (const required of component.requires ?? []) {
-    if (!docSlugs.has(required)) {
-      errors.push(
-        `lib/registry.ts "${component.slug}" requires unknown component "${required}"`,
-      );
-    }
   }
 }
 

@@ -195,7 +195,7 @@
       "type": "registry:ui",
       "title": "Magnetic Button",
       "description": "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
-      "dependencies": ["motion"],
+      "dependencies": ["motion", "class-variance-authority", "lucide-react"],
       "files": [
         {
           "path": "registry/button/magnetic-button/magnetic-button.tsx",

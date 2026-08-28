@@ -66,23 +66,12 @@ export default async function ComponentPage({ params }: PageProps<"/components/[
             Installation
           </h2>
           <p className="mt-2 text-small text-muted-foreground">
-            Install the{" "}
+            One file, no registry dependencies. Install the{" "}
             <Link href="/docs/installation" className="underline underline-offset-4">
               B6 base
             </Link>{" "}
-            once per project
-            {component.requires?.length
-              ? ", plus these components this one builds on:"
-              : ", then add the component."}
-            {component.requires?.map((slug, index) => (
-              <span key={slug}>
-                {index === 0 ? " " : ", "}
-                <Link href={`/components/${slug}`} className="underline underline-offset-4">
-                  {slug}
-                </Link>
-                {index === component.requires!.length - 1 ? "." : ""}
-              </span>
-            ))}
+            once per project, then add this component to any project — it needs nothing else
+            from B6.
           </p>
           <InstallCommand slug={component.slug} className="mt-4 max-w-xl" />
           {component.dependencies.length > 0 ? (
