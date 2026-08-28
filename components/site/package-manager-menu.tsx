@@ -20,8 +20,8 @@ const packageManagerMark: Record<
   PackageManager,
   { Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; className: string }
 > = {
-  bun: { Icon: BunMark, className: "text-[#14151A] dark:text-[#FBF0DF]" },
   npm: { Icon: NpmMark, className: "text-[#CB3837]" },
+  bun: { Icon: BunMark, className: "text-[#14151A] dark:text-[#FBF0DF]" },
   pnpm: { Icon: PnpmMark, className: "text-[#F69220]" },
 };
 

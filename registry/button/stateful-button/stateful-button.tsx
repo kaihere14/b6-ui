@@ -25,6 +25,15 @@ import { cn } from "@/lib/utils";
  * between states via AnimatePresence, and the button auto-resets to `idle`
  * after `resetDelay` milliseconds.
  *
+ * Because the swap runs in `mode="wait"`, the old label is gone before the new
+ * one mounts — left alone the button would collapse to its padding and snap
+ * back out. So the content sits in a wrapper whose width is measured and
+ * animated, and the button grows into a longer label instead of jumping.
+ *
+ * The content swap is a per-character stagger with a blur, and both halves are
+ * opt-out: `stagger={false}` moves the label as one block, `blur={false}` drops
+ * the blur filter, and turning both off leaves a plain fade-scale.
+ *
  * All motion honours `useReducedMotion()`. On reduced-motion systems the icons
  * swap instantly and the shake is suppressed.
  *
@@ -105,6 +114,12 @@ const statefulButtonVariants = cva(
 /** Blur-scale-fade for the content swap. Quick enough to read as a ticker, not a morph. */
 const CONTENT_TRANSITION = { duration: 0.35, ease: [0.2, 0, 0, 1] as const };
 
+/**
+ * Width easing for the content wrapper. Shares the content curve so the box and
+ * the label it holds settle together rather than racing each other.
+ */
+const WIDTH_TRANSITION = CONTENT_TRANSITION;
+
 /** Error shake: a quick horizontal rattle that decays. */
 const SHAKE_KEYFRAMES = [0, -6, 6, -4, 4, -2, 2, 0];
 const SHAKE_DURATION = 0.4;
@@ -172,6 +187,10 @@ export interface StatefulButtonProps
   successIcon?: React.ReactNode;
   /** Custom icon for the error state. @default X from lucide-react */
   errorIcon?: React.ReactNode;
+  /** Blur the content as it swaps between states. Set `false` for a plain fade-scale. @default true */
+  blur?: boolean;
+  /** Animate the label one character at a time. Set `false` to move the whole label as one block. @default true */
+  stagger?: boolean;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -199,6 +218,8 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
       rightIcon,
       successIcon,
       errorIcon,
+      blur = true,
+      stagger = true,
       disabled,
       children,
       type,
@@ -224,6 +245,45 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
         });
       }
     }, [status, reducedMotion, shakeX]);
+
+    /* ---- Content width --------------------------------------------------- */
+    /**
+     * `mode="wait"` means there is a frame with no content in the button at
+     * all, so the wrapper cannot size itself off the flow — it is driven by a
+     * motion value instead.
+     *
+     * The ref is a callback rather than an effect because the swap mounts a new
+     * node per status, and a callback ref fires exactly when that node lands.
+     * The observer on top of it catches the widths a mount cannot see: a font
+     * finishing loading, or `children` changing without the status changing.
+     */
+    const width = useMotionValue<number | "auto">("auto");
+    const contentObserver = React.useRef<ResizeObserver | null>(null);
+
+    const measureContent = React.useCallback(
+      (node: HTMLSpanElement | null) => {
+        contentObserver.current?.disconnect();
+        contentObserver.current = null;
+        if (!node) return;
+
+        const apply = () => {
+          const next = node.offsetWidth;
+          const current = width.get();
+          if (!next || next === current) return;
+          // The first measurement has no `auto` to animate from, so it lands flat.
+          if (current === "auto" || reducedMotion) width.set(next);
+          else animate(width, next, WIDTH_TRANSITION);
+        };
+
+        apply();
+        const observer = new ResizeObserver(apply);
+        observer.observe(node);
+        contentObserver.current = observer;
+      },
+      [reducedMotion, width],
+    );
+
+    React.useEffect(() => () => contentObserver.current?.disconnect(), []);
 
     /* ---- Auto-reset timer ----------------------------------------------- */
     React.useEffect(() => {
@@ -285,75 +345,91 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
               ? errorLabel
               : null;
 
-      const staggerContainer = {
+      /**
+       * Both halves of the swap are opt-out. `stagger` decides whether the
+       * pieces leave and arrive one after another, `blur` whether they defocus
+       * on the way. With both off the content is a plain fade-scale.
+       *
+       * The blur keys are added to all three states or to none of them —
+       * a `filter` that appears in `animate` but not `initial` has nothing to
+       * animate from, and Motion would snap it.
+       */
+      const staggered = stagger && !reducedMotion;
+      const blurred = blur && !reducedMotion;
+
+      const contentContainer = {
         initial: {},
         animate: {
-          transition: { staggerChildren: reducedMotion ? 0 : 0.02 },
+          transition: { staggerChildren: staggered ? 0.02 : 0 },
         },
         exit: {
           transition: {
-            staggerChildren: reducedMotion ? 0 : 0.01,
+            staggerChildren: staggered ? 0.01 : 0,
             staggerDirection: -1 as const,
           },
         },
       };
 
-      const staggerItem = {
-        initial: { opacity: 0, scale: 0.95, filter: "blur(4px)" },
+      const contentItem = {
+        initial: { opacity: 0, scale: 0.95, ...(blurred && { filter: "blur(4px)" }) },
         animate: {
           opacity: 1,
           scale: 1,
-          filter: "blur(0px)",
+          ...(blurred && { filter: "blur(0px)" }),
           transition: contentTransition,
         },
         exit: {
           opacity: 0,
           scale: 0.95,
-          filter: "blur(4px)",
+          ...(blurred && { filter: "blur(4px)" }),
           transition: contentTransition,
         },
       };
 
       return (
-        <>
+        <motion.span
+          style={{ width }}
+          className="inline-flex justify-center overflow-hidden"
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
+              ref={measureContent}
               key={status}
-              variants={staggerContainer}
+              variants={contentContainer}
               initial="initial"
               animate="animate"
               exit="exit"
-              className="inline-flex items-center gap-2"
+              className="inline-flex shrink-0 items-center gap-2"
             >
               {currentIcon && (
-                <motion.span variants={staggerItem} className="inline-flex items-center">
+                <motion.span variants={contentItem} className="inline-flex items-center">
                   {currentIcon}
                 </motion.span>
               )}
               {srLabel && <span className="sr-only">{srLabel}</span>}
               <span className="inline-flex">
-                {typeof resolvedLabel === "string" ? (
+                {staggered && typeof resolvedLabel === "string" ? (
                   resolvedLabel.split("").map((char, i) => (
                     <motion.span
                       key={i}
-                      variants={staggerItem}
+                      variants={contentItem}
                       className="inline-block whitespace-pre"
                     >
                       {char}
                     </motion.span>
                   ))
                 ) : (
-                  <motion.span variants={staggerItem}>{resolvedLabel}</motion.span>
+                  <motion.span variants={contentItem}>{resolvedLabel}</motion.span>
                 )}
               </span>
               {isIdle && rightIcon && (
-                <motion.span variants={staggerItem} className="inline-flex items-center">
+                <motion.span variants={contentItem} className="inline-flex items-center">
                   {rightIcon}
                 </motion.span>
               )}
             </motion.span>
           </AnimatePresence>
-        </>
+        </motion.span>
       );
     };
 

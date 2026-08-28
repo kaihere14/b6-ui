@@ -35,14 +35,14 @@ export function registryItemUrl(slug: string) {
 }
 
 /** Package managers the install snippets offer. First entry is the default. */
-export const packageManagers = ["bun", "npm", "pnpm"] as const;
+export const packageManagers = ["npm", "bun", "pnpm"] as const;
 
 export type PackageManager = (typeof packageManagers)[number];
 
 /** How each package manager runs a one-off binary. */
 const shadcnRunner: Record<PackageManager, string> = {
-  bun: "bunx --bun shadcn@latest",
   npm: "npx shadcn@latest",
+  bun: "bunx --bun shadcn@latest",
   pnpm: "pnpm dlx shadcn@latest",
 };
 
@@ -79,16 +79,16 @@ export const mainNav = [
  * so it works in any project with a `components.json` — no namespace to register
  * first. See `namespacedInstallCommand` for the shorter form.
  */
-export function installCommand(slug: string, packageManager: PackageManager = "bun") {
+export function installCommand(slug: string, packageManager: PackageManager = "npm") {
   return `${shadcnRunner[packageManager]} add ${registryItemUrl(slug)}`;
 }
 
 /** Registers the `@b6-ui` namespace in the consumer's components.json. */
-export function registerNamespaceCommand(packageManager: PackageManager = "bun") {
+export function registerNamespaceCommand(packageManager: PackageManager = "npm") {
   return `${shadcnRunner[packageManager]} registry add ${siteConfig.registryNamespace}=${registryUrlTemplate}`;
 }
 
 /** Shorter form, only valid once `@b6-ui` is in the consumer's `registries`. */
-export function namespacedInstallCommand(slug: string, packageManager: PackageManager = "bun") {
+export function namespacedInstallCommand(slug: string, packageManager: PackageManager = "npm") {
   return `${shadcnRunner[packageManager]} add ${siteConfig.registryNamespace}/${slug}`;
 }

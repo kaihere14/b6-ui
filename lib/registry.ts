@@ -111,7 +111,7 @@ export const components: ComponentMeta[] = [
       "Motion is limited to a 1px press offset, and is suppressed under `prefers-reduced-motion`.",
     ],
     responsive:
-      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",
+      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`. The content wrapper measures itself and animates its width, so a longer status label (\"Save\" → \"Saving…\") grows the button smoothly instead of snapping.",
   },
   {
     slug: "magnetic-button",
@@ -323,6 +323,20 @@ export const components: ComponentMeta[] = [
         description:
           "Custom icons for the success and error states. Default to `Check` and `X` from lucide-react.",
       },
+      {
+        name: "blur",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Blur the content as it swaps between states. Set `false` for a plain fade-scale.",
+      },
+      {
+        name: "stagger",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Animate the label one character at a time. Set `false` to move the whole label as one block; with `blur={false}` too, the swap is a simple fade.",
+      },
     ],
     examples: [
       {
@@ -372,10 +386,19 @@ export const components: ComponentMeta[] = [
 <StatefulButton variant="secondary" status={s} ...>Secondary</StatefulButton>
 <StatefulButton variant="destructive" status={s} ...>Delete</StatefulButton>`,
       },
+      {
+        title: "Simpler motion",
+        preview: "stateful-button/motion",
+        description:
+          "Turn the swap down one piece at a time: `blur={false}` keeps the stagger without the defocus, `stagger={false}` moves the label as one block, and both off leave a plain fade-scale.",
+        code: `<StatefulButton blur={false} status={s} ...>No blur</StatefulButton>
+<StatefulButton stagger={false} status={s} ...>No stagger</StatefulButton>
+<StatefulButton blur={false} stagger={false} status={s} ...>Plain fade</StatefulButton>`,
+      },
     ],
     accessibility: [
       "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
-      "Icons and labels transition via AnimatePresence; all motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`.",
+      "Icons and labels transition via AnimatePresence; all motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`, which also collapses the per-character stagger and the blur regardless of how `stagger` and `blur` are set.",
       '`status="loading"` sets `aria-busy`. When no `loadingText` is provided, `loadingLabel` is announced through a visually hidden span; when `loadingText` is visible the sr-only span is omitted so readers never hear "Loading Saving…". The same logic applies to success and error.',
       "The error shake is a horizontal displacement that carries no meaning — the X icon and `errorLabel` convey the failure.",
       "Held at rest while `disabled` or in any non-idle state, so a non-interactive control never invites a click.",

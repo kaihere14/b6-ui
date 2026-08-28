@@ -28,6 +28,7 @@ import {
 import {
   StatefulButtonDefaultExample,
   StatefulButtonErrorExample,
+  StatefulButtonMotionExample,
   StatefulButtonVariantsExample,
 } from "@/components/previews/examples/stateful-button-examples";
 import {
@@ -73,6 +74,7 @@ export const exampleDemos: Record<string, ComponentType> = {
   "stateful-button/default": StatefulButtonDefaultExample,
   "stateful-button/error": StatefulButtonErrorExample,
   "stateful-button/variants": StatefulButtonVariantsExample,
+  "stateful-button/motion": StatefulButtonMotionExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,
   "badge/tones": BadgeTonesExample,

@@ -8,10 +8,7 @@
       "type": "registry:base",
       "title": "B6 Base",
       "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -229,10 +226,7 @@
       "type": "registry:lib",
       "title": "B6 Utils",
       "description": "The cn() class merger, configured for B6's named type scale so a size utility never overwrites a colour utility.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -246,11 +240,7 @@
       "type": "registry:ui",
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot",
-        "lucide-react"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -305,10 +295,7 @@
       "type": "registry:ui",
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
       "registryDependencies": [],
       "files": [
         {
@@ -323,9 +310,7 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -340,9 +325,7 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {

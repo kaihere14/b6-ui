@@ -102,3 +102,58 @@ export function StatefulButtonVariantsExample() {
     </div>
   );
 }
+
+export function StatefulButtonMotionExample() {
+  const [statuses, setStatuses] = useState<Record<string, ButtonStatus>>({
+    noBlur: "idle",
+    noStagger: "idle",
+    plain: "idle",
+  });
+
+  const handleClick = useCallback((key: string) => {
+    setStatuses((prev) => ({ ...prev, [key]: "loading" }));
+    setTimeout(() => setStatuses((prev) => ({ ...prev, [key]: "success" })), 1500);
+  }, []);
+
+  const handleReset = useCallback((key: string) => {
+    setStatuses((prev) => ({ ...prev, [key]: "idle" }));
+  }, []);
+
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <StatefulButton
+        blur={false}
+        status={statuses.noBlur}
+        onReset={() => handleReset("noBlur")}
+        onClick={() => handleClick("noBlur")}
+        loadingText="Saving…"
+        successText="Saved!"
+      >
+        No blur
+      </StatefulButton>
+      <StatefulButton
+        variant="secondary"
+        stagger={false}
+        status={statuses.noStagger}
+        onReset={() => handleReset("noStagger")}
+        onClick={() => handleClick("noStagger")}
+        loadingText="Saving…"
+        successText="Saved!"
+      >
+        No stagger
+      </StatefulButton>
+      <StatefulButton
+        variant="outline"
+        blur={false}
+        stagger={false}
+        status={statuses.plain}
+        onReset={() => handleReset("plain")}
+        onClick={() => handleClick("plain")}
+        loadingText="Saving…"
+        successText="Saved!"
+      >
+        Plain fade
+      </StatefulButton>
+    </div>
+  );
+}
