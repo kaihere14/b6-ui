@@ -25,6 +25,7 @@ interface RegistryItem {
   files?: RegistryFile[];
   dependencies?: string[];
   registryDependencies?: string[];
+  cssVars?: Record<string, Record<string, string>>;
 }
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -58,6 +59,26 @@ for (const item of uiItems) {
   }
 }
 
+// A self-contained item inlines the token block instead of depending on
+// `@b6-ui/tokens`. That is a second copy, so it has to stay byte-identical to
+// the theme item or consumers install a component whose colours have drifted.
+const themeItem = registry.items.find((item) => item.type === "registry:theme");
+
+for (const item of registry.items) {
+  if (!item.cssVars || item === themeItem) continue;
+  if (!themeItem) {
+    errors.push(
+      `registry.json item "${item.name}" declares cssVars but there is no theme item`,
+    );
+    continue;
+  }
+  if (JSON.stringify(item.cssVars) !== JSON.stringify(themeItem.cssVars)) {
+    errors.push(
+      `registry.json item "${item.name}" inlines cssVars that no longer match "${themeItem.name}"`,
+    );
+  }
+}
+
 for (const component of components) {
   if (!existsSync(path.join(root, component.source))) {
     errors.push(
@@ -71,6 +92,13 @@ for (const component of components) {
     errors.push(
       `"${component.slug}" has no preview at components/previews/${component.slug}-preview.tsx`,
     );
+  }
+  for (const required of component.requires ?? []) {
+    if (!docSlugs.has(required)) {
+      errors.push(
+        `lib/registry.ts "${component.slug}" requires unknown component "${required}"`,
+      );
+    }
   }
 }
 

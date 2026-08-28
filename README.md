@@ -51,15 +51,26 @@ bun run verify         # registry check + typecheck + lint + tests + build
 You need a React project on Tailwind CSS v4 with a `components.json` (run
 `bunx --bun shadcn@latest init` if you do not have one).
 
-**1. Add a component**
+**1. Install the base — once per project**
+
+```bash
+bunx --bun shadcn@latest add https://ui.armandev.space/r/base.json
+```
+
+It writes `lib/utils.ts` and merges the B6 design tokens into your stylesheet. Every
+component assumes both are already there.
+
+**2. Add a component**
 
 ```bash
 bunx --bun shadcn@latest add https://ui.armandev.space/r/button-base.json
 ```
 
-Nothing to configure — the item URL is self-contained.
+Every component is a single file with no registry dependencies, so adding one never
+overwrites something you already own and edited. A component built on another one —
+`magnetic-button` renders a `ButtonBase` — needs that one installed first.
 
-**2. Optional: register the namespace**
+**Optional: register the namespace**
 
 Installing several components? Register `@b6-ui` once and drop the URL:
 
@@ -83,9 +94,6 @@ Then the short form resolves. Without that entry the CLI exits with
 ```bash
 bunx --bun shadcn add @b6-ui/button-base
 ```
-
-The CLI writes `components/ui/button-base.tsx`, installs the npm dependencies the item
-declares, and merges the B6 design tokens into your stylesheet.
 
 **3. Use it**
 

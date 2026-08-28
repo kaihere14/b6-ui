@@ -115,6 +115,7 @@ export const components: ComponentMeta[] = [
       "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
     source: "registry/button/magnetic-button/magnetic-button.tsx",
     dependencies: ["motion"],
+    requires: ["button-base"],
     props: [
       {
         name: "strength",

@@ -12,11 +12,33 @@ not shipped as an npm package — they are distributed as source code through a
 shadcn-compatible registry:
 
 ```
-bunx --bun shadcn add @b6-ui/button-base
+bunx --bun shadcn@latest add https://ui.armandev.space/r/base.json
+bunx --bun shadcn@latest add https://ui.armandev.space/r/button-base.json
 ```
 
 The developer receives the component file inside their own project and owns it from that
 moment on.
+
+### Distribution model: one base, then single-file components
+
+`base` is installed once per project. It carries the design tokens and `cn()` — everything
+every component assumes is already there. After that each component is **one file with no
+registry dependencies**, exactly like a shadcn component that imports `@/lib/utils` and
+expects it to exist.
+
+```
+base  ->  button-base  ->  magnetic-button
+                          metallic-button, …
+```
+
+A component that builds on another (a magnetic button is a `ButtonBase`) imports it from
+`@/components/ui/<slug>` and expects the consumer to have installed it. It does **not** name
+it in `registryDependencies`: naming it would reinstall and overwrite a file the consumer may
+already own and have edited.
+
+Snippets on the site are written with the full item URL rather than `@b6-ui/<slug>`, because a
+namespace address only resolves once the consumer has registered it in their own
+`components.json` — or once B6 UI is listed in the shadcn open source registry index.
 
 ### Non-negotiable identity rules
 
@@ -115,10 +137,11 @@ globally unique — the family folder does not namespace it, so there is no `but
    `components/previews/index.ts`
 4. **Docs metadata** — add a `ComponentMeta` entry to `lib/registry.ts` (description, props,
    examples, accessibility notes, responsive behaviour — all of them, not a subset)
-5. **Registry item** — add an item to `registry.json` with
-   `registryDependencies: ["@b6-ui/tokens", "@b6-ui/utils"]` and a file `target` of
-   `components/ui/<slug>.tsx`. Every component calls `cn()`, so `@b6-ui/utils` is not
-   optional — omit it and the consumer installs a component whose class merging is wrong.
+5. **Registry item** — add an item to `registry.json` with `registryDependencies: []`, one
+   file, and a file `target` of `components/ui/<slug>.tsx`. Tokens and `cn()` arrive with the
+   `base` item, so a component never reinstalls them. Declare every npm package the file
+   imports in `dependencies` — that list is the only thing the consumer's package manager
+   sees.
 6. **Rebuild and verify** — `bun run registry:build && bun run verify`
 
 `bun run registry:check` fails loudly if any of steps 1–5 is missed. Do not skip it.
@@ -158,8 +181,9 @@ Rules:
   statically, never sees the interpolated string, and silently emits no CSS at all.
 - Components using `motion` honour `useReducedMotion()` themselves and fall back to their
   static behaviour. Motion never carries meaning on its own.
-- Every token change must be mirrored into the `tokens` item in `registry.json`, or consumers
-  install a component whose colours do not resolve.
+- Every token change must be mirrored into **both** the `tokens` and the `base` items in
+  `registry.json`, or consumers install a component whose colours do not resolve.
+  `bun run registry:check` fails when the two token blocks drift apart.
 - Naming a new type step means registering it in `lib/utils.ts` too. tailwind-merge sorts
   `text-*` into either `font-size` or `text-color`, and it cannot tell which `text-body` is —
   unregistered, it guesses colour, and a later size utility silently deletes an earlier

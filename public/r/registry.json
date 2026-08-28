@@ -4,6 +4,89 @@
   "homepage": "https://ui.armandev.space",
   "items": [
     {
+      "name": "base",
+      "type": "registry:base",
+      "title": "B6 Base",
+      "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "--ease-b6": "cubic-bezier(0.2, 0, 0, 1)",
+          "--ease-b6-out": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "--text-display": "3.25rem",
+          "--text-h1": "2.25rem",
+          "--text-h2": "1.5rem",
+          "--text-h3": "1.125rem",
+          "--text-body": "0.9375rem",
+          "--text-small": "0.8125rem",
+          "--text-caption": "0.6875rem",
+          "--text-code": "0.8125rem",
+          "--shadow-b6-xs": "0 1px 1px oklch(0 0 0 / 0.04)",
+          "--shadow-b6-sm": "0 1px 2px oklch(0 0 0 / 0.06), 0 1px 6px oklch(0 0 0 / 0.04)",
+          "--shadow-b6-md": "0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07)",
+          "--shadow-b6-lg": "0 4px 8px oklch(0 0 0 / 0.07), 0 18px 44px oklch(0 0 0 / 0.1)"
+        },
+        "light": {
+          "background": "oklch(0.985 0.001 17.5)",
+          "foreground": "oklch(0.166 0.0034 17.5)",
+          "card": "oklch(1 0 0)",
+          "card-foreground": "oklch(0.166 0.0034 17.5)",
+          "popover": "oklch(1 0 0)",
+          "popover-foreground": "oklch(0.166 0.0034 17.5)",
+          "primary": "oklch(0.166 0.0034 17.5)",
+          "primary-hover": "oklch(0.26 0.005 17.5)",
+          "primary-active": "oklch(0.12 0.003 17.5)",
+          "primary-foreground": "oklch(0.985 0.001 17.5)",
+          "secondary": "oklch(0.945 0.003 17.5)",
+          "secondary-foreground": "oklch(0.2 0.004 17.5)",
+          "muted": "oklch(0.955 0.003 17.5)",
+          "muted-foreground": "oklch(0.52 0.005 17.5)",
+          "accent": "oklch(0.9 0.005 17.5)",
+          "accent-foreground": "oklch(0.18 0.004 17.5)",
+          "destructive": "oklch(0.55 0.19 27)",
+          "destructive-hover": "oklch(0.6 0.2 27)",
+          "destructive-active": "oklch(0.5 0.18 27)",
+          "destructive-foreground": "oklch(0.99 0.002 17.5)",
+          "border": "oklch(0.895 0.004 17.5)",
+          "input": "oklch(0.93 0.004 17.5)",
+          "ring": "oklch(0.166 0.0034 17.5)",
+          "radius": "0.5rem"
+        },
+        "dark": {
+          "background": "oklch(0.166 0.0034 17.5)",
+          "foreground": "oklch(0.965 0.002 17.5)",
+          "card": "oklch(0.205 0.004 17.5)",
+          "card-foreground": "oklch(0.965 0.002 17.5)",
+          "popover": "oklch(0.205 0.004 17.5)",
+          "popover-foreground": "oklch(0.965 0.002 17.5)",
+          "primary": "oklch(0.965 0.002 17.5)",
+          "primary-hover": "oklch(0.885 0.003 17.5)",
+          "primary-active": "oklch(0.82 0.004 17.5)",
+          "primary-foreground": "oklch(0.166 0.0034 17.5)",
+          "secondary": "oklch(0.26 0.005 17.5)",
+          "secondary-foreground": "oklch(0.95 0.002 17.5)",
+          "muted": "oklch(0.235 0.005 17.5)",
+          "muted-foreground": "oklch(0.7 0.006 17.5)",
+          "accent": "oklch(0.325 0.006 17.5)",
+          "accent-foreground": "oklch(0.97 0.002 17.5)",
+          "destructive": "oklch(0.62 0.185 27)",
+          "destructive-hover": "oklch(0.67 0.195 27)",
+          "destructive-active": "oklch(0.57 0.175 27)",
+          "destructive-foreground": "oklch(0.99 0.002 17.5)",
+          "border": "oklch(0.3 0.006 17.5)",
+          "input": "oklch(0.27 0.006 17.5)",
+          "ring": "oklch(0.965 0.002 17.5)"
+        }
+      }
+    },
+    {
       "name": "tokens",
       "type": "registry:theme",
       "title": "B6 Design Tokens",
@@ -98,7 +181,7 @@
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
       "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
-      "registryDependencies": ["@b6-ui/tokens", "@b6-ui/utils"],
+      "registryDependencies": [],
       "files": [
         {
           "path": "registry/button/button-base/button-base.tsx",
@@ -113,14 +196,14 @@
       "title": "Magnetic Button",
       "description": "A Button Base that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
       "dependencies": ["motion"],
-      "registryDependencies": ["@b6-ui/tokens", "@b6-ui/button-base", "@b6-ui/utils"],
       "files": [
         {
           "path": "registry/button/magnetic-button/magnetic-button.tsx",
           "type": "registry:ui",
           "target": "components/ui/magnetic-button.tsx"
         }
-      ]
+      ],
+      "registryDependencies": []
     },
     {
       "name": "card-base",
@@ -128,7 +211,7 @@
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
       "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
-      "registryDependencies": ["@b6-ui/tokens", "@b6-ui/utils"],
+      "registryDependencies": [],
       "files": [
         {
           "path": "registry/card/card-base/card-base.tsx",
@@ -143,7 +226,7 @@
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
       "dependencies": ["class-variance-authority"],
-      "registryDependencies": ["@b6-ui/tokens", "@b6-ui/utils"],
+      "registryDependencies": [],
       "files": [
         {
           "path": "registry/badge/badge/badge.tsx",
@@ -158,7 +241,7 @@
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
       "dependencies": ["class-variance-authority"],
-      "registryDependencies": ["@b6-ui/tokens", "@b6-ui/utils"],
+      "registryDependencies": [],
       "files": [
         {
           "path": "registry/input/input/input.tsx",
@@ -173,7 +256,7 @@
       "title": "Separator",
       "description": "A one-pixel rule, horizontal or vertical, optionally captioned.",
       "dependencies": [],
-      "registryDependencies": ["@b6-ui/tokens", "@b6-ui/utils"],
+      "registryDependencies": [],
       "files": [
         {
           "path": "registry/separator/separator/separator.tsx",

@@ -8,7 +8,13 @@ import { components, getComponent, getComponentSlugs } from "../lib/registry";
 const root = path.resolve(import.meta.dirname, "..");
 const registry = JSON.parse(readFileSync(path.join(root, "registry.json"), "utf8")) as {
   name: string;
-  items: { name: string; type: string; files?: { path: string; target?: string }[] }[];
+  items: {
+    name: string;
+    type: string;
+    files?: { path: string; target?: string }[];
+    registryDependencies?: string[];
+    cssVars?: Record<string, Record<string, string>>;
+  }[];
 };
 
 const uiItems = registry.items.filter((item) => item.type === "registry:ui");
@@ -25,6 +31,21 @@ describe("registry.json", () => {
       expect(item.files?.[0]?.target).toBe(`components/ui/${item.name}.tsx`);
       expect(existsSync(path.join(root, item.files![0]!.path))).toBe(true);
     }
+  });
+
+  test("components name no registry dependencies — the base is installed first", () => {
+    for (const item of uiItems) {
+      expect(item.registryDependencies).toEqual([]);
+    }
+  });
+
+  test("ships a base item carrying cn() and the tokens verbatim", () => {
+    const base = registry.items.find((item) => item.type === "registry:base");
+    const tokens = registry.items.find((item) => item.type === "registry:theme");
+
+    expect(base?.name).toBe("base");
+    expect(base?.files?.[0]?.target).toBe("lib/utils.ts");
+    expect(base?.cssVars).toEqual(tokens!.cssVars!);
   });
 });
 

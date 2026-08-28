@@ -6,11 +6,7 @@
   "dependencies": [
     "motion"
   ],
-  "registryDependencies": [
-    "@b6-ui/tokens",
-    "@b6-ui/button-base",
-    "@b6-ui/utils"
-  ],
+  "registryDependencies": [],
   "files": [
     {
       "path": "registry/button/magnetic-button/magnetic-button.tsx",

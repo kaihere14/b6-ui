@@ -7,10 +7,7 @@
     "class-variance-authority",
     "@radix-ui/react-slot"
   ],
-  "registryDependencies": [
-    "@b6-ui/tokens",
-    "@b6-ui/utils"
-  ],
+  "registryDependencies": [],
   "files": [
     {
       "path": "registry/card/card-base/card-base.tsx",

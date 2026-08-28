@@ -24,6 +24,12 @@ export interface ComponentMeta {
   source: string;
   /** npm packages the component pulls in. */
   dependencies: string[];
+  /**
+   * Slugs of other B6 components this one imports and expects to already be
+   * installed. Deliberately not `registryDependencies`: reinstalling them would
+   * overwrite files the consumer owns.
+   */
+  requires?: string[];
   props: ComponentProp[];
   examples: ComponentExample[];
   accessibility: string[];

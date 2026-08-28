@@ -7,7 +7,7 @@ import { registryUrlTemplate, siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Installation",
-  description: "Register the B6 UI namespace and install components with the shadcn CLI.",
+  description: "Install the B6 base once, then add components with the shadcn CLI.",
 };
 
 const componentsJson = `{
@@ -28,14 +28,6 @@ const componentsJson = `{
   "registries": {
     "${siteConfig.registryNamespace}": "${registryUrlTemplate}"
   }
-}`;
-
-const tokens = `:root {
-  --b6-background: oklch(0.985 0.001 17.5);
-  --b6-foreground: oklch(0.166 0.0034 17.5);
-  --b6-primary: oklch(0.166 0.0034 17.5);
-  --b6-primary-foreground: oklch(0.985 0.001 17.5);
-  /* …the full set lives in this repository's app/globals.css */
 }`;
 
 export default function InstallationPage() {
@@ -64,28 +56,43 @@ export default function InstallationPage() {
             not have one.
           </li>
           <li>
-            A <code className="font-mono text-code">cn</code> helper at{" "}
-            <code className="font-mono text-code">@/lib/utils</code> (the shadcn init creates
-            it).
+            Nothing else — the B6 base below installs the{" "}
+            <code className="font-mono text-code">cn</code> helper at{" "}
+            <code className="font-mono text-code">@/lib/utils</code> and the design tokens.
           </li>
         </ul>
       </section>
 
+      <section className="mt-12" aria-labelledby="base-heading">
+        <h2 id="base-heading" className="text-h2">
+          1. Install the base
+        </h2>
+        <p className="mt-2 text-small text-muted-foreground">
+          Once per project. It writes <code className="font-mono text-code">lib/utils.ts</code>{" "}
+          and merges the B6 design tokens into your stylesheet — the two things every component
+          assumes are already there.
+        </p>
+        <InstallCommand slug="base" className="mt-4" />
+      </section>
+
       <section className="mt-12" aria-labelledby="add-heading">
         <h2 id="add-heading" className="text-h2">
-          1. Add a component
+          2. Add a component
         </h2>
         <InstallCommand slug="button-base" className="mt-4" />
         <p className="mt-3 text-small text-muted-foreground">
           The CLI writes the source to{" "}
           <code className="font-mono text-code">components/ui/button-base.tsx</code> and
-          installs any npm dependencies the item declares.
+          installs any npm dependencies the item declares. Every component is a single file with
+          no registry dependencies, so nothing you already own is overwritten. A component built
+          on another one — Magnetic Button is a Button Base — says so on its page; install that
+          one first.
         </p>
       </section>
 
       <section className="mt-12" aria-labelledby="register-heading">
         <h2 id="register-heading" className="text-h2">
-          2. Optional: register the namespace
+          3. Optional: register the namespace
         </h2>
         <p className="mt-2 text-small text-muted-foreground">
           Installing lots of components? Register{" "}
@@ -110,18 +117,6 @@ export default function InstallationPage() {
           .
         </p>
         <InstallCommand slug="button-base" variant="namespace" className="mt-3" />
-      </section>
-
-      <section className="mt-12" aria-labelledby="tokens-heading">
-        <h2 id="tokens-heading" className="text-h2">
-          3. Add the B6 tokens
-        </h2>
-        <p className="mt-2 text-small text-muted-foreground">
-          Components reference semantic tokens. Registry items carry their own{" "}
-          <code className="font-mono text-code">cssVars</code>, so the CLI merges the values it
-          needs into your stylesheet. To adopt the full B6 look, copy the token block:
-        </p>
-        <CodeBlock className="mt-4" code={tokens} filename="app/globals.css" language="css" />
       </section>
 
       <section className="mt-12" aria-labelledby="own-heading">

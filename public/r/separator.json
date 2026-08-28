@@ -4,10 +4,7 @@
   "title": "Separator",
   "description": "A one-pixel rule, horizontal or vertical, optionally captioned.",
   "dependencies": [],
-  "registryDependencies": [
-    "@b6-ui/tokens",
-    "@b6-ui/utils"
-  ],
+  "registryDependencies": [],
   "files": [
     {
       "path": "registry/separator/separator/separator.tsx",

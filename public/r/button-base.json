@@ -8,10 +8,7 @@
     "@radix-ui/react-slot",
     "lucide-react"
   ],
-  "registryDependencies": [
-    "@b6-ui/tokens",
-    "@b6-ui/utils"
-  ],
+  "registryDependencies": [],
   "files": [
     {
       "path": "registry/button/button-base/button-base.tsx",

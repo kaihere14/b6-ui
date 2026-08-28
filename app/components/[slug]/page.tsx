@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { previews } from "@/components/previews";
@@ -65,7 +66,23 @@ export default async function ComponentPage({ params }: PageProps<"/components/[
             Installation
           </h2>
           <p className="mt-2 text-small text-muted-foreground">
-            Register the B6 namespace once, then add the component.
+            Install the{" "}
+            <Link href="/docs/installation" className="underline underline-offset-4">
+              B6 base
+            </Link>{" "}
+            once per project
+            {component.requires?.length
+              ? ", plus these components this one builds on:"
+              : ", then add the component."}
+            {component.requires?.map((slug, index) => (
+              <span key={slug}>
+                {index === 0 ? " " : ", "}
+                <Link href={`/components/${slug}`} className="underline underline-offset-4">
+                  {slug}
+                </Link>
+                {index === component.requires!.length - 1 ? "." : ""}
+              </span>
+            ))}
           </p>
           <InstallCommand slug={component.slug} className="mt-4 max-w-xl" />
           {component.dependencies.length > 0 ? (
