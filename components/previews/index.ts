@@ -38,6 +38,11 @@ import {
   StatefulButtonVariantsExample,
 } from "@/components/previews/examples/stateful-button-examples";
 import {
+  ActivityGraphCompactExample,
+  ActivityGraphDefaultExample,
+  ActivityGraphSizesExample,
+} from "@/components/previews/examples/activity-graph-examples";
+import {
   SeparatorCaptionedExample,
   SeparatorHorizontalExample,
   SeparatorVerticalExample,
@@ -46,6 +51,7 @@ import {
 import { BadgePreview } from "@/components/previews/badge-preview";
 import { ButtonBasePreview } from "@/components/previews/button-base-preview";
 import { CardBasePreview } from "@/components/previews/card-base-preview";
+import { ActivityGraphPreview } from "@/components/previews/activity-graph-preview";
 import { DepthButtonPreview } from "@/components/previews/depth-button-preview";
 import { InputPreview } from "@/components/previews/input-preview";
 import { MagneticButtonPreview } from "@/components/previews/magnetic-button-preview";
@@ -59,6 +65,7 @@ export const previews: Record<string, ComponentType> = {
   "stateful-button": StatefulButtonPreview,
   "depth-button": DepthButtonPreview,
   "card-base": CardBasePreview,
+  "activity-graph": ActivityGraphPreview,
   badge: BadgePreview,
   input: InputPreview,
   separator: SeparatorPreview,
@@ -94,6 +101,9 @@ export const exampleDemos: Record<string, ComponentType> = {
   "input/labelled": InputLabelledExample,
   "input/search": InputSearchExample,
   "input/invalid": InputInvalidExample,
+  "activity-graph/default": ActivityGraphDefaultExample,
+  "activity-graph/compact": ActivityGraphCompactExample,
+  "activity-graph/sizes": ActivityGraphSizesExample,
   "separator/horizontal": SeparatorHorizontalExample,
   "separator/captioned": SeparatorCaptionedExample,
   "separator/vertical": SeparatorVerticalExample,

@@ -361,6 +361,21 @@
       ]
     },
     {
+      "name": "activity-graph",
+      "type": "registry:ui",
+      "title": "Activity Graph",
+      "description": "A configurable seven-day stacked-bar graph for any activity series, with derived totals and optional hatched fills.",
+      "dependencies": ["class-variance-authority", "motion"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/graphs/activity-graph/activity-graph.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/activity-graph.tsx"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",

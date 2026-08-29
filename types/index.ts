@@ -4,7 +4,7 @@
  * A category is a docs-navigation concern, not a registry one: it never reaches
  * `registry.json` and never changes how a component installs.
  */
-export const componentCategories = ["Buttons", "Forms", "Display", "Layout"] as const;
+export const componentCategories = ["Buttons", "Forms", "Display", "Graphs", "Layout"] as const;
 
 export type ComponentCategory = (typeof componentCategories)[number];
 

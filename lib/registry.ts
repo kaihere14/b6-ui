@@ -597,6 +597,109 @@ export const components: ComponentMeta[] = [
       "Cards fill their grid cell. Compose them inside a `grid` and change `padding` per breakpoint if needed.",
   },
   {
+    slug: "activity-graph",
+    category: "Graphs",
+    isNew: true,
+    title: "Activity Graph",
+    description:
+      "A configurable seven-day stacked-bar graph for any activity series, with derived totals and optional hatched fills.",
+    source: "registry/graphs/activity-graph/activity-graph.tsx",
+    dependencies: ["class-variance-authority", "motion"],
+    props: [
+      {
+        name: "data",
+        type: "BarData[]",
+        required: true,
+        description:
+          "Array of seven bars to render left-to-right. Each bar can contain any numeric series keys (0–100 scale) plus an optional label.",
+      },
+      {
+        name: "config",
+        type: "Record<string, SegmentStyle>",
+        required: true,
+        description:
+          "Series definitions keyed by the numeric fields in each bar, including label, color and optional pattern.",
+      },
+      {
+        name: "stats",
+        type: "StatItem[]",
+        description:
+          "Optional total overrides. When omitted, each total is calculated from the current bars.",
+      },
+      {
+        name: "title",
+        type: "string",
+        defaultValue: '"Weekly Activity"',
+        description: "Card header text.",
+      },
+      {
+        name: "variant",
+        type: '"default" | "compact" | "detailed"',
+        defaultValue: '"default"',
+        description:
+          "Layout density. `compact` hides the header. All variants provide per-segment hover and keyboard details.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Controls the height of the chart area.",
+      },
+      {
+        name: "showLegend",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Whether to render the colour legend.",
+      },
+      {
+        name: "animated",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Whether to animate bars on mount.",
+      },
+      {
+        name: "segmentStyles",
+        type: "Partial<Record<string, Partial<SegmentStyle>>>" ,
+        description: "Optional per-series style overrides merged with `config`.",
+      },
+    ],
+    examples: [
+      {
+        title: "Default",
+        preview: "activity-graph/default",
+        description:
+          "The full card: header, stacked bars, and legend with derived stats.",
+        code: `<ActivityGraph
+  data={data}
+  config={config}
+  title="Weekly Activity"
+/>`,
+      },
+      {
+        title: "Compact",
+        preview: "activity-graph/compact",
+        description:
+          "A condensed version with chart and minimal legend only — no header.",
+        code: `<ActivityGraph data={data} config={config} variant="compact" />`,
+      },
+      {
+        title: "Sizes",
+        preview: "activity-graph/sizes",
+        description:
+          "The `size` prop controls the height of the chart area: sm, md, lg.",
+        code: `<ActivityGraph data={data} config={config} size="sm" title="Small" />
+<ActivityGraph data={data} config={config} size="lg" title="Large" />`,
+      },
+    ],
+    accessibility: [
+      "Each bar segment is keyboard focusable and has an accessible label containing its series, optional day, and raw value.",
+      "Hatched patterns use a CSS pattern background rather than colour alone, providing a secondary visual cue beyond colour for distinguishing segment types.",
+      "Colour tokens resolve from the B6 design system and respect light/dark mode.",
+    ],
+    responsive:
+      "The chart fills its container width. Use `size` to control height, and `variant=\"compact\"` for tighter spaces. The bar count adapts to the data provided.",
+  },
+  {
     slug: "badge",
     category: "Display",
     title: "Badge",
