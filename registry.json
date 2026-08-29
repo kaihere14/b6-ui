@@ -376,6 +376,21 @@
       ]
     },
     {
+      "name": "dot-matrix-graph",
+      "type": "registry:ui",
+      "title": "Dot Matrix Graph",
+      "description": "A column graph drawn in dots instead of bars: one dot per unit, stacked from the baseline up, with two periods comparable inside one plot.",
+      "dependencies": ["class-variance-authority", "motion"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/graphs/dot-matrix-graph/dot-matrix-graph.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/dot-matrix-graph.tsx"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",

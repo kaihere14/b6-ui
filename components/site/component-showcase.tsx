@@ -40,8 +40,9 @@ interface ComponentShowcaseProps {
 /**
  * Preview and source for one component, behind a pair of tabs.
  *
- * Both panels stay mounted and the inactive one is `hidden`, so switching tabs
- * never restarts an animation or drops the demo's state. `preview` and `code`
+ * Both panels stay mounted and stacked in one grid cell, so switching tabs
+ * never restarts an animation, drops the demo's state, or resizes the frame —
+ * the block is always as tall as the taller panel. `preview` and `code`
  * arrive as already-rendered server output — the highlighting still happens on
  * the server even though the tab state lives on the client.
  */
@@ -166,28 +167,32 @@ export function ComponentShowcase({
         </div>
       </div>
 
-      <div
-        role="tabpanel"
-        id={panelId("preview")}
-        aria-labelledby={tabId("preview")}
-        hidden={active !== "preview"}
-        className={cn(
-          "min-h-72 w-full b6-dot-canvas p-10",
-          // `hidden` alone loses to a `display` utility, so the layout class is
-          // only applied while the panel is the active one.
-          active === "preview" ? "flex items-center justify-center" : "hidden",
-        )}
-      >
-        {canvas}
-      </div>
+      {/* Both panels share one grid cell, so the frame is always as tall as the
+          taller of the two and switching tabs never resizes the block. The
+          inactive one keeps its space but is `invisible` and `inert`. */}
+      <div className="grid">
+        <div
+          role="tabpanel"
+          id={panelId("preview")}
+          aria-labelledby={tabId("preview")}
+          inert={active !== "preview"}
+          className={cn(
+            "col-start-1 row-start-1 flex min-h-72 w-full items-center justify-center b6-dot-canvas p-10",
+            active !== "preview" && "invisible",
+          )}
+        >
+          {canvas}
+        </div>
 
-      <div
-        role="tabpanel"
-        id={panelId("code")}
-        aria-labelledby={tabId("code")}
-        hidden={active !== "code"}
-      >
-        {code}
+        <div
+          role="tabpanel"
+          id={panelId("code")}
+          aria-labelledby={tabId("code")}
+          inert={active !== "code"}
+          className={cn("col-start-1 row-start-1 min-w-0", active !== "code" && "invisible")}
+        >
+          {code}
+        </div>
       </div>
 
       {toolbar ? (

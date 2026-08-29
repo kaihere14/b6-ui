@@ -41,7 +41,7 @@ export function ActivityGraphSingleSeriesExample() {
       data={SAMPLE_DATA}
       config={SINGLE_CONFIG}
       title="Design Hours"
-      className="w-full max-w-md"
+      className="w-full max-w-xl"
     />
   );
 }
@@ -52,7 +52,7 @@ export function ActivityGraphTwoSeriesExample() {
       data={SAMPLE_DATA}
       config={DUAL_CONFIG}
       title="Design vs Review"
-      className="w-full max-w-md"
+      className="w-full max-w-xl"
     />
   );
 }
@@ -65,14 +65,14 @@ export function ActivityGraphSizesExample() {
         config={SAMPLE_CONFIG}
         size="sm"
         title="Small"
-        className="w-full max-w-md"
+        className="w-full max-w-2xl"
       />
       <ActivityGraph
         data={SAMPLE_DATA}
         config={SAMPLE_CONFIG}
         size="lg"
         title="Large"
-        className="w-full max-w-md"
+        className="w-full max-w-2xl"
       />
     </div>
   );

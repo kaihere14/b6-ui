@@ -29,7 +29,8 @@ export function ActivityGraphPreview() {
         data={SAMPLE_DATA}
         config={SAMPLE_CONFIG}
         title="Weekly Activity"
-        className="w-full max-w-md"
+        size="lg"
+        className="w-full max-w-4xl scale-140"
       />
     </div>
   );

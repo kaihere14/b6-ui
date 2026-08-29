@@ -21,6 +21,10 @@ import {
   DepthButtonVariantsExample,
 } from "@/components/previews/examples/depth-button-examples";
 import {
+  DotMatrixGraphRangesExample,
+  DotMatrixGraphSizesExample,
+} from "@/components/previews/examples/dot-matrix-graph-examples";
+import {
   InputInvalidExample,
   InputLabelledExample,
   InputSearchExample,
@@ -53,6 +57,7 @@ import { ButtonBasePreview } from "@/components/previews/button-base-preview";
 import { CardBasePreview } from "@/components/previews/card-base-preview";
 import { ActivityGraphPreview } from "@/components/previews/activity-graph-preview";
 import { DepthButtonPreview } from "@/components/previews/depth-button-preview";
+import { DotMatrixGraphPreview } from "@/components/previews/dot-matrix-graph-preview";
 import { InputPreview } from "@/components/previews/input-preview";
 import { MagneticButtonPreview } from "@/components/previews/magnetic-button-preview";
 import { SeparatorPreview } from "@/components/previews/separator-preview";
@@ -66,6 +71,7 @@ export const previews: Record<string, ComponentType> = {
   "depth-button": DepthButtonPreview,
   "card-base": CardBasePreview,
   "activity-graph": ActivityGraphPreview,
+  "dot-matrix-graph": DotMatrixGraphPreview,
   badge: BadgePreview,
   input: InputPreview,
   separator: SeparatorPreview,
@@ -104,6 +110,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "activity-graph/single-series": ActivityGraphSingleSeriesExample,
   "activity-graph/two-series": ActivityGraphTwoSeriesExample,
   "activity-graph/sizes": ActivityGraphSizesExample,
+  "dot-matrix-graph/ranges": DotMatrixGraphRangesExample,
+  "dot-matrix-graph/sizes": DotMatrixGraphSizesExample,
   "separator/horizontal": SeparatorHorizontalExample,
   "separator/captioned": SeparatorCaptionedExample,
   "separator/vertical": SeparatorVerticalExample,

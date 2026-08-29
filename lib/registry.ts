@@ -659,7 +659,7 @@ export const components: ComponentMeta[] = [
       },
       {
         name: "segmentStyles",
-        type: "Partial<Record<string, Partial<SegmentStyle>>>" ,
+        type: "Partial<Record<string, Partial<SegmentStyle>>>",
         description: "Optional per-series style overrides merged with `config`.",
       },
     ],
@@ -694,8 +694,7 @@ export const components: ComponentMeta[] = [
       {
         title: "Sizes",
         preview: "activity-graph/sizes",
-        description:
-          "The `size` prop controls the height of the chart area: sm, md, lg.",
+        description: "The `size` prop controls the height of the chart area: sm, md, lg.",
         code: `<ActivityGraph data={data} config={config} size="sm" title="Small" />
 <ActivityGraph data={data} config={config} size="lg" title="Large" />`,
       },
@@ -706,7 +705,174 @@ export const components: ComponentMeta[] = [
       "Colour tokens resolve from the B6 design system and respect light/dark mode.",
     ],
     responsive:
-      "The chart fills its container width. Use `size` to control height, and `variant=\"compact\"` for tighter spaces. The bar count adapts to the data provided.",
+      'The chart fills its container width. Use `size` to control height, and `variant="compact"` for tighter spaces. The bar count adapts to the data provided.',
+  },
+  {
+    slug: "dot-matrix-graph",
+    category: "Graphs",
+    isNew: true,
+    title: "Dot Matrix Graph",
+    description:
+      "A column graph drawn in dots instead of bars: one dot per unit, stacked from the baseline up, with two periods comparable inside one plot.",
+    source: "registry/graphs/dot-matrix-graph/dot-matrix-graph.tsx",
+    dependencies: ["class-variance-authority", "motion"],
+    props: [
+      {
+        name: "data",
+        type: "DotColumnData[] | Record<string, DotColumnData[]>",
+        required: true,
+        description:
+          "Columns to plot left-to-right, either as one list or keyed by range id (`{ daily: [...], weekly: [...] }`). Each column carries a numeric `value`, an optional tick `label`, and an optional `series` key into `config`.",
+      },
+      {
+        name: "config",
+        type: "Record<string, SeriesStyle>",
+        required: true,
+        description:
+          "Series definitions keyed by the `series` field on a column: `fill`, `label`, and an optional `value` caption for the footer. A column with no `series` uses the first entry.",
+      },
+      {
+        name: "title",
+        type: "string",
+        defaultValue: '"Distribution"',
+        description: "Card header text, rendered in the caption step and uppercased.",
+      },
+      {
+        name: "headline",
+        type: "React.ReactNode",
+        description: 'Headline figure under the title, e.g. `"+326%"`.',
+      },
+      {
+        name: "dotValue",
+        type: "number",
+        description:
+          "Units one dot stands for. When omitted, it is derived from the largest column so the tallest stack is exactly `maxDots` tall.",
+      },
+      {
+        name: "maxDots",
+        type: "number",
+        defaultValue: "14",
+        description:
+          "Tallest a column may get, in dots. It divides the plot height into cells and, without an explicit `dotValue`, sets the scale — the tallest column of the active range is drawn at exactly this many dots.",
+      },
+      {
+        name: "showRanges",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Show the range toggle in the header. Hidden, the graph stays on `defaultRange`.",
+      },
+      {
+        name: "ranges",
+        type: "RangeOption[]",
+        defaultValue: "daily / weekly / monthly",
+        description:
+          "Toggle entries, each `{ id, label }`. The id is what `data` is keyed by and what `onRangeChange` reports.",
+      },
+      {
+        name: "defaultRange",
+        type: "string",
+        defaultValue: '"daily"',
+        description: "Range selected on mount, and the range used when the toggle is hidden.",
+      },
+      {
+        name: "range",
+        type: "string",
+        description:
+          "Controlled range id. Pass `onRangeChange` alongside it and own the switch in the parent.",
+      },
+      {
+        name: "onRangeChange",
+        type: "(range: string) => void",
+        description: "Called with the new range id whenever a toggle is pressed.",
+      },
+      {
+        name: "showBaseline",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Draw a muted dot on the baseline of every column, so an empty column still reads as a position on the axis.",
+      },
+      {
+        name: "showTooltip",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Show a tooltip above the hovered or focused column with its series, tick label and formatted value.",
+      },
+      {
+        name: "formatValue",
+        type: "(value: number) => string",
+        description:
+          "Formats a value for the footer totals and the accessible labels, e.g. as currency.",
+      },
+      {
+        name: "variant",
+        type: '"default" | "compact"',
+        defaultValue: '"default"',
+        description:
+          "Layout density. `compact` tightens the padding and drops the header, so the range toggle goes with it.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description:
+          "Controls the height of the plot (5 / 7 / 9rem) and, with it, the dot cell ceiling — the plot height divided by `maxDots`.",
+      },
+      {
+        name: "showLegend",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Whether to render the footer series captions.",
+      },
+      {
+        name: "animated",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Whether to stagger the dots in on mount.",
+      },
+      {
+        name: "seriesStyles",
+        type: "Partial<Record<string, Partial<SeriesStyle>>>",
+        description: "Optional per-series style overrides merged with `config`.",
+      },
+    ],
+    examples: [
+      {
+        title: "Ranges",
+        preview: "dot-matrix-graph/ranges",
+        description:
+          "Key `data` by range id and the header toggle switches the plot on its own. `defaultRange` picks the range on mount; `showRanges={false}` hides the toggle and pins the graph to it. Pass `range` + `onRangeChange` instead to own the switch in the parent.",
+        code: `const data = {
+  daily: dailyColumns,
+  weekly: weeklyColumns,
+  monthly: monthlyColumns,
+};
+
+<DotMatrixGraph data={data} config={config} defaultRange="monthly" />
+
+// toggle hidden — the graph stays on the default range
+<DotMatrixGraph data={data} config={config} showRanges={false} defaultRange="weekly" />`,
+      },
+      {
+        title: "Sizes",
+        preview: "dot-matrix-graph/sizes",
+        description: "The `size` prop controls dot diameter and spacing: sm, md, lg.",
+        code: `<DotMatrixGraph data={data} config={config} size="sm" title="Small" />
+<DotMatrixGraph data={data} config={config} size="lg" title="Large" />`,
+      },
+    ],
+    accessibility: [
+      'Each column is one focus stop with `role="img"` and a label carrying its series, tick label and formatted value — dots are a drawing, not hundreds of tab stops.',
+      "Focus is visible through `--color-ring`; hovering or focusing a column dims the rest rather than changing hue alone.",
+      "The tooltip is `aria-hidden` and duplicates the column's own accessible label, so a screen reader hears the value once — keyboard focus surfaces the same tooltip a pointer does.",
+      "Dot count encodes the value, so magnitude survives when colour does not: two series stay distinguishable by position and height as well as fill.",
+      "Range toggles are real `<button>`s in a labelled group, each carrying `aria-pressed`, so the selected range is announced and reachable by keyboard.",
+      "Colour tokens resolve from the B6 design system and respect light/dark mode.",
+    ],
+    responsive:
+      "The plot owns its height, so the card is the same size on every range — six monthly columns or thirty-two daily ones. Dots sit in square cells capped by both the column track and the plot height divided by `maxDots`, so a wide card grows them, a narrow one shrinks them, and the sizes stay in order at every width.",
   },
   {
     slug: "badge",
