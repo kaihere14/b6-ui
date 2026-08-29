@@ -215,6 +215,11 @@
   --shadow-b6-md: 0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07);
   --shadow-b6-lg: 0 4px 8px oklch(0 0 0 / 0.07), 0 18px 44px oklch(0 0 0 / 0.1);
 
+  /* The same light falling *inside* a surface instead of past it. It composes
+   * with the four steps above rather than replacing them, because Tailwind
+   * keeps inset and outer shadows in separate slots of one box-shadow. */
+  --inset-shadow-b6: inset 0 2px 4px oklch(0 0 0 / 0.1);
+
   /* Depth — a hard, unblurred ledge. `depth` is the resting height of a
    * pressable surface, `depth-sm` the same surface half-pressed, `depth-flush`
    * the same surface pressed all the way down. `flush` is a zero-offset shadow
