@@ -665,22 +665,31 @@ export const components: ComponentMeta[] = [
     ],
     examples: [
       {
-        title: "Default",
-        preview: "activity-graph/default",
+        title: "Single Series",
+        preview: "activity-graph/single-series",
         description:
-          "The full card: header, stacked bars, and legend with derived stats.",
-        code: `<ActivityGraph
-  data={data}
-  config={config}
-  title="Weekly Activity"
-/>`,
+          "One value per day. With a single key in `config`, each bar is a plain column and the legend collapses to one total.",
+        code: `const config = {
+  design: { fill: "var(--color-primary)", pattern: "solid", label: "Design" },
+};
+
+<ActivityGraph data={data} config={config} title="Design Hours" />`,
       },
       {
-        title: "Compact",
-        preview: "activity-graph/compact",
+        title: "Two Series",
+        preview: "activity-graph/two-series",
         description:
-          "A condensed version with chart and minimal legend only — no header.",
-        code: `<ActivityGraph data={data} config={config} variant="compact" />`,
+          "Two values per day, stacked and normalised to each day's total. Pattern fills keep the pair distinguishable without relying on colour.",
+        code: `const config = {
+  design: { fill: "var(--color-primary)", pattern: "solid", label: "Design" },
+  review: {
+    fill: "var(--color-muted-foreground)",
+    pattern: "hatched",
+    label: "Review",
+  },
+};
+
+<ActivityGraph data={data} config={config} title="Design vs Review" />`,
       },
       {
         title: "Sizes",

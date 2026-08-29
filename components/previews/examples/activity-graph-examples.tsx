@@ -22,24 +22,37 @@ const SAMPLE_CONFIG: ChartConfig = {
   },
 };
 
-export function ActivityGraphDefaultExample() {
+const SINGLE_CONFIG: ChartConfig = {
+  design: { fill: "var(--color-primary)", pattern: "solid", label: "Design" },
+};
+
+const DUAL_CONFIG: ChartConfig = {
+  design: { fill: "var(--color-primary)", pattern: "solid", label: "Design" },
+  review: {
+    fill: "var(--color-muted-foreground)",
+    pattern: "hatched",
+    label: "Review",
+  },
+};
+
+export function ActivityGraphSingleSeriesExample() {
   return (
     <ActivityGraph
       data={SAMPLE_DATA}
-      config={SAMPLE_CONFIG}
-      title="Weekly Activity"
+      config={SINGLE_CONFIG}
+      title="Design Hours"
       className="w-full max-w-md"
     />
   );
 }
 
-export function ActivityGraphCompactExample() {
+export function ActivityGraphTwoSeriesExample() {
   return (
     <ActivityGraph
       data={SAMPLE_DATA}
-      config={SAMPLE_CONFIG}
-      variant="compact"
-      className="w-full max-w-sm"
+      config={DUAL_CONFIG}
+      title="Design vs Review"
+      className="w-full max-w-md"
     />
   );
 }

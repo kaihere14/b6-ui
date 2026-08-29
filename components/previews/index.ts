@@ -38,9 +38,9 @@ import {
   StatefulButtonVariantsExample,
 } from "@/components/previews/examples/stateful-button-examples";
 import {
-  ActivityGraphCompactExample,
-  ActivityGraphDefaultExample,
+  ActivityGraphSingleSeriesExample,
   ActivityGraphSizesExample,
+  ActivityGraphTwoSeriesExample,
 } from "@/components/previews/examples/activity-graph-examples";
 import {
   SeparatorCaptionedExample,
@@ -101,8 +101,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "input/labelled": InputLabelledExample,
   "input/search": InputSearchExample,
   "input/invalid": InputInvalidExample,
-  "activity-graph/default": ActivityGraphDefaultExample,
-  "activity-graph/compact": ActivityGraphCompactExample,
+  "activity-graph/single-series": ActivityGraphSingleSeriesExample,
+  "activity-graph/two-series": ActivityGraphTwoSeriesExample,
   "activity-graph/sizes": ActivityGraphSizesExample,
   "separator/horizontal": SeparatorHorizontalExample,
   "separator/captioned": SeparatorCaptionedExample,
