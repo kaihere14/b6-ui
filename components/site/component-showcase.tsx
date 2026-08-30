@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import { Maximize2, Monitor, RotateCcw, Smartphone, Tablet, X } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 
 import { CopyButton } from "@/components/site/copy-button";
+import { easeB6Out } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -45,6 +47,12 @@ interface ComponentShowcaseProps {
  * the block is always as tall as the taller panel. `preview` and `code`
  * arrive as already-rendered server output — the highlighting still happens on
  * the server even though the tab state lives on the client.
+ *
+ * The lifted face behind the selected tab is a single element shared through
+ * `layoutId`, so selecting the other tab unmounts it in one button and mounts
+ * it in the other and Motion interpolates the two positions into a slide.
+ * Under `prefers-reduced-motion` it drops the shared identity and lands in
+ * place.
  */
 export function ComponentShowcase({
   preview,
@@ -58,10 +66,13 @@ export function ComponentShowcase({
   // Bumped by the reload button; used as a `key` to remount the demo.
   const [generation, setGeneration] = React.useState(0);
   const fullscreen = React.useRef<HTMLDialogElement>(null);
+  const reduced = useReducedMotion();
 
   const baseId = React.useId();
   const tabId = (id: TabId) => `${baseId}-tab-${id}`;
   const panelId = (id: TabId) => `${baseId}-panel-${id}`;
+  /** Scoped to this showcase, so two on a page do not share one face. */
+  const indicator = `${baseId}-tab-face`;
 
   /** Left/right move between tabs, as the tabs pattern expects. */
   function onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -109,13 +120,22 @@ export function ComponentShowcase({
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(tab.id)}
                 className={cn(
-                  "rounded-sm px-3 py-1 text-small transition-colors duration-150 ease-b6",
+                  "relative rounded-sm px-3 py-1 text-small transition-colors duration-150 ease-b6 cursor-pointer",
                   selected
-                    ? "bg-card font-medium text-foreground shadow-b6-xs"
+                    ? "font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                {tab.label}
+                {selected ? (
+                  <motion.span
+                    aria-hidden
+                    layoutId={reduced ? undefined : indicator}
+                    transition={{ duration: 0.24, ease: easeB6Out }}
+                    className="absolute inset-0 rounded-sm bg-raised shadow-b6-xs"
+                  />
+                ) : null}
+                {/* Above the face travelling behind it. */}
+                <span className="relative">{tab.label}</span>
               </button>
             );
           })}

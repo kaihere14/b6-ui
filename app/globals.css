@@ -16,6 +16,12 @@
   --b6-foreground: oklch(0.166 0.0034 17.5);
   --b6-card: oklch(1 0 0);
   --b6-card-foreground: oklch(0.166 0.0034 17.5);
+  /* The face of a control lifted off a chrome bar — a selected tab in a
+   * toolbar. Its own token because `card` cannot serve: a bar is `muted` over
+   * `card`, and in the dark theme `muted` sits *above* `card`, so a card-faced
+   * chip reads as a dent rather than a lift. This one is always the lighter
+   * surface, in both themes. */
+  --b6-raised: oklch(1 0 0);
   --b6-popover: oklch(1 0 0);
   --b6-popover-foreground: oklch(0.166 0.0034 17.5);
 
@@ -85,6 +91,7 @@
   --b6-foreground: oklch(0.97 0 0);
   --b6-card: oklch(0.145 0 0);
   --b6-card-foreground: oklch(0.97 0 0);
+  --b6-raised: oklch(0.225 0 0);
   --b6-popover: oklch(0.145 0 0);
   --b6-popover-foreground: oklch(0.97 0 0);
 
@@ -135,6 +142,7 @@
   --color-foreground: var(--b6-foreground);
   --color-card: var(--b6-card);
   --color-card-foreground: var(--b6-card-foreground);
+  --color-raised: var(--b6-raised);
   --color-popover: var(--b6-popover);
   --color-popover-foreground: var(--b6-popover-foreground);
   --color-primary: var(--b6-primary);
