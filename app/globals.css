@@ -412,6 +412,21 @@
   background-position: center;
 }
 
+/*
+ * Scroll without a visible scrollbar. For panels that scroll inside the page
+ * chrome, such as the docs sidebar, where the bar would draw a second edge next
+ * to the column rule. The panel still scrolls by wheel, trackpad, keyboard and
+ * touch, so nothing is taken away but the paint.
+ */
+@utility b6-scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ---------------------------------------------------------------------------
  * Syntax highlighting
  *

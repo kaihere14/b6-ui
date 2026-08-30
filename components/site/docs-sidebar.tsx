@@ -3,13 +3,24 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown } from "lucide-react";
+import {
+  ChartColumn,
+  ChevronDown,
+  Layers,
+  MousePointerClick,
+  Rocket,
+  Rows3,
+  TextCursorInput,
+  Type,
+  type LucideIcon,
+} from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { Badge } from "@/components/ui/badge";
 import { docsNav, easeB6Out } from "@/lib/constants";
 import { getComponentsByCategory } from "@/lib/registry";
 import { cn } from "@/lib/utils";
+import type { ComponentCategory } from "@/types";
 
 interface SidebarLink {
   href: string;
@@ -17,14 +28,33 @@ interface SidebarLink {
   isNew?: boolean;
 }
 
+/**
+ * One icon per group heading.
+ *
+ * The heading is what a reader scans for on the way to a component, so the mark
+ * belongs there. The rows under it stay plain: every one of them is already
+ * named after what it is, and a glyph on each would turn the column into a list
+ * of pictures with words beside them.
+ */
+const categoryIcon: Record<ComponentCategory, LucideIcon> = {
+  Buttons: MousePointerClick,
+  Forms: TextCursorInput,
+  Display: Layers,
+  Text: Type,
+  Graphs: ChartColumn,
+  Layout: Rows3,
+};
+
 /** Static data: neither list changes at runtime. */
-const sections: { label: string; links: SidebarLink[] }[] = [
+const sections: { label: string; icon: LucideIcon; links: SidebarLink[] }[] = [
   {
     label: "Getting started",
+    icon: Rocket,
     links: docsNav.map((item) => ({ href: item.href, title: item.title })),
   },
   ...getComponentsByCategory().map((group) => ({
     label: group.category,
+    icon: categoryIcon[group.category],
     links: group.items.map((component) => ({
       href: `/components/${component.slug}`,
       title: component.title,
@@ -65,7 +95,11 @@ export function DocsSidebar() {
   return (
     <nav
       aria-label="Documentation"
-      className="py-6 lg:sticky lg:top-14 lg:h-[calc(100dvh-3.5rem)] lg:overflow-y-auto lg:py-12"
+      // `overflow-y-auto` clips horizontally too, and the group headings hang
+      // half an icon into the left margin. The nav takes that space back from
+      // the page gutter with `-ml-2 pl-2`, so the glyphs sit inside the scroll
+      // box while every row stays exactly where it was.
+      className="-ml-2 b6-scroll-hidden py-6 pl-2 lg:sticky lg:top-14 lg:h-[calc(100dvh-3.5rem)] lg:overflow-y-auto lg:py-12"
     >
       <button
         type="button"
@@ -92,7 +126,11 @@ export function DocsSidebar() {
       >
         {sections.map((section) => (
           <div key={section.label}>
-            <p className="mb-2 pl-3 text-caption text-muted-foreground uppercase">
+            {/* Pulled half an icon left so the glyph is centred on the rail
+                below it, and the gap is set so the label still starts on the
+                same 12px line as every row label under it. */}
+            <p className="mb-2 -ml-2 flex items-center gap-1 text-caption text-foreground uppercase">
+              <section.icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
               {section.label}
             </p>
             <ul className="flex flex-col border-l border-border">
