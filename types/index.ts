@@ -38,7 +38,7 @@ export interface ComponentExample {
 
 /** Everything the documentation site needs to render one component page. */
 export interface ComponentMeta {
-  /** Registry item name — also the URL slug and the shadcn install target. */
+  /** Registry item name. Also the URL slug and the shadcn install target. */
   slug: string;
   title: string;
   description: string;

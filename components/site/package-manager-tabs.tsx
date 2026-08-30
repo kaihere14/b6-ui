@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 /**
  * Brand mark and colour per package manager. These hexes are the only hard-coded
  * colours on the site: they are third-party brand constants, not design
- * decisions, so they must never become `--b6-*` tokens — tokens ship to
+ * decisions, so they must never become `--b6-*` tokens. Tokens ship to
  * consumers through the `tokens` registry item, and npm red is not part of the
  * B6 palette. Bun's cream is unreadable on a light surface, so its mark uses
  * bun's own ink/cream pair per theme.
@@ -48,7 +48,7 @@ export function usePackageManager() {
         const stored = window.localStorage.getItem(STORAGE_KEY);
         if (isPackageManager(stored)) setPackageManager(stored);
       } catch {
-        /* storage unavailable — keep the default */
+        /* storage unavailable, so keep the default */
       }
     }
 
@@ -62,7 +62,7 @@ export function usePackageManager() {
     try {
       window.localStorage.setItem(STORAGE_KEY, next);
     } catch {
-      /* storage unavailable — the choice still applies to this page */
+      /* storage unavailable, but the choice still applies to this page */
     }
     window.dispatchEvent(new Event(SYNC_EVENT));
   }, []);
@@ -86,7 +86,7 @@ interface PackageManagerTabsProps {
  *
  * Every option is on screen, so switching is one click and the reader can see
  * what else is on offer without opening anything. Three options is the whole
- * set, which is what makes a row the right shape here — a menu would hide two
+ * set, which is what makes a row the right shape here. A menu would hide two
  * of them behind a click to save no space at all.
  *
  * Roving tabindex: one stop in the page's tab order, arrows move between the

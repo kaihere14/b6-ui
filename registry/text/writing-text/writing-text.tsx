@@ -14,7 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Writing Text
+ * B6 UI: Writing Text
  *
  * Text that writes itself in, one character at a time, behind a blinking
  * caret. The written characters are the only thing that moves; the element
@@ -122,7 +122,7 @@ export const WritingText = React.forwardRef<HTMLSpanElement, WritingTextProps>(
 
     useMotionValueEvent(written, "change", setCount);
 
-    // Reduced motion gets the finished sentence — the writing is decoration,
+    // Reduced motion gets the finished sentence. The writing is decoration,
     // and the text it carries has to arrive either way.
     const target = shouldReduceMotion ? text.length : count;
     const isDone = target >= text.length;

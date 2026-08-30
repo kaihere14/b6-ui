@@ -17,7 +17,7 @@ interface SidebarLink {
   isNew?: boolean;
 }
 
-/** Static data — neither list changes at runtime. */
+/** Static data: neither list changes at runtime. */
 const sections: { label: string; links: SidebarLink[] }[] = [
   {
     label: "Getting started",

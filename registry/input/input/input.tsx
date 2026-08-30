@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Input
+ * B6 UI: Input
  *
  * A single-line text field. The native `size` attribute is deliberately not
  * forwarded: `size` here selects a B6 sizing token instead.
@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
  * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
  * class group unless cn() has been told the B6 scale is a font size, so under a
  * stock shadcn cn() the size silently deletes the colour and the label renders
- * in whatever colour it inherits — invisible on a solid button. Reading the
+ * in whatever colour it inherits, invisible on a solid button. Reading the
  * token directly lands the step in the font-size group for every cn(), extended
  * or not, and still loses to a consumer's own `text-lg`.
  */

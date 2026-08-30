@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Magnetic Button
+ * B6 UI: Magnetic Button
  *
  * A button that leans toward the pointer while the pointer is over it, and
  * springs back to rest the moment it leaves. Pointer tracking drives motion
@@ -45,7 +45,7 @@ import { cn } from "@/lib/utils";
  * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
  * class group unless cn() has been told the B6 scale is a font size, so under a
  * stock shadcn cn() the size silently deletes the colour and the label renders
- * in whatever colour it inherits — invisible on a solid button. Reading the
+ * in whatever colour it inherits, invisible on a solid button. Reading the
  * token directly lands the step in the font-size group for every cn(), extended
  * or not, and still loses to a consumer's own `text-lg`.
  */
@@ -109,7 +109,7 @@ const CONTENT_SPRING = { stiffness: 180, damping: 20, mass: 0.5 } as const;
 /** How far the button dips along y when it is clicked, in pixels. */
 const PRESS_TRAVEL = 2;
 
-/** How long the whole dip lasts — down and back — in seconds. */
+/** How long the whole dip lasts, down and back, in seconds. */
 const PRESS_DURATION = 0.24;
 
 /** Fraction of the press spent travelling down. The rest is the return. */
@@ -117,7 +117,7 @@ const PRESS_DROP = 0.25;
 
 /**
  * Slot, driven by Motion. `asChild` still has to animate a transform, and the
- * only element Motion can reach is the one Slot renders — so Motion wraps Slot
+ * only element Motion can reach is the one Slot renders, so Motion wraps Slot
  * rather than the other way round, and follows Slot's ref down to the real DOM
  * node.
  */
@@ -148,7 +148,7 @@ export interface MagneticInput {
 /**
  * Compute the pull for one pointer position.
  *
- * Pure and synchronous — given the same input it returns the same offset, with
+ * Pure and synchronous: given the same input it returns the same offset, with
  * no reads or writes to the DOM. That keeps it trivially testable and lets the
  * caller decide when it runs.
  *
@@ -277,7 +277,7 @@ export function useMagnetic<T extends HTMLElement>({
       // Read per move: the resting box shifts with scroll and layout. But
       // getBoundingClientRect() reports the box *including* the transform the
       // spring is currently writing, and feeding that back in would make the
-      // pull chase its own output — the centre it leans away from moves with
+      // pull chase its own output, because the centre it leans away from moves with
       // it, so the spring hunts around the answer instead of settling on it,
       // and the follow reads as a wobble. Subtracting the offset applied right
       // now recovers the resting box, leaving the target a function of the
@@ -408,14 +408,14 @@ export const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButton
 
     // The press dip rides on top of the magnet rather than replacing it: both
     // are a y offset, so they are summed into the single transform Motion
-    // writes. A CSS `active:translate-y-px` could not work here — Motion owns
+    // writes. A CSS `active:translate-y-px` could not work here, because Motion owns
     // the element's transform and would overwrite it on the next frame.
     const press = useMotionValue(0);
     const y = useTransform([style.y, press], ([pull, dip]: number[]) => pull + dip);
 
     // One handler covers every activation: a button fires `click` for Enter and
     // Space as well as for the pointer, so the dip follows the keyboard for
-    // free. The dip travels down and back in a single pass — starting the
+    // free. The dip travels down and back in a single pass, so starting the
     // keyframes at 0 rather than at full travel matters: jumping straight to
     // the bottom and easing up is a discontinuity, and it is felt as a snap
     // rather than as a press. Down takes a quarter of the pass, the return the

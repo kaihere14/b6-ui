@@ -9,7 +9,7 @@ export function GithubMark(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Bun mark. Brand marks stay inline — lucide-react ships none. */
+/** Bun mark. Brand marks stay inline, because lucide-react ships none. */
 export function BunMark(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden focusable="false" {...props}>
@@ -18,7 +18,7 @@ export function BunMark(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** npm mark. Brand marks stay inline — lucide-react ships none. */
+/** npm mark. Brand marks stay inline, because lucide-react ships none. */
 export function NpmMark(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden focusable="false" {...props}>
@@ -27,7 +27,7 @@ export function NpmMark(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** pnpm mark. Brand marks stay inline — lucide-react ships none. */
+/** pnpm mark. Brand marks stay inline, because lucide-react ships none. */
 export function PnpmMark(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden focusable="false" {...props}>

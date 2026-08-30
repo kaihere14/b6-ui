@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Depth Button
+ * B6 UI: Depth Button
  *
  * A button that sits on a hard, unblurred ledge and travels down into it when
  * pressed. Hovering sinks it halfway (4px ledge → 2px), pressing takes it all
@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
  * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
  * class group unless cn() has been told the B6 scale is a font size, so under a
  * stock shadcn cn() the size silently deletes the colour and the label renders
- * in whatever colour it inherits — invisible on a solid button. Reading the
+ * in whatever colour it inherits, invisible on a solid button. Reading the
  * token directly lands the step in the font-size group for every cn(), extended
  * or not, and still loses to a consumer's own `text-lg`.
  */
@@ -45,7 +45,7 @@ const depthButtonVariants = cva(
     //
     // `ease-b6`, not `ease-b6-out`. The out curve spends four fifths of its
     // distance in its first fifth of time, which over 4px of travel is not read
-    // as a fast movement — it is read as a jump followed by a crawl. The
+    // as a fast movement. It is read as a jump followed by a crawl. The
     // in-out curve keeps the whole 4px visible. The press is a little quicker
     // than the release, the way a key gives way faster than it returns, but
     // both are long enough to be seen.
@@ -57,12 +57,12 @@ const depthButtonVariants = cva(
     "hover:translate-y-0.5 hover:shadow-b6-depth-sm",
     "active:translate-y-1 active:shadow-b6-depth-flush active:duration-150",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-    // A control that cannot be pressed keeps its full ledge and never moves —
+    // A control that cannot be pressed keeps its full ledge and never moves,
     // the depth is an affordance, so offering it would be a lie.
     "disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-50 disabled:shadow-b6-depth",
     "aria-disabled:pointer-events-none aria-disabled:translate-y-0 aria-disabled:opacity-50 aria-disabled:shadow-b6-depth",
     // The press is the feedback, not the animation. Under reduced motion the
-    // button still travels — it just arrives instantly.
+    // button still travels; it just arrives instantly.
     "motion-reduce:transition-none",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   ],

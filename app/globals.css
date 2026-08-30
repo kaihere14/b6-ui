@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
- * B6 UI — design tokens
+ * B6 UI design tokens
  *
  * Everything visual in B6 UI resolves to a token defined here. Components never
  * hard-code a colour, radius, shadow or easing curve; they reference a semantic
@@ -16,7 +16,7 @@
   --b6-foreground: oklch(0.166 0.0034 17.5);
   --b6-card: oklch(1 0 0);
   --b6-card-foreground: oklch(0.166 0.0034 17.5);
-  /* The face of a control lifted off a chrome bar — a selected tab in a
+  /* The face of a control lifted off a chrome bar: a selected tab in a
    * toolbar. Its own token because `card` cannot serve: a bar is `muted` over
    * `card`, and in the dark theme `muted` sits *above* `card`, so a card-faced
    * chip reads as a dent rather than a lift. This one is always the lighter
@@ -25,7 +25,7 @@
   --b6-popover: oklch(1 0 0);
   --b6-popover-foreground: oklch(0.166 0.0034 17.5);
 
-  /* Intent — primary is ink on paper. */
+  /* Intent. Primary is ink on paper. */
   --b6-primary: oklch(0.166 0.0034 17.5);
   --b6-primary-hover: oklch(0.26 0.005 17.5);
   --b6-primary-active: oklch(0.12 0.003 17.5);
@@ -41,13 +41,13 @@
   --b6-destructive-active: oklch(0.5 0.18 27);
   --b6-destructive-foreground: oklch(0.99 0.002 17.5);
 
-  /* Brand — the flame in the mark. The one chromatic accent in a monochrome
+  /* Brand: the flame in the mark. The one chromatic accent in a monochrome
    * system, so it is spent sparingly: it marks the thing being pointed at,
    * never a surface. Held at a lightness that clears 4.5:1 on card and
    * background, because it is used on text. */
   --b6-brand: oklch(0.58 0.19 40);
 
-  /* Terminal — the shadcn command rendered as code. Lifted from the
+  /* Terminal: the shadcn command rendered as code. Lifted from the
    * vitesse-light theme Shiki highlights the source panels with (#59873A,
    * #A65E2B, #B56959), so a command reads in exactly the same palette whether
    * it sits in a code block or in an install box. */
@@ -60,13 +60,13 @@
   --b6-input: oklch(0.93 0.004 17.5);
   --b6-ring: oklch(0.166 0.0034 17.5);
 
-  /* Depth — the solid ledge a pressable surface sits on. Not an elevation
+  /* Depth: the solid ledge a pressable surface sits on. Not an elevation
    * shadow: it is an opaque block with no blur, so it reads as the side of a
    * physical key rather than as light falling past an edge.
    *
    * One ledge colour per surface, because a ledge is the *same material* as the
    * face it carries, in shade. A single grey under every button reads as a
-   * shadow dropped behind unrelated objects — worst of all under a white or a
+   * shadow dropped behind unrelated objects, worst of all under a white or a
    * red one, which have no grey in them at all.
    *
    * The base value is the ledge of a surface with no colour of its own, so it
@@ -78,12 +78,12 @@
   --b6-depth-primary: oklch(0.09 0.002 17.5);
   --b6-depth-destructive: oklch(0.4 0.155 27);
 
-  /* Radius scale — every component derives from this base. */
+  /* Radius scale. Every component derives from this base. */
   --b6-radius: 0.5rem;
 }
 
 .dark {
-  /* Surfaces & text — a pure, neutral black ground. Every dark surface is
+  /* Surfaces & text: a pure, neutral black ground. Every dark surface is
    * achromatic (chroma 0), so nothing carries a colour cast, and the page
    * itself sits at true black with the surfaces above it stepping up in
    * lightness only. */
@@ -111,11 +111,11 @@
   --b6-destructive-active: oklch(0.57 0.175 27);
   --b6-destructive-foreground: oklch(0.99 0.002 17.5);
 
-  /* Brand — lifted against the black ground so the flame reads as the same
+  /* Brand, lifted against the black ground so the flame reads as the same
    * colour it is in the mark. */
   --b6-brand: oklch(0.76 0.175 48);
 
-  /* Terminal — the vitesse-dark counterparts (#80A665, #C99076, #C98A7D). */
+  /* Terminal: the vitesse-dark counterparts (#80A665, #C99076, #C98A7D). */
   --b6-terminal-command: oklch(0.681 0.1 133.2);
   --b6-terminal-option: oklch(0.703 0.079 45.5);
   --b6-terminal-argument: oklch(0.693 0.08 32.1);
@@ -125,9 +125,9 @@
   --b6-input: oklch(0.22 0 0);
   --b6-ring: oklch(0.97 0 0);
 
-  /* Depth — the pale surfaces invert: on a black ground a ledge darker than
+  /* Depth. The pale surfaces invert: on a black ground a ledge darker than
    * the page cannot be seen, so a dark face is carried by a lifted edge rather
-   * than by a shade of itself — the outline ledge sits exactly on the border
+   * than by a shade of itself, and the outline ledge sits exactly on the border
    * tone, the filled one a step above it. The white and red faces keep the
    * shading model, since there is room below them for it. */
   --b6-depth: oklch(0.24 0 0);
@@ -228,10 +228,10 @@
    * keeps inset and outer shadows in separate slots of one box-shadow. */
   --inset-shadow-b6: inset 0 2px 4px oklch(0 0 0 / 0.1);
 
-  /* Depth — a hard, unblurred ledge. `depth` is the resting height of a
+  /* Depth: a hard, unblurred ledge. `depth` is the resting height of a
    * pressable surface, `depth-sm` the same surface half-pressed, `depth-flush`
    * the same surface pressed all the way down. `flush` is a zero-offset shadow
-   * rather than `none`, because CSS cannot interpolate a shadow to `none` — it
+   * rather than `none`, because CSS cannot interpolate a shadow to `none`; it
    * would snap the ledge away instead of collapsing it. All three read the raw
    * colour token, so the ledge follows the theme. */
   --shadow-b6-depth: 0 4px 0 0 var(--b6-depth);
@@ -362,10 +362,10 @@
  *
  * Switching theme swaps every colour token at once, which reads as a flash. The
  * View Transitions API snapshots the page before and after, so the new theme can
- * be wiped in over the old one instead — a straight edge travelling from the
+ * be wiped in over the old one instead: a straight edge travelling from the
  * bottom of the viewport to the top.
  *
- * The old snapshot holds still and the new one sits above it — the default
+ * The old snapshot holds still and the new one sits above it. The default
  * cross-fade would blend two full-page images and grey the whole thing out
  * mid-transition.
  *
@@ -417,7 +417,7 @@
  *
  * `lib/highlight.ts` renders both Shiki themes at once, so every token carries a
  * `--shiki-light` and a `--shiki-dark` custom property and nothing needs to
- * re-highlight when the theme toggles. Shiki's own background is dropped — code
+ * re-highlight when the theme toggles. Shiki's own background is dropped, so code
  * blocks sit on a B6 surface token like every other panel.
  * ------------------------------------------------------------------------ */
 

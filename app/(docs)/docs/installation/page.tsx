@@ -47,9 +47,9 @@ export default function InstallationPage() {
         <header>
           <h1 className="text-h1">Installation</h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            B6 UI is a shadcn-compatible registry. Install any component straight from its URL —
-            no setup beyond the <code className="font-mono text-code">components.json</code> you
-            already have.
+            B6 UI is a shadcn-compatible registry. Install any component straight from its URL,
+            with no setup beyond the{" "}
+            <code className="font-mono text-code">components.json</code> you already have.
           </p>
         </header>
 
@@ -57,12 +57,12 @@ export default function InstallationPage() {
           <ul className="flex list-disc flex-col gap-1.5 pl-5 text-small text-muted-foreground">
             <li>A React project with Tailwind CSS v4.</li>
             <li>
-              A <code className="font-mono text-code">components.json</code> — run{" "}
+              A <code className="font-mono text-code">components.json</code>. Run{" "}
               <code className="font-mono text-code">npx shadcn@latest init</code> if you do not
               have one.
             </li>
             <li>
-              Nothing else — the B6 base below installs the{" "}
+              Nothing else. The B6 base below installs the{" "}
               <code className="font-mono text-code">cn</code> helper at{" "}
               <code className="font-mono text-code">@/lib/utils</code> and the design tokens.
             </li>
@@ -76,7 +76,7 @@ export default function InstallationPage() {
             <>
               Once per project. It writes{" "}
               <code className="font-mono text-code">lib/utils.ts</code> and merges the B6 design
-              tokens into your stylesheet — the two things every component assumes are already
+              tokens into your stylesheet, the two things every component assumes are already
               there.
             </>
           }
@@ -91,7 +91,7 @@ export default function InstallationPage() {
             <code className="font-mono text-code">components/ui/button-base.tsx</code> and
             installs any npm dependencies the item declares. Every component is a single file
             with no registry dependencies, so nothing you already own is overwritten. A
-            component built on another one — Magnetic Button is a Button Base — says so on its
+            component built on another one (Magnetic Button is a Button Base) says so on its
             page; install that one first.
           </p>
         </DocsSection>

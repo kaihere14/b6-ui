@@ -21,7 +21,7 @@ interface HeroProps {
 /**
  * The landing hero: registry pill, word-by-word headline, the two entry points.
  *
- * The headline reveal is real motion — words slide out from a clipped line box —
+ * The headline reveal is real motion (words slide out from a clipped line box),
  * so it is driven by `motion`, not a CSS keyframe. Under
  * `prefers-reduced-motion` every word renders in place and the CTAs skip their
  * entrance, leaving the same layout with nothing moving.
@@ -86,7 +86,7 @@ export function Hero({ componentCount }: HeroProps) {
                   }}
                 >
                   {/* A plain trailing space sits at the end of an inline-block and is
-                      trimmed away, running the words together — nbsp survives. */}
+                      trimmed away, running the words together. nbsp survives. */}
                   {index < words.length - 1 ? `${word}\u00A0` : word}
                 </motion.span>
               </span>

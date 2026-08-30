@@ -50,6 +50,6 @@
     "sharp",
     "unrs-resolver"
   ],
-  "description": "B6 UI — an original React component library distributed as source through the shadcn CLI.",
+  "description": "B6 UI, an original React component library distributed as source through the shadcn CLI.",
   "license": "MIT"
 }

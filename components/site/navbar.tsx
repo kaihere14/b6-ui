@@ -30,7 +30,7 @@ export function Navbar() {
    * route starts against content, where the separation is needed immediately.
    *
    * `scrolled` is false on the server and on the first client render, so a docs
-   * page would flash an unseparated bar for one frame — hence the route check
+   * page would flash an unseparated bar for one frame, hence the route check
    * rather than scroll position alone.
    */
   const separated = pathname !== "/" || scrolled;

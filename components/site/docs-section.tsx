@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface DocsSectionProps {
-  /** Anchor target — also what the table of contents links to. */
+  /** Anchor target. Also what the table of contents links to. */
   id: string;
   title: string;
   description?: ReactNode;

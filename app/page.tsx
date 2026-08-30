@@ -19,7 +19,7 @@ const pillars = [
     icon: Boxes,
     title: "Original by design",
     description:
-      "Every component is drawn from the B6 token set — colour, type, radius, elevation and motion — not borrowed from another library.",
+      "Every component is drawn from the B6 token set (colour, type, radius, elevation and motion), not borrowed from another library.",
   },
   {
     icon: Terminal,

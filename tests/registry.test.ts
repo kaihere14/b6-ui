@@ -33,7 +33,7 @@ describe("registry.json", () => {
     }
   });
 
-  test("components name no registry dependencies — the base is installed first", () => {
+  test("components name no registry dependencies, because the base is installed first", () => {
     for (const item of uiItems) {
       expect(item.registryDependencies).toEqual([]);
     }

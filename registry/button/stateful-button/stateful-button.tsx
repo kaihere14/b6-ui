@@ -15,10 +15,10 @@ import {
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Stateful Button
+ * B6 UI: Stateful Button
  *
- * A button that progresses through visual states — idle, loading, success and
- * error — with animated content transitions. The consumer drives the state
+ * A button that progresses through four visual states (idle, loading, success
+ * and error) with animated content transitions. The consumer drives the state
  * via the `status` prop; the button handles all motion internally.
  *
  * Entering the `error` state triggers a horizontal shake. Icons cross-fade
@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
  * after `resetDelay` milliseconds.
  *
  * Because the swap runs in `mode="wait"`, the old label is gone before the new
- * one mounts — left alone the button would collapse to its padding and snap
+ * one mounts. Left alone the button would collapse to its padding and snap
  * back out. So the content sits in a wrapper whose width is measured and
  * animated, and the button grows into a longer label instead of jumping.
  *
@@ -52,7 +52,7 @@ import { cn } from "@/lib/utils";
  * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
  * class group unless cn() has been told the B6 scale is a font size, so under a
  * stock shadcn cn() the size silently deletes the colour and the label renders
- * in whatever colour it inherits — invisible on a solid button. Reading the
+ * in whatever colour it inherits, invisible on a solid button. Reading the
  * token directly lands the step in the font-size group for every cn(), extended
  * or not, and still loses to a consumer's own `text-lg`.
  */
@@ -129,7 +129,7 @@ const DEFAULT_RESET_DELAY = 2000;
 
 /**
  * Slot, driven by Motion. `asChild` still has to animate a transform, and the
- * only element Motion can reach is the one Slot renders — so Motion wraps Slot
+ * only element Motion can reach is the one Slot renders, so Motion wraps Slot
  * rather than the other way round, and follows Slot's ref down to the real DOM
  * node.
  */
@@ -249,7 +249,7 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
     /* ---- Content width --------------------------------------------------- */
     /**
      * `mode="wait"` means there is a frame with no content in the button at
-     * all, so the wrapper cannot size itself off the flow — it is driven by a
+     * all, so the wrapper cannot size itself off the flow. It is driven by a
      * motion value instead.
      *
      * The ref is a callback rather than an effect because the swap mounts a new
@@ -350,7 +350,7 @@ export const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButton
        * pieces leave and arrive one after another, `blur` whether they defocus
        * on the way. With both off the content is a plain fade-scale.
        *
-       * The blur keys are added to all three states or to none of them —
+       * The blur keys are added to all three states or to none of them,
        * a `filter` that appears in `animate` but not `initial` has nothing to
        * animate from, and Motion would snap it.
        */

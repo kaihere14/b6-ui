@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react";
 
 export interface Crumb {
   label: string;
-  /** Omit on the final crumb — the page you are already on. */
+  /** Omit on the final crumb, the page you are already on. */
   href?: string;
 }
 

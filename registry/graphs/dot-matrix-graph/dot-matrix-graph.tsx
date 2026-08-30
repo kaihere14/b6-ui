@@ -7,12 +7,12 @@ import { AnimatePresence, motion, useReducedMotion, type HTMLMotionProps } from 
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Dot Matrix Graph
+ * B6 UI: Dot Matrix Graph
  *
  * A column chart drawn in dots instead of bars: every column is a stack of
  * dots, one dot per `dotValue` units, so a value is read by counting rather
  * than by measuring a length. Columns can belong to different series, which is
- * how two periods sit side by side in one plot — the past one muted, the
+ * how two periods sit side by side in one plot: the past one muted, the
  * current one solid.
  *
  * This file is standalone by design. It repeats shared styling rather than
@@ -75,7 +75,7 @@ const BASELINE_OPACITY = 0.35;
  * Plot height per size, in rem.
  *
  * The plot owns its height, so the card is exactly as tall on `monthly` with
- * six columns as on `daily` with thirty-two — switching range never resizes it.
+ * six columns as on `daily` with thirty-two, so switching range never resizes it.
  * The cell ceiling falls out of it: `height / maxDots`, published as
  * `--dot-cell` so every dot reads the same number.
  */
@@ -98,7 +98,7 @@ const DEFAULT_RANGES: RangeOption[] = [
 /**
  * Default ceiling on stack height.
  *
- * A dot column spends height fast — every dot is a row — so the stack is capped
+ * A dot column spends height fast (every dot is a row), so the stack is capped
  * and, without an explicit `dotValue`, the tallest column is drawn at exactly
  * this many dots. Raise `maxDots` for a taller, finer-grained plot.
  */
@@ -478,7 +478,7 @@ const DotMatrixGraph = React.forwardRef<HTMLDivElement, DotMatrixGraphProps>(
     const rows = Math.max(1, Math.round(maxDots));
     const rangeOptions = ranges ?? DEFAULT_RANGES;
     // With the toggle hidden there is nothing to select, so the graph stays on
-    // `defaultRange` — "daily" unless the consumer named another one.
+    // `defaultRange`, which is "daily" unless the consumer named another one.
     const activeRange = range ?? (showRanges ? internalRange : defaultRange);
 
     const setRange = React.useCallback(

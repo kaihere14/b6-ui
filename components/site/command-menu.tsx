@@ -13,7 +13,7 @@ interface SearchEntry {
   id: string;
   href: string;
   title: string;
-  /** Shown beside the title — a category, or the prose-page grouping. */
+  /** Shown beside the title: a category, or the prose-page grouping. */
   group: string;
   description: string;
 }

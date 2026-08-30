@@ -6,7 +6,7 @@ interface CodePanelProps {
   code: string;
   language?: CodeLanguage;
   className?: string;
-  /** Cap the height and scroll — useful for long source files. */
+  /** Cap the height and scroll. Useful for long source files. */
   scroll?: boolean;
   /** Render a line-number gutter. On by default. */
   lineNumbers?: boolean;
@@ -17,7 +17,7 @@ interface CodePanelProps {
  *
  * Server component: `highlight()` runs here, so the markup reaches the browser
  * already coloured and no highlighter is shipped to the client. Use it when the
- * surrounding panel already has a border and a header — `ComponentShowcase`
+ * surrounding panel already has a border and a header. `ComponentShowcase`
  * does. Everywhere else, use `CodeBlock`.
  */
 export async function CodePanel({

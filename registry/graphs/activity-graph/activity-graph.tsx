@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 /**
- * B6 UI — Activity Graph
+ * B6 UI: Activity Graph
  *
  * A configurable stacked-bar chart card for any seven-day activity series.
  * Each bar is a column of stacked segments with solid or hatched pattern

@@ -4,7 +4,7 @@ export const siteConfig = {
   tagline: "Components you own.",
   description:
     "An original React component library distributed as source code through the shadcn CLI. Copy it in, keep it, change it.",
-  /** Public origin of the deployed docs site — also the registry host. */
+  /** Public origin of the deployed docs site. Also the registry host. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://ui.armandev.space",
   github: "https://github.com/kaihere14/b6-ui",
   /** Namespace consumers register in their own components.json. */
@@ -29,7 +29,7 @@ export const easeB6Out = [0.16, 1, 0.3, 1] as const;
 /** Path template consumers point their `registries` entry at. */
 export const registryUrlTemplate = `${siteConfig.url}/r/{name}.json`;
 
-/** Direct URL of a single registry item — installable without any local config. */
+/** Direct URL of a single registry item, installable without any local config. */
 export function registryItemUrl(slug: string) {
   return `${siteConfig.url}/r/${slug}.json`;
 }
@@ -76,7 +76,7 @@ export const mainNav = [
 
 /**
  * Build the shadcn install command for a registry item. Uses the direct item URL
- * so it works in any project with a `components.json` — no namespace to register
+ * so it works in any project with a `components.json`, with no namespace to register
  * first. See `namespacedInstallCommand` for the shorter form.
  */
 export function installCommand(slug: string, packageManager: PackageManager = "npm") {

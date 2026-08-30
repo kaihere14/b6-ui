@@ -32,7 +32,7 @@ export type CodeLanguage = (typeof codeLanguages)[number];
 
 let highlighter: Promise<HighlighterCore> | null = null;
 
-/** One highlighter per process — creating it parses every grammar. */
+/** One highlighter per process, because creating it parses every grammar. */
 function getHighlighter() {
   highlighter ??= createHighlighterCore({
     themes: [vitesseLight, vitesseDark],

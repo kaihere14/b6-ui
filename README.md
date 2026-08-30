@@ -3,7 +3,7 @@
 **Components you own.**
 
 B6 UI is an original React component library with its own design language. It is not published
-as an npm package — components are distributed as **source code** through a shadcn-compatible
+as an npm package. Components are distributed as **source code** through a shadcn-compatible
 registry. You run one command, the file lands in your repository, and it is yours to change.
 
 ```bash
@@ -11,7 +11,7 @@ bunx --bun shadcn add @b6-ui/button-base
 ```
 
 > B6 UI is designed and coded from scratch. It borrows the _developer experience_ of
-> shadcn-style registries and nothing else — no components, class strings, or visual identity
+> shadcn-style registries and nothing else: no components, class strings, or visual identity
 > from Aceternity UI, shadcn/ui, Magic UI, or any other library.
 
 ---
@@ -51,7 +51,7 @@ bun run verify         # registry check + typecheck + lint + tests + build
 You need a React project on Tailwind CSS v4 with a `components.json` (run
 `bunx --bun shadcn@latest init` if you do not have one).
 
-**1. Install the base — once per project**
+**1. Install the base, once per project**
 
 ```bash
 bunx --bun shadcn@latest add https://ui.armandev.space/r/base.json
@@ -67,8 +67,8 @@ bunx --bun shadcn@latest add https://ui.armandev.space/r/button-base.json
 ```
 
 Every component is a single file with no registry dependencies, so adding one never
-overwrites something you already own and edited. A component built on another one —
-`magnetic-button` renders a `ButtonBase` — needs that one installed first.
+overwrites something you already own and edited. A component built on another one, such as
+`magnetic-button` rendering a `ButtonBase`, needs that one installed first.
 
 **Optional: register the namespace**
 
@@ -136,7 +136,7 @@ registry/button-base/button-base.tsx     source of truth
 ```
 
 Component logic exists in exactly one place. The docs site imports it, the registry ships it,
-and the source panel on each component page reads that same file from disk — so what you see
+and the source panel on each component page reads that same file from disk, so what you see
 documented is byte-for-byte what you install.
 
 ---
@@ -144,7 +144,7 @@ documented is byte-for-byte what you install.
 ## Project structure
 
 ```
-app/                       Next.js App Router — pages only
+app/                       Next.js App Router, pages only
   globals.css              the design system: every token lives here
   components/              /components and /components/[slug]
   docs/                    /docs and /docs/installation
@@ -158,7 +158,7 @@ types/                     shared TypeScript types
 scripts/                   registry integrity check
 tests/                     bun test
 registry.json              shadcn registry definition
-public/r/                  generated registry JSON — committed, never hand-edited
+public/r/                  generated registry JSON, committed, never hand-edited
 ```
 
 ---
@@ -168,35 +168,35 @@ public/r/                  generated registry JSON — committed, never hand-edi
 Everything visual resolves to a token in `app/globals.css`. Components never hard-code a
 value.
 
-- **Colour** — semantic oklch tokens: `background`, `foreground`, `card`, `popover`, `primary`,
+- **Colour**: semantic oklch tokens: `background`, `foreground`, `card`, `popover`, `primary`,
   `secondary`, `muted`, `accent`, `destructive`, `border`, `input`, `ring`, each with a
   foreground pair where it carries text. Light and dark are both first-class.
-- **Typography** — eight steps: `text-display`, `text-h1`, `text-h2`, `text-h3`, `text-body`,
+- **Typography**: eight steps: `text-display`, `text-h1`, `text-h2`, `text-h3`, `text-body`,
   `text-small`, `text-caption`, `text-code`. Each ships its own line-height and tracking.
-- **Spacing** — Tailwind's 0.25rem scale, unmodified.
-- **Radius** — derived from one `--b6-radius` base: `rounded-xs` through `rounded-xl`.
-- **Elevation** — `shadow-b6-xs` through `shadow-b6-lg`.
-- **Motion** — two easing curves (`ease-b6`, `ease-b6-out`) and five named animations: fade,
+- **Spacing**: Tailwind's 0.25rem scale, unmodified.
+- **Radius**: derived from one `--b6-radius` base: `rounded-xs` through `rounded-xl`.
+- **Elevation**: `shadow-b6-xs` through `shadow-b6-lg`.
+- **Motion**: two easing curves (`ease-b6`, `ease-b6-out`) and five named animations: fade,
   slide, scale, expand, collapse. All honour `prefers-reduced-motion`.
 
 ---
 
 ## Adding a new component
 
-The slug is the contract — folder name, file name, export path, docs URL, and `shadcn add`
+The slug is the contract: folder name, file name, export path, docs URL, and `shadcn add`
 argument all use it. Kebab-case.
 
-1. **Write the source** — `registry/<slug>/<slug>.tsx`. This exact file is what consumers
+1. **Write the source**: `registry/<slug>/<slug>.tsx`. This exact file is what consumers
    receive.
-2. **Re-export it** — `components/ui/<slug>.tsx`:
+2. **Re-export it**: `components/ui/<slug>.tsx`:
    ```ts
    export * from "@/registry/<slug>/<slug>";
    ```
-3. **Add a preview** — `components/previews/<slug>-preview.tsx`, then register it in
+3. **Add a preview**: `components/previews/<slug>-preview.tsx`, then register it in
    `components/previews/index.ts`.
-4. **Document it** — add a `ComponentMeta` entry to `lib/registry.ts`: description, props,
+4. **Document it**: add a `ComponentMeta` entry to `lib/registry.ts`: description, props,
    examples, accessibility notes, responsive behaviour.
-5. **Register it** — add an item to `registry.json`:
+5. **Register it**: add an item to `registry.json`:
    ```json
    {
      "name": "toggle",
@@ -243,7 +243,7 @@ bunx --bun shadcn add @b6-ui/button-base
 | `bun run start`          | Serve the production build                    |
 | `bun run lint`           | ESLint                                        |
 | `bun run typecheck`      | `tsc --noEmit`                                |
-| `bun run test`           | `bun test` — registry integrity               |
+| `bun run test`           | `bun test`, registry integrity                |
 | `bun run format`         | Prettier                                      |
 | `bun run registry:check` | registry.json ↔ lib/registry.ts ↔ disk parity |
 | `bun run registry:build` | Regenerate `public/r/*.json`                  |

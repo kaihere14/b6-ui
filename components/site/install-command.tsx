@@ -19,8 +19,8 @@ import { cn } from "@/lib/utils";
  * source panels: the runner as a command, `--flags` as options, everything else
  * as an argument.
  *
- * The grammar's own classification for these commands is exactly this simple —
- * first word, then anything leading with a dash, then arguments — so the site
+ * The grammar's own classification for these commands is exactly this simple
+ * (first word, then anything leading with a dash, then arguments), so the site
  * reproduces it from the string instead of shipping a highlighter to the
  * browser for one line that changes on every click.
  */
@@ -152,7 +152,7 @@ interface RotatingInstallCommandProps {
 
 /**
  * The install command with its item name cycling through the registry, one
- * character at a time — each character rises into place from below while the
+ * character at a time: each character rises into place from below while the
  * outgoing name lifts away.
  *
  * Only the `<slug>.json` tail moves. The command around it is coloured like any

@@ -8,7 +8,7 @@ file. `CLAUDE.md` only points here, so there is one set of rules and no drift.
 ## 1. What this repository is
 
 B6 UI is an **original** React component library plus its documentation site. Components are
-not shipped as an npm package — they are distributed as source code through a
+not shipped as an npm package. They are distributed as source code through a
 shadcn-compatible registry:
 
 ```
@@ -21,7 +21,7 @@ moment on.
 
 ### Distribution model: one base, then self-contained components
 
-`base` is installed once per project. It carries the design tokens and `cn()` — the two
+`base` is installed once per project. It carries the design tokens and `cn()`, the two
 things a standard shadcn project already has, and the only things a component may assume.
 
 Every component after that is **one file that stands alone**:
@@ -36,7 +36,7 @@ base
 A distributed component imports npm packages and `@/lib/utils`. **Nothing else.** It never
 imports another B6 component, and it never names one in `registryDependencies`:
 
-- importing one breaks the install — the consumer added _this_ component, so
+- importing one breaks the install: the consumer added _this_ component, so
   `@/components/ui/button-base` is not on their disk, and their build fails at
   `Module not found`;
 - naming one in `registryDependencies` "fixes" that by overwriting a file the consumer may
@@ -45,12 +45,12 @@ imports another B6 component, and it never names one in `registryDependencies`:
 So a magnetic button repeats the B6 button styling inside its own file rather than wrapping
 `ButtonBase`. That duplication is deliberate and is the one place the "logic exists exactly
 once" rule yields: a registry ships **source code into someone else's project**, and their
-build working is worth more than our line count. Duplicate the styling, not the behaviour —
+build working is worth more than our line count. Duplicate the styling, not the behaviour.
 if two components would share real logic, the shared part belongs in `base`.
 
 Snippets on the site are written with the full item URL rather than `@b6-ui/<slug>`, because a
 namespace address only resolves once the consumer has registered it in their own
-`components.json` — or once B6 UI is listed in the shadcn open source registry index.
+`components.json`, or once B6 UI is listed in the shadcn open source registry index.
 
 ### Non-negotiable identity rules
 
@@ -64,18 +64,18 @@ namespace address only resolves once the consumer has registered it in their own
 
 ## 2. Stack
 
-| Concern      | Choice                                                            |
-| ------------ | ----------------------------------------------------------------- |
-| Framework    | Next.js 16 (App Router, React Server Components)                  |
-| UI           | React 19                                                          |
-| Language     | TypeScript, `strict: true`                                        |
-| Styling      | Tailwind CSS v4 (CSS-first, `@theme inline`)                      |
-| Variants     | `class-variance-authority`                                        |
-| Primitives   | `@radix-ui/*`, only where behaviour demands it                    |
-| Motion       | `motion` (Motion for React, formerly Framer Motion)               |
-| Icons        | `lucide-react` (no brand icons — see `components/site/icons.tsx`) |
-| Runtime / PM | Bun                                                               |
-| Quality      | ESLint, Prettier, `tsc --noEmit`, `bun test`                      |
+| Concern      | Choice                                                           |
+| ------------ | ---------------------------------------------------------------- |
+| Framework    | Next.js 16 (App Router, React Server Components)                 |
+| UI           | React 19                                                         |
+| Language     | TypeScript, `strict: true`                                       |
+| Styling      | Tailwind CSS v4 (CSS-first, `@theme inline`)                     |
+| Variants     | `class-variance-authority`                                       |
+| Primitives   | `@radix-ui/*`, only where behaviour demands it                   |
+| Motion       | `motion` (Motion for React, formerly Framer Motion)              |
+| Icons        | `lucide-react` (no brand icons, see `components/site/icons.tsx`) |
+| Runtime / PM | Bun                                                              |
+| Quality      | ESLint, Prettier, `tsc --noEmit`, `bun test`                     |
 
 Next.js 16 specifics that bite:
 
@@ -90,27 +90,27 @@ Next.js 16 specifics that bite:
 ## 3. Directory map
 
 ```
-app/                      Next.js App Router — pages only, no component logic
+app/                      Next.js App Router, pages only, no component logic
   globals.css             THE design system: every token lives here
   components/             /components index + [slug] detail page
   docs/                   /docs and /docs/installation
 components/
-  ui/                     Thin re-exports of registry/ — never edit logic here
+  ui/                     Thin re-exports of registry/, never edit logic here
   previews/               One preview per component + index.ts slug map
   site/                   Documentation-site-only components (never distributed)
 registry/
   <family>/               Component family: button, card, input, badge, separator
-    <slug>/<slug>.tsx     SOURCE OF TRUTH — what consumers receive
+    <slug>/<slug>.tsx     SOURCE OF TRUTH: what consumers receive
 lib/
-  utils.ts                cn() — class merging
+  utils.ts                cn(), class merging
   registry.ts             Docs metadata for every component (pure data, no fs)
   constants.ts            Site config, nav, install-command builder
   source.ts               Server-only registry source reader
 types/index.ts            ComponentMeta, ComponentProp, ComponentExample
 scripts/check-registry.ts Fails when the three registries disagree
-tests/                    bun test — registry integrity
+tests/                    bun test, registry integrity
 registry.json             shadcn registry definition (hand-maintained)
-public/r/*.json           Generated by `shadcn build` — committed, never hand-edited
+public/r/*.json           Generated by `shadcn build`, committed, never hand-edited
 ```
 
 **One rule above all others: component logic exists exactly once, in `registry/`.**
@@ -124,7 +124,7 @@ above forbids outright.
 The `<family>` folder groups variants of the same thing so `registry/` does not flatten into
 dozens of sibling folders. The family is the base noun the component varies on: `button-base`
 and a future `magnetic-button` both live under `registry/button/`. A component with no
-siblings yet still gets its family folder (`registry/badge/badge/badge.tsx`) — the layout is
+siblings yet still gets its family folder (`registry/badge/badge/badge.tsx`). The layout is
 uniform, so nothing has to be moved when the second variant arrives.
 
 Grouping is a **disk layout only**. It never reaches the slug, the docs URL, or the consumer:
@@ -137,26 +137,26 @@ Grouping is a **disk layout only**. It never reaches the slug, the docs URL, or 
 
 The slug is the contract. It is the component folder name, the file name, the export path,
 the docs URL, and the `shadcn add` argument. Pick it once, use it everywhere. Kebab-case, and
-globally unique — the family folder does not namespace it, so there is no `button/base`, only
+globally unique: the family folder does not namespace it, so there is no `button/base`, only
 `button-base`.
 
-1. **Source** — `registry/<family>/<slug>/<slug>.tsx`. Reuse an existing family folder when
+1. **Source**: `registry/<family>/<slug>/<slug>.tsx`. Reuse an existing family folder when
    the component is a variant of something already there; otherwise create one named for the
    base noun. Extra files a component owns (a hook, a helper) live beside it in `<slug>/`.
-2. **Re-export** — `components/ui/<slug>.tsx` (flat — this mirrors the install target)
+2. **Re-export**: `components/ui/<slug>.tsx` (flat, mirroring the install target)
    containing only `export * from "@/registry/<family>/<slug>/<slug>";`
-3. **Preview** — `components/previews/<slug>-preview.tsx`, then register it in
+3. **Preview**: `components/previews/<slug>-preview.tsx`, then register it in
    `components/previews/index.ts`
-4. **Docs metadata** — add a `ComponentMeta` entry to `lib/registry.ts` (description, props,
-   examples, accessibility notes, responsive behaviour — all of them, not a subset)
-5. **Registry item** — add an item to `registry.json` with `registryDependencies: []`, one
+4. **Docs metadata**: add a `ComponentMeta` entry to `lib/registry.ts` (description, props,
+   examples, accessibility notes, responsive behaviour: all of them, not a subset)
+5. **Registry item**: add an item to `registry.json` with `registryDependencies: []`, one
    file, and a file `target` of `components/ui/<slug>.tsx`. Tokens and `cn()` arrive with the
    `base` item, so a component never reinstalls them. Declare every npm package the file
-   imports in `dependencies` — that list is the only thing the consumer's package manager
+   imports in `dependencies`. That list is the only thing the consumer's package manager
    sees.
-6. **Rebuild and verify** — `bun run registry:build && bun run verify`
+6. **Rebuild and verify**: `bun run registry:build && bun run verify`
 
-`bun run registry:check` fails loudly if any of steps 1–5 is missed. Do not skip it.
+`bun run registry:check` fails loudly if any of steps 1-5 is missed. Do not skip it.
 
 ---
 
@@ -171,26 +171,26 @@ Rules:
 
 - **Never hard-code a colour, radius, shadow, or easing curve in a component.** If a value is
   missing, add a token; do not inline a hex or a magic number.
-- Colour tokens are **semantic**, not literal: `primary`, `muted`, `destructive` — never
+- Colour tokens are **semantic**, not literal: `primary`, `muted`, `destructive`, never
   `orange-500`.
 - Typography uses the eight named steps (`text-display`, `text-h1`, `text-h2`, `text-h3`,
   `text-body`, `text-small`, `text-caption`, `text-code`). Each carries its own line-height and
   tracking, so one class is a complete type decision. That holds on the documentation site.
-  **A distributed component never writes a named step** — see the type-step rule below.
+  **A distributed component never writes a named step**. See the type-step rule below.
 - Radius derives from `--b6-radius`. Use `rounded-xs|sm|md|lg|xl`, never arbitrary values.
 - Elevation is `shadow-b6-xs|sm|md|lg`. A surface rises only when it is interactive or
   overlaying.
 - Motion is limited to `ease-b6` / `ease-b6-out` and the five named animations (fade, slide,
   scale, expand, collapse). Do not overuse animation. `prefers-reduced-motion` is already
-  handled globally — do not fight it.
+  handled globally, so do not fight it.
 - **Anything beyond a state transition is written with `motion`, never by hand.** A CSS
   transition on hover, focus or press stays CSS and stays on the tokens above. The moment
-  motion needs to be driven — pointer tracking, springs, gestures, layout or enter/exit
-  animation — reach for `motion/react`. Do not hand-roll `requestAnimationFrame` loops,
+  motion needs to be driven (pointer tracking, springs, gestures, layout or enter/exit
+  animation), reach for `motion/react`. Do not hand-roll `requestAnimationFrame` loops,
   tween timers, or transform strings assembled in JavaScript.
 - Drive motion through `useMotionValue` / `useSpring` and pass them as `style`, so following a
   pointer costs no React render. Never build a Tailwind arbitrary value from a template
-  literal (`` `[transform:translate3d(var(${VAR}),0,0)]` ``) — Tailwind scans source
+  literal (`` `[transform:translate3d(var(${VAR}),0,0)]` ``). Tailwind scans source
   statically, never sees the interpolated string, and silently emits no CSS at all.
 - Components using `motion` honour `useReducedMotion()` themselves and fall back to their
   static behaviour. Motion never carries meaning on its own.
@@ -198,12 +198,12 @@ Rules:
   `registry.json`, or consumers install a component whose colours do not resolve.
   `bun run registry:check` fails when the two token blocks drift apart.
 - Naming a new type step means registering it in `lib/utils.ts` too. tailwind-merge sorts
-  `text-*` into either `font-size` or `text-color`, and it cannot tell which `text-body` is —
+  `text-*` into either `font-size` or `text-color`, and it cannot tell which `text-body` is:
   unregistered, it guesses colour, and a later size utility silently deletes an earlier
   `text-primary-foreground`.
 - **A registry component reads the type token instead of naming the step**, because that
   registration only exists in B6's `cn()`. `shadcn add` will not overwrite a `lib/utils.ts`
-  the consumer already has, so most consumers keep the stock one-line `twMerge` — under it
+  the consumer already has, so most consumers keep the stock one-line `twMerge`. Under it
   `cn("bg-primary text-primary-foreground", "text-body")` returns `bg-primary text-body` and
   the label renders in the inherited colour, invisible on a solid button. So a component
   writes the step as an explicit token read, which lands in the `font-size` group for every
@@ -216,7 +216,7 @@ Rules:
   ```
 
   Include the modifiers the step defines (`--line-height`, `--letter-spacing`,
-  `--font-weight`) — the token read carries none of them on its own. `bun run registry:check`
+  `--font-weight`). The token read carries none of them on its own. `bun run registry:check`
   fails on any named step in a registry source.
 
 ---
@@ -236,7 +236,7 @@ Rules:
 - Add no dependency that is not required. Every new dependency must be declared in both
   `lib/registry.ts` and `registry.json` for that component.
 - A file under `registry/` may import npm packages and `@/lib/utils`, and nothing else. No
-  import from `@/components/ui/*`, no import from another `registry/` folder — see the
+  import from `@/components/ui/*`, no import from another `registry/` folder. See the
   distribution model in §1.
 
 ### Accessibility is part of the component, not a follow-up
@@ -276,7 +276,7 @@ bun run dev              # local dev server
 bun run build            # production build
 bun run lint             # ESLint
 bun run typecheck        # tsc --noEmit
-bun run test             # bun test — registry integrity
+bun run test             # bun test, registry integrity
 bun run format           # Prettier
 bun run registry:check   # registry.json <-> lib/registry.ts <-> disk parity
 bun run registry:build   # regenerate public/r/*.json from registry.json
@@ -316,13 +316,29 @@ Commit messages use Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`,
 - Do not copy another library's source, class strings, or visual identity.
 - Do not duplicate a component implementation between `registry/` and `components/ui/`.
 - Do not build features inside one giant `page.tsx`.
-- Do not hand-edit anything in `public/r/` — regenerate it.
+- Do not hand-edit anything in `public/r/`. Regenerate it.
 - Do not commit secrets, `.env` files, or API keys.
 - Do not add a dependency to solve something twenty lines of code solves.
 - Do not ship a component without props, accessibility notes, a preview, and a registry entry.
 - Do not create dozens of components before the registry pipeline is proven for the ones that
   exist.
 - Do not put rules in `CLAUDE.md`. They belong here.
+
+---
+
+## 11. Writing style
+
+Everything written in this repository is read by someone: docs-site copy, prop
+descriptions, source comments, commit messages, README prose.
+
+- **No em dashes.** Use a comma, a colon, a semicolon, parentheses, or a full
+  stop. An aside that needs an em dash usually wants to be its own sentence.
+- Say the thing once. Do not restate a sentence in different words for emphasis,
+  and do not open a paragraph by announcing what the paragraph will cover.
+- Write plainly. No "seamlessly", "robust", "leverage", "delve", "it's worth
+  noting", or "not just X, but Y".
+- A comment explains why the code is the way it is. Code that says what it does
+  needs no comment repeating it.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

@@ -86,7 +86,7 @@ export default async function ComponentPage({ params }: PageProps<"/components/[
               <Link href="/docs/installation" className="underline underline-offset-4">
                 B6 base
               </Link>{" "}
-              once per project, then add this component to any project — it needs nothing else
+              once per project, then add this component to any project. It needs nothing else
               from B6.
             </>
           }
@@ -168,7 +168,7 @@ export default async function ComponentPage({ params }: PageProps<"/components/[
                       {prop.type}
                     </td>
                     <td className="px-4 py-2 font-mono text-code text-muted-foreground">
-                      {prop.defaultValue ?? "—"}
+                      {prop.defaultValue ?? "-"}
                     </td>
                     <td className="px-4 py-2 text-muted-foreground">{prop.description}</td>
                   </tr>

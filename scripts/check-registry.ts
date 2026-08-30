@@ -2,7 +2,7 @@
  * Registry integrity check.
  *
  * Fails the build when `registry.json`, `lib/registry.ts` and the files on disk
- * disagree — the three places a new component has to be wired up.
+ * disagree. Those are the three places a new component has to be wired up.
  *
  *   bun run registry:check
  */
@@ -87,7 +87,7 @@ const forbiddenImport = /from\s+"@\/(?!lib\/utils")[^"]+"/g;
 // A distributed component may not name a B6 type step (`text-body`, `text-h3`, …)
 // as a class. Stock `tailwind-merge` files those under `text-color`, so a size
 // from one cva variant deletes the colour from another and the label renders in
-// the colour it inherits — invisible on a solid button. Only B6's own extended
+// the colour it inherits, invisible on a solid button. Only B6's own extended
 // cn() knows better, and a consumer who already had `lib/utils.ts` never got it.
 // Read the token instead: `text-(length:--text-body) leading-(--text-body--line-height)`.
 const forbiddenTypeClass =
@@ -98,7 +98,7 @@ for (const component of components) {
   if (existsSync(sourcePath)) {
     for (const match of readFileSync(sourcePath, "utf8").matchAll(forbiddenImport)) {
       errors.push(
-        `${component.source} imports ${match[0].replace(/^from\s+/, "")} — a registry component may only import npm packages and "@/lib/utils"`,
+        `${component.source} imports ${match[0].replace(/^from\s+/, "")}. A registry component may only import npm packages and "@/lib/utils"`,
       );
     }
 
@@ -108,7 +108,7 @@ for (const component of components) {
 
     for (const match of code.matchAll(forbiddenTypeClass)) {
       errors.push(
-        `${component.source} uses the class "${match[0]}" — a registry component reads the type token directly (text-(length:--text-${match[1]})), because stock tailwind-merge treats a named step as a colour`,
+        `${component.source} uses the class "${match[0]}". A registry component reads the type token directly (text-(length:--text-${match[1]})), because stock tailwind-merge treats a named step as a colour`,
       );
     }
   }

@@ -15,7 +15,7 @@ interface ComponentCardProps {
  * Registry entry as a browsable tile: the component's own preview on top, its
  * name and description underneath.
  *
- * The preview is decorative here — it is inert (`pointer-events-none`,
+ * The preview is decorative here, so it is inert (`pointer-events-none`,
  * `aria-hidden`) so the whole tile is one link and a keyboard user tabs past a
  * card once, not through every control inside the demo.
  */

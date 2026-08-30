@@ -14,7 +14,7 @@ export interface SeparatorProps extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 /**
- * B6 UI — Separator
+ * B6 UI: Separator
  *
  * A one-pixel rule in the shared border colour, optionally captioned.
  */
@@ -24,7 +24,7 @@ export interface SeparatorProps extends React.ComponentPropsWithoutRef<"div"> {
  * `text-body` and `text-primary-foreground` fall into the same tailwind-merge
  * class group unless cn() has been told the B6 scale is a font size, so under a
  * stock shadcn cn() the size silently deletes the colour and the label renders
- * in whatever colour it inherits — invisible on a solid button. Reading the
+ * in whatever colour it inherits, invisible on a solid button. Reading the
  * token directly lands the step in the font-size group for every cn(), extended
  * or not, and still loses to a consumer's own `text-lg`.
  */

@@ -107,7 +107,7 @@ export const components: ComponentMeta[] = [
       'Renders a real `<button>` with `type="button"` unless you pass a `type`.',
       "Focus is always visible through the shared `--color-ring` outline; it is never removed.",
       "`loading` sets `aria-busy` and announces `loadingLabel` through a visually hidden span.",
-      "Icons are decorative — pass an `aria-label` when a button has no text.",
+      "Icons are decorative. Pass an `aria-label` when a button has no text.",
       "Motion is limited to a 1px press offset, and is suppressed under `prefers-reduced-motion`.",
     ],
     responsive:
@@ -206,7 +206,7 @@ export const components: ComponentMeta[] = [
         title: "As a link",
         preview: "magnetic-button/as-child",
         description:
-          "`asChild` hands the styling and the motion to the child element, so a navigation target stays a real `<a>` — middle-click and open-in-new-tab keep working.",
+          "`asChild` hands the styling and the motion to the child element, so a navigation target stays a real `<a>`, so middle-click and open-in-new-tab keep working.",
         code: `<MagneticButton asChild rightIcon={<ArrowRight />}>
   <Link href="/components">Browse components</Link>
 </MagneticButton>`,
@@ -215,7 +215,7 @@ export const components: ComponentMeta[] = [
         title: "Opting out",
         preview: "magnetic-button/opt-out",
         description:
-          "`magnetic={false}` parks the button at rest — useful inside dense or scrolling layouts.",
+          "`magnetic={false}` parks the button at rest, which suits dense or scrolling layouts.",
         code: `<MagneticButton magnetic={false}>Magnet off</MagneticButton>`,
       },
     ],
@@ -225,7 +225,7 @@ export const components: ComponentMeta[] = [
       "Clicking the button dips it 2px along y and eases it back. It hangs off `click`, which a button also fires for Enter and Space, so keyboard activation is confirmed the same way as a pointer one.",
       "Magnetism is suppressed entirely under `prefers-reduced-motion: reduce` (via Motion\'s `useReducedMotion`) and on coarse pointers, where it is an ordinary B6 button. The press dip is dropped under reduced motion as well; colour and focus still confirm the press.",
       "Held at rest while `disabled` or `loading`, so a non-interactive control never invites a click.",
-      "Motion carries no meaning — every state is already conveyed by colour, the spinner and `aria-busy`.",
+      "Motion carries no meaning. Every state is already conveyed by colour, the spinner and `aria-busy`.",
     ],
     responsive:
       "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off, but the press dip stays, so a tap is still confirmed.",
@@ -236,7 +236,7 @@ export const components: ComponentMeta[] = [
     isNew: true,
     title: "Stateful Button",
     description:
-      "A button that progresses through visual states — idle, loading, success and error — with animated icon transitions and an error shake.",
+      "A button that progresses through four visual states (idle, loading, success and error) with animated icon transitions and an error shake.",
     source: "registry/button/stateful-button/stateful-button.tsx",
     dependencies: [
       "motion",
@@ -400,7 +400,7 @@ export const components: ComponentMeta[] = [
       "Renders a real `<button>` with the standard B6 focus ring and keyboard behaviour.",
       "Icons and labels transition via AnimatePresence; all motion is suppressed under `prefers-reduced-motion: reduce` via Motion's `useReducedMotion`, which also collapses the per-character stagger and the blur regardless of how `stagger` and `blur` are set.",
       '`status="loading"` sets `aria-busy`. When no `loadingText` is provided, `loadingLabel` is announced through a visually hidden span; when `loadingText` is visible the sr-only span is omitted so readers never hear "Loading Saving…". The same logic applies to success and error.',
-      "The error shake is a horizontal displacement that carries no meaning — the X icon and `errorLabel` convey the failure.",
+      "The error shake is a horizontal displacement that carries no meaning. The X icon and `errorLabel` convey the failure.",
       "Held at rest while `disabled` or in any non-idle state, so a non-interactive control never invites a click.",
       "A `data-status` attribute is exposed for consumer styling hooks without hard-coding colours in the component.",
     ],
@@ -413,7 +413,7 @@ export const components: ComponentMeta[] = [
     isNew: true,
     title: "Depth Button",
     description:
-      "A button that sits on a hard, unblurred ledge and travels down into it — half-way on hover, flush with the page on press.",
+      "A button that sits on a hard, unblurred ledge and travels down into it: half-way on hover, flush with the page on press.",
     source: "registry/button/depth-button/depth-button.tsx",
     dependencies: ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
     props: [
@@ -422,7 +422,7 @@ export const components: ComponentMeta[] = [
         type: '"primary" | "secondary" | "outline" | "destructive"',
         defaultValue: '"primary"',
         description:
-          "Visual weight. Every variant is a solid surface — the depth mechanic needs a face to press, so there is no ghost or link variant.",
+          "Visual weight. Every variant is a solid surface, because the depth mechanic needs a face to press, so there is no ghost or link variant.",
       },
       {
         name: "size",
@@ -493,7 +493,7 @@ export const components: ComponentMeta[] = [
         title: "Icons, loading and disabled",
         preview: "depth-button/states",
         description:
-          "A button that cannot be pressed keeps its full ledge and never moves — the depth is an affordance, so a non-interactive control does not offer it.",
+          "A button that cannot be pressed keeps its full ledge and never moves. The depth is an affordance, so a non-interactive control does not offer it.",
         code: `<DepthButton variant="outline" leftIcon={<Download />}>Install</DepthButton>
 <DepthButton loading loadingLabel="Saving changes">Saving</DepthButton>
 <DepthButton variant="secondary" disabled>Disabled</DepthButton>`,
@@ -515,11 +515,11 @@ export const components: ComponentMeta[] = [
       "Focus is always visible through the shared `--color-ring` outline, offset clear of the ledge; it is never removed.",
       "The press is a CSS state, so Enter and Space activate the button exactly as a pointer does.",
       "`loading` sets `aria-busy` and announces `loadingLabel` through a visually hidden span. `aria-disabled` is set alongside the native `disabled`, so an `asChild` link is announced as unavailable too.",
-      "Depth carries no meaning on its own — colour, the spinner and `aria-busy` already convey every state. Under `prefers-reduced-motion: reduce` the transition is dropped and the travel is instant, so the press is still confirmed.",
-      "Icons are decorative — pass an `aria-label` when a button has no text.",
+      "Depth carries no meaning on its own. Colour, the spinner and `aria-busy` already convey every state. Under `prefers-reduced-motion: reduce` the transition is dropped and the travel is instant, so the press is still confirmed.",
+      "Icons are decorative. Pass an `aria-label` when a button has no text.",
     ],
     responsive:
-      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`. The ledge is a shadow, so it never adds to the layout box — buttons in a row stay on their baseline whether pressed or not.",
+      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`. The ledge is a shadow, so it never adds to the layout box, and buttons in a row stay on their baseline whether pressed or not.",
   },
   {
     slug: "card-base",
@@ -589,7 +589,7 @@ export const components: ComponentMeta[] = [
       },
     ],
     accessibility: [
-      "`CardBase` is a plain `<div>` — it adds no implicit semantics.",
+      "`CardBase` is a plain `<div>`, so it adds no implicit semantics.",
       "Set `CardBaseTitle`'s `as` prop so headings never skip a level.",
       "An `interactive` card must contain a real link or button; do not attach `onClick` to the card alone.",
     ],
@@ -611,7 +611,7 @@ export const components: ComponentMeta[] = [
         type: "BarData[]",
         required: true,
         description:
-          "Array of seven bars to render left-to-right. Each bar can contain any numeric series keys (0–100 scale) plus an optional label.",
+          "Array of seven bars to render left-to-right. Each bar can contain any numeric series keys (0-100 scale) plus an optional label.",
       },
       {
         name: "config",
@@ -753,7 +753,7 @@ export const components: ComponentMeta[] = [
         type: "number",
         defaultValue: "14",
         description:
-          "Tallest a column may get, in dots. It divides the plot height into cells and, without an explicit `dotValue`, sets the scale — the tallest column of the active range is drawn at exactly this many dots.",
+          "Tallest a column may get, in dots. It divides the plot height into cells and, without an explicit `dotValue`, sets the scale, so the tallest column of the active range is drawn at exactly this many dots.",
       },
       {
         name: "showRanges",
@@ -818,7 +818,7 @@ export const components: ComponentMeta[] = [
         type: '"sm" | "md" | "lg"',
         defaultValue: '"md"',
         description:
-          "Controls the height of the plot (5 / 7 / 9rem) and, with it, the dot cell ceiling — the plot height divided by `maxDots`.",
+          "Controls the height of the plot (5 / 7 / 9rem) and, with it, the dot cell ceiling, which is the plot height divided by `maxDots`.",
       },
       {
         name: "showLegend",
@@ -852,7 +852,7 @@ export const components: ComponentMeta[] = [
 
 <DotMatrixGraph data={data} config={config} defaultRange="monthly" />
 
-// toggle hidden — the graph stays on the default range
+// toggle hidden, so the graph stays on the default range
 <DotMatrixGraph data={data} config={config} showRanges={false} defaultRange="weekly" />`,
       },
       {
@@ -864,15 +864,15 @@ export const components: ComponentMeta[] = [
       },
     ],
     accessibility: [
-      'Each column is one focus stop with `role="img"` and a label carrying its series, tick label and formatted value — dots are a drawing, not hundreds of tab stops.',
+      'Each column is one focus stop with `role="img"` and a label carrying its series, tick label and formatted value. Dots are a drawing, not hundreds of tab stops.',
       "Focus is visible through `--color-ring`; hovering or focusing a column dims the rest rather than changing hue alone.",
-      "The tooltip is `aria-hidden` and duplicates the column's own accessible label, so a screen reader hears the value once — keyboard focus surfaces the same tooltip a pointer does.",
+      "The tooltip is `aria-hidden` and duplicates the column's own accessible label, so a screen reader hears the value once. Keyboard focus surfaces the same tooltip a pointer does.",
       "Dot count encodes the value, so magnitude survives when colour does not: two series stay distinguishable by position and height as well as fill.",
       "Range toggles are real `<button>`s in a labelled group, each carrying `aria-pressed`, so the selected range is announced and reachable by keyboard.",
       "Colour tokens resolve from the B6 design system and respect light/dark mode.",
     ],
     responsive:
-      "The plot owns its height, so the card is the same size on every range — six monthly columns or thirty-two daily ones. Dots sit in square cells capped by both the column track and the plot height divided by `maxDots`, so a wide card grows them, a narrow one shrinks them, and the sizes stay in order at every width.",
+      "The plot owns its height, so the card is the same size on every range, whether that is six monthly columns or thirty-two daily ones. Dots sit in square cells capped by both the column track and the plot height divided by `maxDots`, so a wide card grows them, a narrow one shrinks them, and the sizes stay in order at every width.",
   },
   {
     slug: "badge",
@@ -916,7 +916,7 @@ export const components: ComponentMeta[] = [
       },
     ],
     accessibility: [
-      "A badge is a label, not a control — it is not focusable and has no role.",
+      "A badge is a label, not a control, so it is not focusable and has no role.",
       "When a badge carries status that changes at runtime, put it in a live region.",
       "Colour alone never conveys the meaning; the text does.",
     ],
@@ -1084,7 +1084,7 @@ export const components: ComponentMeta[] = [
     slug: "separator",
     category: "Layout",
     title: "Separator",
-    description: "A one-pixel rule — horizontal or vertical, optionally captioned.",
+    description: "A one-pixel rule, horizontal or vertical, optionally captioned.",
     source: "registry/separator/separator/separator.tsx",
     dependencies: [],
     props: [

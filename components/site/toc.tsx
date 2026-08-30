@@ -10,11 +10,11 @@ export interface TocItem {
   label: string;
 }
 
-/** Height of the sticky navbar, in px — `rootMargin` takes no other unit. */
+/** Height of the sticky navbar, in px. `rootMargin` takes no other unit. */
 const NAVBAR_HEIGHT = 56;
 
 /**
- * "On this page" — the section index shown beside a documentation page.
+ * "On this page": the section index shown beside a documentation page.
  *
  * The active entry follows the topmost section inside the reading band: the
  * `rootMargin` discounts the sticky navbar at the top and the bottom 70% of the

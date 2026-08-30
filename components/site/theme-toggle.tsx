@@ -8,7 +8,7 @@ type Theme = "light" | "dark";
 /** Storage key shared with the blocking script in `app/layout.tsx`. */
 export const THEME_STORAGE_KEY = "b6-ui-theme";
 
-/** How the theme reveal is scoped — matches the selector in `globals.css`. */
+/** How the theme reveal is scoped. Matches the selector in `globals.css`. */
 const REVEAL_ATTRIBUTE = "b6ThemeReveal";
 
 /** `document.startViewTransition` is not in every browser, nor in lib.dom yet. */

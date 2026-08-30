@@ -43,9 +43,9 @@ interface ComponentShowcaseProps {
  * Preview and source for one component, behind a pair of tabs.
  *
  * Both panels stay mounted and stacked in one grid cell, so switching tabs
- * never restarts an animation, drops the demo's state, or resizes the frame —
+ * never restarts an animation, drops the demo's state, or resizes the frame:
  * the block is always as tall as the taller panel. `preview` and `code`
- * arrive as already-rendered server output — the highlighting still happens on
+ * arrive as already-rendered server output, so the highlighting still happens on
  * the server even though the tab state lives on the client.
  *
  * The lifted face behind the selected tab is a single element shared through
