@@ -427,6 +427,21 @@
       ]
     },
     {
+      "name": "writing-text",
+      "type": "registry:ui",
+      "title": "Writing Text",
+      "description": "Text that writes itself in one character at a time behind a blinking caret, at a speed you set.",
+      "dependencies": ["class-variance-authority", "motion"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/text/writing-text/writing-text.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/writing-text.tsx"
+        }
+      ]
+    },
+    {
       "name": "separator",
       "type": "registry:ui",
       "title": "Separator",

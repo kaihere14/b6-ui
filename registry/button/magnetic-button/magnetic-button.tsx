@@ -71,9 +71,9 @@ const magneticButtonVariants = cva(
           "hover:inset-shadow-b6 hover:brightness-[1.06] active:brightness-[0.97]",
         ],
         secondary:
-          "bg-secondary text-secondary-foreground shadow-b6-xs hover:inset-shadow-b6 hover:bg-accent hover:text-accent-foreground",
+          "bg-secondary text-secondary-foreground shadow-b6-xs hover:bg-accent hover:text-accent-foreground hover:inset-shadow-b6",
         outline:
-          "border border-border bg-background text-foreground shadow-b6-xs hover:inset-shadow-b6 hover:bg-muted",
+          "border border-border bg-background text-foreground shadow-b6-xs hover:bg-muted hover:inset-shadow-b6",
         ghost: "text-foreground hover:bg-muted",
         destructive: [
           "bg-destructive text-destructive-foreground shadow-b6-sm",

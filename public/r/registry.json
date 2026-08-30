@@ -8,7 +8,10 @@
       "type": "registry:base",
       "title": "B6 Base",
       "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -73,6 +76,7 @@
           "foreground": "oklch(0.166 0.0034 17.5)",
           "card": "oklch(1 0 0)",
           "card-foreground": "oklch(0.166 0.0034 17.5)",
+          "raised": "oklch(1 0 0)",
           "popover": "oklch(1 0 0)",
           "popover-foreground": "oklch(0.166 0.0034 17.5)",
           "primary": "oklch(0.166 0.0034 17.5)",
@@ -107,6 +111,7 @@
           "foreground": "oklch(0.97 0 0)",
           "card": "oklch(0.145 0 0)",
           "card-foreground": "oklch(0.97 0 0)",
+          "raised": "oklch(0.225 0 0)",
           "popover": "oklch(0.145 0 0)",
           "popover-foreground": "oklch(0.97 0 0)",
           "primary": "oklch(0.97 0 0)",
@@ -199,6 +204,7 @@
           "foreground": "oklch(0.166 0.0034 17.5)",
           "card": "oklch(1 0 0)",
           "card-foreground": "oklch(0.166 0.0034 17.5)",
+          "raised": "oklch(1 0 0)",
           "popover": "oklch(1 0 0)",
           "popover-foreground": "oklch(0.166 0.0034 17.5)",
           "primary": "oklch(0.166 0.0034 17.5)",
@@ -233,6 +239,7 @@
           "foreground": "oklch(0.97 0 0)",
           "card": "oklch(0.145 0 0)",
           "card-foreground": "oklch(0.97 0 0)",
+          "raised": "oklch(0.225 0 0)",
           "popover": "oklch(0.145 0 0)",
           "popover-foreground": "oklch(0.97 0 0)",
           "primary": "oklch(0.97 0 0)",
@@ -268,7 +275,10 @@
       "type": "registry:lib",
       "title": "B6 Utils",
       "description": "The cn() class merger, configured for B6's named type scale so a size utility never overwrites a colour utility.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -282,7 +292,11 @@
       "type": "registry:ui",
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -337,7 +351,11 @@
       "type": "registry:ui",
       "title": "Depth Button",
       "description": "A button that sits on a hard, unblurred ledge and travels down into it \u2014 half-way on hover, flush with the page on press.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -352,7 +370,10 @@
       "type": "registry:ui",
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -367,7 +388,10 @@
       "type": "registry:ui",
       "title": "Activity Graph",
       "description": "A configurable seven-day stacked-bar graph for any activity series, with derived totals and optional hatched fills.",
-      "dependencies": ["class-variance-authority", "motion"],
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -382,7 +406,10 @@
       "type": "registry:ui",
       "title": "Dot Matrix Graph",
       "description": "A column graph drawn in dots instead of bars: one dot per unit, stacked from the baseline up, with two periods comparable inside one plot.",
-      "dependencies": ["class-variance-authority", "motion"],
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -397,7 +424,9 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -412,13 +441,33 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "files": [
         {
           "path": "registry/input/input/input.tsx",
           "type": "registry:ui",
           "target": "components/ui/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "writing-text",
+      "type": "registry:ui",
+      "title": "Writing Text",
+      "description": "Text that writes itself in one character at a time behind a blinking caret, at a speed you set.",
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/text/writing-text/writing-text.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/writing-text.tsx"
         }
       ]
     },

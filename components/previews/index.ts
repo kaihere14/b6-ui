@@ -47,6 +47,11 @@ import {
   ActivityGraphTwoSeriesExample,
 } from "@/components/previews/examples/activity-graph-examples";
 import {
+  WritingTextDefaultExample,
+  WritingTextSequenceExample,
+  WritingTextSpeedExample,
+} from "@/components/previews/examples/writing-text-examples";
+import {
   SeparatorCaptionedExample,
   SeparatorHorizontalExample,
   SeparatorVerticalExample,
@@ -62,6 +67,7 @@ import { InputPreview } from "@/components/previews/input-preview";
 import { MagneticButtonPreview } from "@/components/previews/magnetic-button-preview";
 import { SeparatorPreview } from "@/components/previews/separator-preview";
 import { StatefulButtonPreview } from "@/components/previews/stateful-button-preview";
+import { WritingTextPreview } from "@/components/previews/writing-text-preview";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
 export const previews: Record<string, ComponentType> = {
@@ -75,6 +81,7 @@ export const previews: Record<string, ComponentType> = {
   badge: BadgePreview,
   input: InputPreview,
   separator: SeparatorPreview,
+  "writing-text": WritingTextPreview,
 };
 
 /**
@@ -115,4 +122,7 @@ export const exampleDemos: Record<string, ComponentType> = {
   "separator/horizontal": SeparatorHorizontalExample,
   "separator/captioned": SeparatorCaptionedExample,
   "separator/vertical": SeparatorVerticalExample,
+  "writing-text/default": WritingTextDefaultExample,
+  "writing-text/speed": WritingTextSpeedExample,
+  "writing-text/sequence": WritingTextSequenceExample,
 };

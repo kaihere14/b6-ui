@@ -991,6 +991,96 @@ export const components: ComponentMeta[] = [
       "The field is `w-full` by default; constrain it with a `max-w-*` on the wrapper.",
   },
   {
+    slug: "writing-text",
+    category: "Text",
+    title: "Writing Text",
+    description:
+      "Text that writes itself in one character at a time behind a blinking caret, at a speed you set.",
+    isNew: true,
+    source: "registry/text/writing-text/writing-text.tsx",
+    dependencies: ["class-variance-authority", "motion"],
+    props: [
+      {
+        name: "text",
+        type: "string",
+        required: true,
+        description: "The string to write out.",
+      },
+      {
+        name: "variant",
+        type: '"default" | "muted" | "primary"',
+        defaultValue: '"default"',
+        description: "Colour of the written text and the caret.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Type step, from body copy up to a display line.",
+      },
+      {
+        name: "speed",
+        type: "number",
+        defaultValue: "24",
+        description: "Characters written per second.",
+      },
+      {
+        name: "startDelay",
+        type: "number",
+        defaultValue: "0",
+        description: "Seconds to wait before the first character is written.",
+      },
+      {
+        name: "cursor",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Show the blinking caret while the text is being written.",
+      },
+      {
+        name: "keepCursor",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Keep the caret after the last character has been written.",
+      },
+      {
+        name: "onWritten",
+        type: "() => void",
+        description: "Fires once the last character is written. Use it to start the next line.",
+      },
+    ],
+    examples: [
+      {
+        title: "Default",
+        preview: "writing-text/default",
+        code: `<WritingText text="Writing itself out, one character at a time." />`,
+      },
+      {
+        title: "Speed",
+        description: "`speed` is characters per second, so a longer string takes longer.",
+        preview: "writing-text/speed",
+        code: `<WritingText text="Twelve characters a second." size="sm" speed={12} />
+<WritingText text="Forty characters a second." size="sm" speed={40} variant="primary" />`,
+      },
+      {
+        title: "Sequencing lines",
+        description:
+          "`onWritten` fires on the last character, which is how one line hands over to the next.",
+        preview: "writing-text/sequence",
+        code: `const [firstDone, setFirstDone] = React.useState(false);
+
+<WritingText text="One line lands." onWritten={() => setFirstDone(true)} />
+{firstDone && <WritingText text="Then the next one starts." size="sm" variant="muted" keepCursor />}`,
+      },
+    ],
+    accessibility: [
+      "The complete string is in the accessibility tree from the first render; only the visible characters animate, and they are `aria-hidden`.",
+      "Under `prefers-reduced-motion` the text renders complete immediately and the caret stops blinking.",
+      "The component renders a `span` and carries no role, so it inherits the semantics of whatever heading or paragraph wraps it.",
+    ],
+    responsive:
+      "The text wraps with its container and reserves no width of its own, so it can sit inline inside a sentence at any breakpoint.",
+  },
+  {
     slug: "separator",
     category: "Layout",
     title: "Separator",

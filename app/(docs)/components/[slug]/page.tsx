@@ -91,7 +91,7 @@ export default async function ComponentPage({ params }: PageProps<"/components/[
             </>
           }
         >
-          <InstallCommand slug={component.slug} className="max-w-xl" />
+          <InstallCommand slug={component.slug} />
           {component.dependencies.length > 0 ? (
             <p className="mt-3 text-small text-muted-foreground">
               Pulls in{" "}

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { CopyButton } from "@/components/site/copy-button";
-import { PackageManagerMenu, usePackageManager } from "@/components/site/package-manager-menu";
+import { PackageManagerTabs, usePackageManager } from "@/components/site/package-manager-tabs";
 import {
   easeB6Out,
   installCommand,
@@ -55,7 +55,7 @@ interface CommandShellProps {
   body?: ReactNode;
 }
 
-/** Terminal-styled block: package-manager menu, the command, a copy button. */
+/** Terminal-styled block: package-manager tabs, the command, a copy button. */
 function CommandShell({
   command,
   packageManager,
@@ -64,13 +64,22 @@ function CommandShell({
   className,
   body,
 }: CommandShellProps) {
+  const panelId = useId();
+
   return (
     <div className={cn("rounded-md border border-border bg-card", className)}>
-      <div className="flex items-center justify-between gap-2 rounded-t-md border-b border-border bg-muted/60 p-1.5">
-        <PackageManagerMenu value={packageManager} onSelect={onSelect} />
-        <CopyButton value={command} label={label} />
+      {/* No vertical padding on the row: the tabs set its height themselves, so
+          the selected marker lands exactly on the header's bottom border. */}
+      <div className="flex items-center justify-between gap-2 rounded-t-md border-b border-border bg-muted/60 px-1.5">
+        <PackageManagerTabs value={packageManager} onSelect={onSelect} panelId={panelId} />
+        <CopyButton value={command} label={label} className="shrink-0" />
       </div>
-      <div className="flex items-start gap-2 overflow-x-auto px-3 py-2.5">
+      <div
+        id={panelId}
+        role="tabpanel"
+        aria-labelledby={`${panelId}-${packageManager}`}
+        className="flex items-start gap-2 overflow-x-auto px-3 py-2.5"
+      >
         <span aria-hidden className="font-mono text-code text-muted-foreground select-none">
           $
         </span>

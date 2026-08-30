@@ -120,7 +120,7 @@ export function ComponentShowcase({
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(tab.id)}
                 className={cn(
-                  "relative rounded-sm px-3 py-1 text-small transition-colors duration-150 ease-b6 cursor-pointer",
+                  "relative cursor-pointer rounded-sm px-3 py-1 text-small transition-colors duration-150 ease-b6",
                   selected
                     ? "font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground",
