@@ -442,6 +442,21 @@
       ]
     },
     {
+      "name": "handwritten-text",
+      "type": "registry:ui",
+      "title": "Handwritten Text",
+      "description": "A line written by a pen: connected script drawn stroke by stroke, in the order a hand would draw it, in either of two hands.",
+      "dependencies": ["class-variance-authority", "motion"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/text/handwritten-text/handwritten-text.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/handwritten-text.tsx"
+        }
+      ]
+    },
+    {
       "name": "separator",
       "type": "registry:ui",
       "title": "Separator",

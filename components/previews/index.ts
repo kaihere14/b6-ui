@@ -52,6 +52,13 @@ import {
   WritingTextSpeedExample,
 } from "@/components/previews/examples/writing-text-examples";
 import {
+  HandwrittenTextDefaultExample,
+  HandwrittenTextHandsExample,
+  HandwrittenTextNibExample,
+  HandwrittenTextSequenceExample,
+  HandwrittenTextSpeedExample,
+} from "@/components/previews/examples/handwritten-text-examples";
+import {
   SeparatorCaptionedExample,
   SeparatorHorizontalExample,
   SeparatorVerticalExample,
@@ -67,6 +74,7 @@ import { InputPreview } from "@/components/previews/input-preview";
 import { MagneticButtonPreview } from "@/components/previews/magnetic-button-preview";
 import { SeparatorPreview } from "@/components/previews/separator-preview";
 import { StatefulButtonPreview } from "@/components/previews/stateful-button-preview";
+import { HandwrittenTextPreview } from "@/components/previews/handwritten-text-preview";
 import { WritingTextPreview } from "@/components/previews/writing-text-preview";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
@@ -82,6 +90,7 @@ export const previews: Record<string, ComponentType> = {
   input: InputPreview,
   separator: SeparatorPreview,
   "writing-text": WritingTextPreview,
+  "handwritten-text": HandwrittenTextPreview,
 };
 
 /**
@@ -125,4 +134,9 @@ export const exampleDemos: Record<string, ComponentType> = {
   "writing-text/default": WritingTextDefaultExample,
   "writing-text/speed": WritingTextSpeedExample,
   "writing-text/sequence": WritingTextSequenceExample,
+  "handwritten-text/default": HandwrittenTextDefaultExample,
+  "handwritten-text/hands": HandwrittenTextHandsExample,
+  "handwritten-text/speed": HandwrittenTextSpeedExample,
+  "handwritten-text/nib": HandwrittenTextNibExample,
+  "handwritten-text/sequence": HandwrittenTextSequenceExample,
 };

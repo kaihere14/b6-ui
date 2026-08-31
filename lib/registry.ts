@@ -1081,6 +1081,117 @@ export const components: ComponentMeta[] = [
       "The text wraps with its container and reserves no width of its own, so it can sit inline inside a sentence at any breakpoint.",
   },
   {
+    slug: "handwritten-text",
+    category: "Text",
+    title: "Handwritten Text",
+    description:
+      "A line written by a pen: connected script drawn stroke by stroke, in the order a hand would draw it, in either of two hands.",
+    isNew: true,
+    source: "registry/text/handwritten-text/handwritten-text.tsx",
+    dependencies: ["class-variance-authority", "motion"],
+    props: [
+      {
+        name: "text",
+        type: "string",
+        required: true,
+        description:
+          "The line to write. Latin letters, digits and common punctuation, from the single-line script bundled with the component.",
+      },
+      {
+        name: "hand",
+        type: '"script" | "brush"',
+        defaultValue: '"script"',
+        description:
+          "Which alphabet writes the line. `script` is a fine connected script; `brush` is a faster, more slanted brush hand.",
+      },
+      {
+        name: "variant",
+        type: '"default" | "muted" | "primary"',
+        defaultValue: '"default"',
+        description: "Colour of the ink, taken from the semantic colour tokens.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Type step. The glyphs are drawn in em, so the whole hand scales with it.",
+      },
+      {
+        name: "speed",
+        type: "number",
+        defaultValue: "5",
+        description:
+          "Characters written per second. Stroke timing is shared out by length, so the pen keeps one pace across the line.",
+      },
+      {
+        name: "startDelay",
+        type: "number",
+        defaultValue: "0",
+        description: "Seconds to wait before the pen touches down.",
+      },
+      {
+        name: "nib",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Show the nib riding the head of the stroke, lifts included.",
+      },
+      {
+        name: "onWritten",
+        type: "() => void",
+        description: "Fires once the last stroke is finished. Use it to start the next line.",
+      },
+    ],
+    examples: [
+      {
+        title: "Default",
+        preview: "handwritten-text/default",
+        code: `<HandwrittenText text="Every letter is one stroke." />`,
+      },
+      {
+        title: "Two hands",
+        description:
+          "Both alphabets are single-line scripts, drawn as centrelines rather than outlines. They differ in the pen, not in the animation.",
+        preview: "handwritten-text/hands",
+        code: `<HandwrittenText text="A fine connected script." size="sm" />
+<HandwrittenText text="A faster brush hand." size="sm" hand="brush" variant="primary" />`,
+      },
+      {
+        title: "Speed",
+        description:
+          "`speed` is characters per second. Long strokes still take longer than short ones, so the hand stays even.",
+        preview: "handwritten-text/speed",
+        code: `<HandwrittenText text="A slow, careful hand." size="sm" speed={3} />
+<HandwrittenText text="A quick one." size="sm" speed={9} variant="primary" />`,
+      },
+      {
+        title: "The nib",
+        description:
+          "The pen travels between strokes as well as along them, which is where the pauses in the line come from.",
+        preview: "handwritten-text/nib",
+        code: `<HandwrittenText text="Follow the nib." nib speed={3} />`,
+      },
+      {
+        title: "Sequencing lines",
+        description:
+          "`onWritten` fires on the last stroke, which is how one line hands over to the next.",
+        preview: "handwritten-text/sequence",
+        code: `const [firstDone, setFirstDone] = React.useState(false);
+
+<HandwrittenText text="One line lands." onWritten={() => setFirstDone(true)} />
+{firstDone && <HandwrittenText text="Then the next one starts." size="sm" variant="muted" />}`,
+      },
+    ],
+    accessibility: [
+      'The svg carries `role="img"` and an `aria-label` holding the whole line, so the text is read out complete from the first render while the strokes are still arriving.',
+      "Under `prefers-reduced-motion` the line is drawn in full immediately and the nib never appears.",
+      "Ink is `currentColor`, so the writing inherits the colour of the surface it sits on and keeps its contrast in both themes.",
+      "A character the alphabet does not carry advances by a space rather than dropping out of the line, and the label still reads it.",
+      "Letterforms come from EMS Allure and Mistral SingleLine (both SIL Open Font License 1.1), scripts drawn as centrelines rather than outlines, so the paths are the pen's own route through each letter.",
+    ],
+    responsive:
+      "The line is one line: it never wraps, and it scales with the type step. Width is measured in em and capped at the container, so a long line shrinks rather than overflowing.",
+  },
+  {
     slug: "separator",
     category: "Layout",
     title: "Separator",
