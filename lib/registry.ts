@@ -231,6 +231,114 @@ export const components: ComponentMeta[] = [
       "The pull is measured from the live bounding box, so it stays correct at any width, and `maxTravel` keeps a full-width `block` button from swinging. On touch layouts the magnet is off, but the press dip stays, so a tap is still confirmed.",
   },
   {
+    slug: "cross-button",
+    category: "Buttons",
+    isNew: true,
+    title: "Cross Button",
+    description:
+      "A family of close or dismiss buttons with two interaction modes: a plain close, and a timed countdown that draws a border before enabling.",
+    source: "registry/buttons/cross-button/cross-button.tsx",
+    dependencies: [
+      "motion",
+      "class-variance-authority",
+      "lucide-react",
+    ],
+    props: [
+      {
+        name: "mode",
+        type: '"default" | "timed"',
+        defaultValue: '"default"',
+        description:
+          "Interaction mode. `default` is a plain close button, `timed` disables the button until a border-drawing countdown completes.",
+      },
+      {
+        name: "variant",
+        type: '"ghost" | "outline" | "solid" | "soft" | "destructive"',
+        defaultValue: '"ghost"',
+        description: "Visual tone.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Control dimension.",
+      },
+      {
+        name: "shape",
+        type: '"square" | "circle"',
+        defaultValue: '"square"',
+        description: "Border radius: rounded corners or a full circle.",
+      },
+      {
+        name: "duration",
+        type: "number",
+        defaultValue: "3000",
+        description:
+          "Timed mode only. Duration in milliseconds for the border to trace around the button.",
+      },
+      {
+        name: "onReady",
+        type: "() => void",
+        description:
+          "Timed mode only. Fired when the countdown completes and the button becomes pressable.",
+      },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Close"',
+        description: "Screen-reader label for the button.",
+      },
+    ],
+    examples: [
+      {
+        title: "Variants",
+        preview: "cross-button/variants",
+        description: "Five visual styles to suit any context: ghost, outline, solid, soft, and destructive.",
+        code: `<CrossButton variant="ghost" />
+<CrossButton variant="outline" />
+<CrossButton variant="solid" />
+<CrossButton variant="soft" />
+<CrossButton variant="destructive" />`,
+      },
+      {
+        title: "Sizes",
+        preview: "cross-button/sizes",
+        description: "Three sizes with proportionally scaled icons.",
+        code: `<CrossButton size="sm" />
+<CrossButton size="md" />
+<CrossButton size="lg" />`,
+      },
+      {
+        title: "Shapes",
+        preview: "cross-button/shapes",
+        description: "Rounded square or full circle.",
+        code: `<CrossButton shape="square" variant="outline" />
+<CrossButton shape="circle" variant="outline" />`,
+      },
+      {
+        title: "Timed countdown",
+        preview: "cross-button/timed",
+        description:
+          "The border traces around the button over the specified duration. The button is disabled until the animation completes, then `onReady` fires.",
+        code: `<CrossButton
+  mode="timed"
+  variant="outline"
+  duration={3000}
+  onReady={() => console.log("Ready!")}
+/>`,
+      },
+    ],
+    accessibility: [
+      "Renders as a native `<button>` element with full keyboard support.",
+      "Always carries an `aria-label` (defaults to \"Close\").",
+      "The X icon is `aria-hidden` and paired with a visually hidden label so screen readers announce the action.",
+      "Timed mode sets `disabled` until the countdown completes, preventing premature interaction. Under `prefers-reduced-motion` the countdown completes instantly.",
+      "All Motion animations honour `useReducedMotion()` and fall back to instant transitions.",
+    ],
+    responsive:
+      "A fixed-size button determined by the `size` prop. Does not stretch to fill its container.",
+  },
+  {
     slug: "stateful-button",
     category: "Buttons",
     isNew: true,

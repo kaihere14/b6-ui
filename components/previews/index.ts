@@ -63,6 +63,12 @@ import {
   SeparatorHorizontalExample,
   SeparatorVerticalExample,
 } from "@/components/previews/examples/separator-examples";
+import {
+  CrossButtonShapesExample,
+  CrossButtonSizesExample,
+  CrossButtonTimedExample,
+  CrossButtonVariantsExample,
+} from "@/components/previews/examples/cross-button-examples";
 
 import { BadgePreview } from "@/components/previews/badge-preview";
 import { ButtonBasePreview } from "@/components/previews/button-base-preview";
@@ -76,6 +82,7 @@ import { SeparatorPreview } from "@/components/previews/separator-preview";
 import { StatefulButtonPreview } from "@/components/previews/stateful-button-preview";
 import { HandwrittenTextPreview } from "@/components/previews/handwritten-text-preview";
 import { WritingTextPreview } from "@/components/previews/writing-text-preview";
+import { CrossButtonPreview } from "@/components/previews/cross-button-preview";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
 export const previews: Record<string, ComponentType> = {
@@ -91,6 +98,7 @@ export const previews: Record<string, ComponentType> = {
   separator: SeparatorPreview,
   "writing-text": WritingTextPreview,
   "handwritten-text": HandwrittenTextPreview,
+  "cross-button": CrossButtonPreview,
 };
 
 /**
@@ -139,4 +147,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "handwritten-text/speed": HandwrittenTextSpeedExample,
   "handwritten-text/nib": HandwrittenTextNibExample,
   "handwritten-text/sequence": HandwrittenTextSequenceExample,
+  "cross-button/variants": CrossButtonVariantsExample,
+  "cross-button/sizes": CrossButtonSizesExample,
+  "cross-button/shapes": CrossButtonShapesExample,
+  "cross-button/timed": CrossButtonTimedExample,
 };

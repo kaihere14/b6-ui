@@ -317,6 +317,21 @@
       "registryDependencies": []
     },
     {
+      "name": "cross-button",
+      "type": "registry:ui",
+      "title": "Cross Button",
+      "description": "A family of close or dismiss buttons with three interaction modes: a plain close, a timed countdown that draws a border before enabling, and a confirm-to-close that requires a double press.",
+      "dependencies": ["motion", "class-variance-authority", "lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/buttons/cross-button/cross-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/cross-button.tsx"
+        }
+      ]
+    },
+    {
       "name": "stateful-button",
       "type": "registry:ui",
       "title": "Stateful Button",
