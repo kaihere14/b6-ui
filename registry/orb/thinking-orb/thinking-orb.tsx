@@ -727,14 +727,14 @@ function paintWork(ctx: CanvasRenderingContext2D, state: OrbState, t: number) {
     const ringGain = 0.72 + (0.28 * dot.band) / WORK_BAND_RINGS;
     const g = Math.exp(-(rel * rel) / (2 * sigma * sigma)) * ringGain;
 
-    const alpha = Math.min(1, 0.09 + g * 0.96);
-    const radius = baseDot * (0.85 + g * 1.35);
+    const alpha = Math.min(1, 0.09 + g * 0.7);
+    const radius = baseDot * (0.85 + g * 1.0);
     const px = cx + Math.cos(dot.ang) * rf * workR;
     const py = cy + Math.sin(dot.ang) * rf * workR;
 
-    if (g > 0.5) {
-      ctx.shadowBlur = 5 * dpr * g;
-      ctx.shadowColor = `rgba(${color},${(0.4 * g).toFixed(3)})`;
+    if (g > 0.62) {
+      ctx.shadowBlur = 3 * dpr * g;
+      ctx.shadowColor = `rgba(${color},${(0.22 * g).toFixed(3)})`;
     } else {
       ctx.shadowBlur = 0;
     }
@@ -780,14 +780,14 @@ function paintListen(ctx: CanvasRenderingContext2D, state: OrbState, t: number) 
     const g = Math.exp(-(dy * dy) / twoSigmaSq);
     const front = 0.5 + 0.5 * dot.depth;
 
-    const alpha = Math.min(1, 0.08 + 0.14 * dot.depth + g * 0.95 * front);
-    const radius = baseDot * (0.7 + 0.3 * dot.depth + g * 1.5);
+    const alpha = Math.min(1, 0.06 + 0.1 * dot.depth + g * 0.64 * front);
+    const radius = baseDot * (0.7 + 0.3 * dot.depth + g * 1.05);
     const px = cx + dot.sx * sphereR;
     const py = cy + dot.sy * sphereR;
 
-    if (g > 0.55) {
-      ctx.shadowBlur = 6 * dpr * g * front;
-      ctx.shadowColor = `rgba(${color},${(0.5 * g).toFixed(3)})`;
+    if (g > 0.62) {
+      ctx.shadowBlur = 3.5 * dpr * g * front;
+      ctx.shadowColor = `rgba(${color},${(0.26 * g).toFixed(3)})`;
     } else {
       ctx.shadowBlur = 0;
     }
@@ -835,14 +835,14 @@ function paintSolve(ctx: CanvasRenderingContext2D, state: OrbState, t: number) {
     const g = Math.exp(-(dy * dy) / twoSigmaSq);
     const spine = 1 - 0.28 * dot.edge;
 
-    const alpha = Math.min(1, 0.1 + g * 0.9 * spine);
-    const radius = baseDot * (0.8 + g * 1.3 * spine);
+    const alpha = Math.min(1, 0.1 + g * 0.66 * spine);
+    const radius = baseDot * (0.8 + g * 0.95 * spine);
     const px = cx + dot.x * scale;
     const py = cy + dot.y * scale;
 
-    if (g > 0.6) {
-      ctx.shadowBlur = 4 * dpr * g;
-      ctx.shadowColor = `rgba(${color},${(0.35 * g).toFixed(3)})`;
+    if (g > 0.62) {
+      ctx.shadowBlur = 2.5 * dpr * g;
+      ctx.shadowColor = `rgba(${color},${(0.2 * g).toFixed(3)})`;
     } else {
       ctx.shadowBlur = 0;
     }
