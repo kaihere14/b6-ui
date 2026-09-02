@@ -64,9 +64,9 @@ import {
   SeparatorVerticalExample,
 } from "@/components/previews/examples/separator-examples";
 import {
+  CrossButtonAdExample,
   CrossButtonShapesExample,
   CrossButtonSizesExample,
-  CrossButtonTimedExample,
   CrossButtonVariantsExample,
 } from "@/components/previews/examples/cross-button-examples";
 
@@ -83,6 +83,12 @@ import { StatefulButtonPreview } from "@/components/previews/stateful-button-pre
 import { HandwrittenTextPreview } from "@/components/previews/handwritten-text-preview";
 import { WritingTextPreview } from "@/components/previews/writing-text-preview";
 import { CrossButtonPreview } from "@/components/previews/cross-button-preview";
+import { ThinkingOrbPreview } from "@/components/previews/thinking-orb-preview";
+import {
+  ThinkingOrbCustomExample,
+  ThinkingOrbSizesExample,
+  ThinkingOrbTonesExample,
+} from "@/components/previews/examples/thinking-orb-examples";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
 export const previews: Record<string, ComponentType> = {
@@ -99,6 +105,7 @@ export const previews: Record<string, ComponentType> = {
   "writing-text": WritingTextPreview,
   "handwritten-text": HandwrittenTextPreview,
   "cross-button": CrossButtonPreview,
+  "thinking-orb": ThinkingOrbPreview,
 };
 
 /**
@@ -150,5 +157,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "cross-button/variants": CrossButtonVariantsExample,
   "cross-button/sizes": CrossButtonSizesExample,
   "cross-button/shapes": CrossButtonShapesExample,
-  "cross-button/timed": CrossButtonTimedExample,
+  "cross-button/ad": CrossButtonAdExample,
+  "thinking-orb/sizes": ThinkingOrbSizesExample,
+  "thinking-orb/tones": ThinkingOrbTonesExample,
+  "thinking-orb/custom": ThinkingOrbCustomExample,
 };

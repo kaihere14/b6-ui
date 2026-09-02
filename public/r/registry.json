@@ -412,6 +412,21 @@
       ]
     },
     {
+      "name": "thinking-orb",
+      "type": "registry:ui",
+      "title": "Thinking Orb",
+      "description": "A status pill that pairs an animated orb with a label, for showing what an agent is doing: thinking, listening, searching, working, solving.",
+      "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/orb/thinking-orb/thinking-orb.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/thinking-orb.tsx"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",

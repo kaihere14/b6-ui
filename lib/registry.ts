@@ -316,16 +316,30 @@ export const components: ComponentMeta[] = [
 <CrossButton shape="circle" variant="outline" />`,
       },
       {
-        title: "Timed countdown",
-        preview: "cross-button/timed",
+        title: "Close ad after countdown",
+        preview: "cross-button/ad",
         description:
-          "The border traces around the button over the specified duration. The button is disabled until the animation completes, then `onReady` fires.",
-        code: `<CrossButton
-  mode="timed"
-  variant="outline"
-  duration={3000}
-  onReady={() => console.log("Ready!")}
-/>`,
+          "A skippable ad. The close button sits inside the ad in `timed` mode, so the countdown border traces around it while the ad stays on screen. Once the border completes the button unlocks and the reader can dismiss the ad.",
+        code: `function SkippableAd() {
+  const [dismissed, setDismissed] = useState(false);
+
+  if (dismissed) return null;
+
+  return (
+    <div className="relative">
+      {/* ad content */}
+      <CrossButton
+        className="absolute top-2 right-2"
+        mode="timed"
+        variant="ghost"
+        size="sm"
+        duration={5000}
+        label="Close ad"
+        onClick={() => setDismissed(true)}
+      />
+    </div>
+  );
+}`,
       },
     ],
     accessibility: [
@@ -981,6 +995,104 @@ export const components: ComponentMeta[] = [
     ],
     responsive:
       "The plot owns its height, so the card is the same size on every range, whether that is six monthly columns or thirty-two daily ones. Dots sit in square cells capped by both the column track and the plot height divided by `maxDots`, so a wide card grows them, a narrow one shrinks them, and the sizes stay in order at every width.",
+  },
+  {
+    slug: "thinking-orb",
+    category: "Display",
+    isNew: true,
+    title: "Thinking Orb",
+    description:
+      "A status pill that pairs an animated orb with a label, for showing what an agent is doing: thinking, listening, searching, working, solving.",
+    source: "registry/orb/thinking-orb/thinking-orb.tsx",
+    dependencies: ["motion", "class-variance-authority"],
+    props: [
+      {
+        name: "preset",
+        type: '"idle" | "thinking" | "listening" | "working" | "searching" | "solving"',
+        defaultValue: '"thinking"',
+        description:
+          "Named state. Sets the orb motion and the default label. Idle, listening, searching and solving are one particle sphere moving differently (slow and dim, soft radar rings, a scanning band shooting outward, particles pulled to the centre and back). Thinking is a scanning ring of meridian lines; working is a stationary tall dot matrix with a soft wave of brightness bouncing down it and back up.",
+      },
+      {
+        name: "kind",
+        type: '"pulse" | "dots" | "wave" | "cluster" | "spark" | "globe"',
+        description:
+          "Overrides just the motion chosen by `preset`. Use it to keep a preset's label but swap the movement, or on its own with no preset.",
+      },
+      {
+        name: "label",
+        type: "string",
+        description: "Replaces the preset's default label.",
+      },
+      {
+        name: "showLabel",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Render the label next to the orb. When false, the label text still becomes the pill's `aria-label`.",
+      },
+      {
+        name: "active",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Run the animation. Set false to freeze the orb on a resting frame while keeping the pill on screen.",
+      },
+      {
+        name: "speed",
+        type: "number",
+        defaultValue: "1",
+        description: "Animation timing multiplier. 2 runs twice as fast, 0.5 half speed.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Pill height, padding, label type step, and orb diameter.",
+      },
+      {
+        name: "tone",
+        type: '"surface" | "muted" | "ghost"',
+        defaultValue: '"surface"',
+        description:
+          "Container styling: a raised card, a flat muted fill, or no background at all.",
+      },
+    ],
+    examples: [
+      {
+        title: "Sizes",
+        preview: "thinking-orb/sizes",
+        description: "Three sizes. The orb scales with the pill.",
+        code: `<ThinkingOrb size="sm" preset="searching" />
+<ThinkingOrb size="md" preset="searching" />
+<ThinkingOrb size="lg" preset="searching" />`,
+      },
+      {
+        title: "Tones",
+        preview: "thinking-orb/tones",
+        description: "A raised card, a flat muted fill, or no container.",
+        code: `<ThinkingOrb tone="surface" preset="working" />
+<ThinkingOrb tone="muted" preset="working" />
+<ThinkingOrb tone="ghost" preset="working" />`,
+      },
+      {
+        title: "Custom label, motion and speed",
+        preview: "thinking-orb/custom",
+        description:
+          "`label` overrides the preset text, `kind` overrides just the motion, `speed` scales the timing, and `active={false}` freezes the orb.",
+        code: `<ThinkingOrb preset="solving" label="Compiling project" speed={1.6} />
+<ThinkingOrb kind="wave" label="Streaming response" tone="muted" />
+<ThinkingOrb preset="idle" active={false} label="Paused" tone="ghost" />`,
+      },
+    ],
+    accessibility: [
+      "The pill is a live region: `role=\"status\"` with `aria-live=\"polite\"`, so a state change is announced without stealing focus.",
+      "The orb is a decorative `<canvas>` marked `aria-hidden`. The label carries the meaning.",
+      "With `showLabel={false}` the label text moves to the pill's `aria-label` so the state is still announced.",
+      "The particle loop runs on Motion's frame loop and honours `useReducedMotion()`: it paints one still frame and stops, the same frame `active={false}` shows.",
+    ],
+    responsive:
+      "The pill shrink-wraps its content and never wraps mid-label; the label truncates if a container forces it narrower. All sizing comes from the `size` variant, so it renders the same at any viewport width.",
   },
   {
     slug: "badge",
