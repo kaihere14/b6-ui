@@ -1011,7 +1011,7 @@ export const components: ComponentMeta[] = [
         type: '"idle" | "thinking" | "listening" | "working" | "searching" | "solving"',
         defaultValue: '"thinking"',
         description:
-          "Named state. Sets the orb motion and the default label. Idle, listening, searching and solving are one particle sphere moving differently (slow and dim, soft radar rings, a scanning band shooting outward, particles pulled to the centre and back). Thinking is a scanning ring of meridian lines; working is a stationary tall dot matrix with a soft wave of brightness bouncing down it and back up.",
+          "Named state. Sets the orb motion and the default label. Searching is a particle sphere with a scanning band shooting outward. Idle is a dotted wireframe sphere breathing slowly; thinking is a scanning ring of meridian lines; working is a dotted disc with a bright band travelling round its rim; listening is a dotted sphere with a bright horizontal plane scanning up and down through it; solving is a fixed dot diamond with a bright band scanning through it.",
       },
       {
         name: "kind",
