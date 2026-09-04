@@ -54,6 +54,15 @@
       "--shadow-b6-md": "0 2px 4px oklch(0 0 0 / 0.06), 0 8px 20px oklch(0 0 0 / 0.07)",
       "--shadow-b6-lg": "0 4px 8px oklch(0 0 0 / 0.07), 0 18px 44px oklch(0 0 0 / 0.1)",
       "--inset-shadow-b6": "inset 0 2px 4px oklch(0 0 0 / 0.1)",
+      "--inset-shadow-b6-glow": "inset 0 0 10px 0 var(--glow)",
+      "--inset-shadow-b6-glow-strong": "inset 0 0 20px 0 var(--glow-strong)",
+      "--inset-shadow-b6-glow-secondary": "inset 0 0 10px 0 var(--glow-secondary)",
+      "--inset-shadow-b6-glow-secondary-strong": "inset 0 0 20px 0 var(--glow-secondary-strong)",
+      "--inset-shadow-b6-glow-destructive": "inset 0 0 10px 0 var(--glow-destructive)",
+      "--inset-shadow-b6-glow-destructive-strong": "inset 0 0 20px 0 var(--glow-destructive-strong)",
+      "--shadow-b6-glow-band": "0 0 0 2px var(--primary)",
+      "--shadow-b6-glow-band-secondary": "0 0 0 2px var(--secondary)",
+      "--shadow-b6-glow-band-destructive": "0 0 0 2px var(--destructive)",
       "--shadow-b6-depth": "0 4px 0 0 var(--depth)",
       "--shadow-b6-depth-sm": "0 2px 0 0 var(--depth)",
       "--shadow-b6-depth-flush": "0 0 0 0 var(--depth)",
@@ -102,6 +111,12 @@
       "depth-secondary": "oklch(0.78 0.004 17.5)",
       "depth-primary": "oklch(0.09 0.002 17.5)",
       "depth-destructive": "oklch(0.4 0.155 27)",
+      "glow": "oklch(1 0 0 / 0.2)",
+      "glow-strong": "oklch(1 0 0 / 0.4)",
+      "glow-secondary": "oklch(0 0 0 / 0.08)",
+      "glow-secondary-strong": "oklch(0 0 0 / 0.16)",
+      "glow-destructive": "oklch(1 0 0 / 0.22)",
+      "glow-destructive-strong": "oklch(1 0 0 / 0.4)",
       "radius": "0.5rem"
     },
     "dark": {
@@ -138,7 +153,13 @@
       "depth": "oklch(0.24 0 0)",
       "depth-secondary": "oklch(0.34 0 0)",
       "depth-primary": "oklch(0.74 0 0)",
-      "depth-destructive": "oklch(0.42 0.15 27)"
+      "depth-destructive": "oklch(0.42 0.15 27)",
+      "glow": "oklch(0 0 0 / 0.2)",
+      "glow-strong": "oklch(0 0 0 / 0.3)",
+      "glow-secondary": "oklch(1 0 0 / 0.1)",
+      "glow-secondary-strong": "oklch(1 0 0 / 0.2)",
+      "glow-destructive": "oklch(1 0 0 / 0.2)",
+      "glow-destructive-strong": "oklch(1 0 0 / 0.35)"
     }
   },
   "type": "registry:base"

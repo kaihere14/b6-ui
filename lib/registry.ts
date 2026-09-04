@@ -105,7 +105,7 @@ export const components: ComponentMeta[] = [
     ],
     accessibility: [
       'Renders a real `<button>` with `type="button"` unless you pass a `type`.',
-      "Focus is always visible through the shared `--color-ring` outline; it is never removed.",
+      "Focus is always visible through the shared `--color-ring` outline, offset clear of the colour band so the two never sit on top of each other; it is never removed.",
       "`loading` sets `aria-busy` and announces `loadingLabel` through a visually hidden span.",
       "Icons are decorative. Pass an `aria-label` when a button has no text.",
       "Motion is limited to a 1px press offset, and is suppressed under `prefers-reduced-motion`.",
@@ -522,6 +522,120 @@ export const components: ComponentMeta[] = [
       "The error shake is a horizontal displacement that carries no meaning. The X icon and `errorLabel` convey the failure.",
       "Held at rest while `disabled` or in any non-idle state, so a non-interactive control never invites a click.",
       "A `data-status` attribute is exposed for consumer styling hooks without hard-coding colours in the component.",
+    ],
+    responsive:
+      "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",
+  },
+  {
+    slug: "glow-button",
+    category: "Buttons",
+    isNew: true,
+    title: "Glow Button",
+    description:
+      "A solid button lit from the inside: an inset glow and a hairline inset ring, both brightening on hover.",
+    source: "registry/button/glow-button/glow-button.tsx",
+    dependencies: ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
+    props: [
+      {
+        name: "variant",
+        type: '"primary" | "secondary" | "outline" | "destructive"',
+        defaultValue: '"primary"',
+        description:
+          "Visual weight. Every variant is a filled surface, because the glow needs a face to sit inside. The three solid ones carry a 2px band of their own colour; `outline` has none, since its face is the page.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "icon"',
+        defaultValue: '"md"',
+        description: "Control height and padding. Use `icon` for square icon-only buttons.",
+      },
+      {
+        name: "block",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Stretch the button to the full width of its container.",
+      },
+      {
+        name: "loading",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Swap the leading icon for a spinner, block interaction and set `aria-busy`.",
+      },
+      {
+        name: "loadingLabel",
+        type: "string",
+        defaultValue: '"Loading"',
+        description: "Text announced to screen readers while loading.",
+      },
+      {
+        name: "leftIcon / rightIcon",
+        type: "React.ReactNode",
+        description: "Icons either side of the label. The left one is hidden while loading.",
+      },
+      {
+        name: "asChild",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Render the child element (e.g. a `Link`) with the button's styling and glow.",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Native disabled state. Holds the button at rest.",
+      },
+    ],
+    examples: [
+      {
+        title: "Variants",
+        preview: "glow-button/variants",
+        description:
+          "Each variant is lit by its own glow token, so the light matches the face it sits in. Hover raises both the glow and the ring.",
+        code: `<GlowButton>Get started</GlowButton>
+<GlowButton variant="secondary">Learn more</GlowButton>
+<GlowButton variant="outline">Docs</GlowButton>
+<GlowButton variant="destructive">Delete</GlowButton>`,
+      },
+      {
+        title: "Sizes",
+        preview: "glow-button/sizes",
+        description:
+          "Height and padding come from the size token. The glow spread is fixed, so a small button is lit the same as a large one.",
+        code: `<GlowButton size="sm">Small</GlowButton>
+<GlowButton size="md">Medium</GlowButton>
+<GlowButton size="lg">Large</GlowButton>
+<GlowButton size="icon" aria-label="Download"><Download /></GlowButton>`,
+      },
+      {
+        title: "Icons, loading and disabled",
+        preview: "glow-button/states",
+        description:
+          "A button that cannot be pressed stops glowing, so a non-interactive control never invites a click.",
+        code: `<GlowButton variant="outline" leftIcon={<Download />}>Install</GlowButton>
+<GlowButton loading loadingLabel="Saving changes">Saving</GlowButton>
+<GlowButton variant="secondary" disabled>Disabled</GlowButton>`,
+      },
+      {
+        title: "As a link",
+        preview: "glow-button/as-link",
+        description:
+          "`asChild` hands the styling to the child, so a navigation target stays a real `<a>`.",
+        code: `import Link from "next/link";
+
+<GlowButton asChild rightIcon={<ArrowRight />}>
+  <Link href="/components">Browse components</Link>
+</GlowButton>`,
+      },
+    ],
+    accessibility: [
+      'Renders a real `<button>` with `type="button"` unless you pass a `type`.',
+      "Focus is always visible through the shared `--color-ring` outline; it is never removed.",
+      "The glow layer is `aria-hidden` and `pointer-events-none`, so it never reaches the accessibility tree or swallows a click.",
+      "`loading` sets `aria-busy` and announces `loadingLabel` through a visually hidden span. `aria-disabled` is set alongside the native `disabled`, so an `asChild` link is announced as unavailable too.",
+      "The glow carries no meaning on its own. Colour, the spinner and `aria-busy` already convey every state.",
+      "Icons are decorative. Pass an `aria-label` when a button has no text.",
     ],
     responsive:
       "Sizing is fixed per `size` token; use `block` to fill narrow layouts and change `size` at a breakpoint via `className`.",

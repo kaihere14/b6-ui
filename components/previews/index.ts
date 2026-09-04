@@ -70,6 +70,13 @@ import {
   CrossButtonVariantsExample,
 } from "@/components/previews/examples/cross-button-examples";
 
+import {
+  GlowButtonAsLinkExample,
+  GlowButtonSizesExample,
+  GlowButtonStatesExample,
+  GlowButtonVariantsExample,
+} from "@/components/previews/examples/glow-button-examples";
+
 import { BadgePreview } from "@/components/previews/badge-preview";
 import { ButtonBasePreview } from "@/components/previews/button-base-preview";
 import { CardBasePreview } from "@/components/previews/card-base-preview";
@@ -85,6 +92,7 @@ import { WritingTextPreview } from "@/components/previews/writing-text-preview";
 import { CrossButtonPreview } from "@/components/previews/cross-button-preview";
 import { ThinkingOrbPreview } from "@/components/previews/thinking-orb-preview";
 import { CircularMusicPlayerPreview } from "@/components/previews/circular-music-player-preview";
+import { GlowButtonPreview } from "@/components/previews/glow-button-preview";
 import {
   ThinkingOrbCustomExample,
   ThinkingOrbSizesExample,
@@ -104,6 +112,7 @@ export const previews: Record<string, ComponentType> = {
   "magnetic-button": MagneticButtonPreview,
   "stateful-button": StatefulButtonPreview,
   "depth-button": DepthButtonPreview,
+  "glow-button": GlowButtonPreview,
   "card-base": CardBasePreview,
   "activity-graph": ActivityGraphPreview,
   "dot-matrix-graph": DotMatrixGraphPreview,
@@ -140,6 +149,10 @@ export const exampleDemos: Record<string, ComponentType> = {
   "depth-button/sizes": DepthButtonSizesExample,
   "depth-button/states": DepthButtonStatesExample,
   "depth-button/as-link": DepthButtonAsLinkExample,
+  "glow-button/variants": GlowButtonVariantsExample,
+  "glow-button/sizes": GlowButtonSizesExample,
+  "glow-button/states": GlowButtonStatesExample,
+  "glow-button/as-link": GlowButtonAsLinkExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,
   "badge/tones": BadgeTonesExample,

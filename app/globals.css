@@ -87,6 +87,21 @@
   --b6-depth-primary: oklch(0.09 0.002 17.5);
   --b6-depth-destructive: oklch(0.4 0.155 27);
 
+  /* Glow: light thrown from *inside* a filled surface, never past its edge, so
+   * a lit control still reads as one flat object rather than a lamp. The base
+   * pair lights the primary face, which is near-black here, so the light is
+   * white; the secondary pair lights a pale face and is therefore dark. Each
+   * pair is a resting value and the same light turned up, which is what hover
+   * moves between. Alpha is baked into the token because the strength of the
+   * light *is* the token: a caller picking its own opacity would be picking a
+   * different material. */
+  --b6-glow: oklch(1 0 0 / 0.2);
+  --b6-glow-strong: oklch(1 0 0 / 0.4);
+  --b6-glow-secondary: oklch(0 0 0 / 0.08);
+  --b6-glow-secondary-strong: oklch(0 0 0 / 0.16);
+  --b6-glow-destructive: oklch(1 0 0 / 0.22);
+  --b6-glow-destructive-strong: oklch(1 0 0 / 0.4);
+
   /* Radius scale. Every component derives from this base. */
   --b6-radius: 0.5rem;
 }
@@ -147,6 +162,17 @@
   --b6-depth-secondary: oklch(0.34 0 0);
   --b6-depth-primary: oklch(0.74 0 0);
   --b6-depth-destructive: oklch(0.42 0.15 27);
+
+  /* Glow. The faces invert, so the light does too: the primary face is paper
+   * here and is lit by shadow rather than by light, while the dark secondary
+   * face takes the white the light theme gave to primary. Destructive keeps a
+   * white light in both themes, because the red face never becomes pale. */
+  --b6-glow: oklch(0 0 0 / 0.2);
+  --b6-glow-strong: oklch(0 0 0 / 0.3);
+  --b6-glow-secondary: oklch(1 0 0 / 0.1);
+  --b6-glow-secondary-strong: oklch(1 0 0 / 0.2);
+  --b6-glow-destructive: oklch(1 0 0 / 0.2);
+  --b6-glow-destructive-strong: oklch(1 0 0 / 0.35);
 }
 
 @theme inline {
@@ -178,6 +204,12 @@
   --color-terminal-argument: var(--b6-terminal-argument);
   --color-glyph: var(--b6-glyph);
   --color-glyph-foreground: var(--b6-glyph-foreground);
+  --color-glow: var(--b6-glow);
+  --color-glow-strong: var(--b6-glow-strong);
+  --color-glow-secondary: var(--b6-glow-secondary);
+  --color-glow-secondary-strong: var(--b6-glow-secondary-strong);
+  --color-glow-destructive: var(--b6-glow-destructive);
+  --color-glow-destructive-strong: var(--b6-glow-destructive-strong);
   --color-border: var(--b6-border);
   --color-input: var(--b6-input);
   --color-ring: var(--b6-ring);
@@ -242,6 +274,31 @@
    * with the four steps above rather than replacing them, because Tailwind
    * keeps inset and outer shadows in separate slots of one box-shadow. */
   --inset-shadow-b6: inset 0 2px 4px oklch(0 0 0 / 0.1);
+
+  /* Glow: the same inside light as `inset-shadow-b6`, but thrown from every
+   * edge at once instead of from the top, and read from a colour token so it
+   * follows the face it sits in. The `-strong` step is the lit state: a wider
+   * spread of the same light, so hover raises the brightness without moving
+   * the surface. */
+  --inset-shadow-b6-glow: inset 0 0 10px 0 var(--b6-glow);
+  --inset-shadow-b6-glow-strong: inset 0 0 20px 0 var(--b6-glow-strong);
+
+  --inset-shadow-b6-glow-secondary: inset 0 0 10px 0 var(--b6-glow-secondary);
+  --inset-shadow-b6-glow-secondary-strong: inset 0 0 20px 0 var(--b6-glow-secondary-strong);
+
+  --inset-shadow-b6-glow-destructive: inset 0 0 10px 0 var(--b6-glow-destructive);
+  --inset-shadow-b6-glow-destructive-strong: inset 0 0 20px 0
+    var(--b6-glow-destructive-strong);
+
+  /* The band a lit face sits on: 2px of the face's own colour immediately
+   * outside it, so the inset ring reads as a line drawn *inside* an object
+   * rather than as the object's edge. It is a spread-only shadow with no
+   * offset and no blur, which follows the corner radius on its own, and it is
+   * the face colour rather than a shade of it, because a band in any other
+   * tone would read as a second border. */
+  --shadow-b6-glow-band: 0 0 0 2px var(--b6-primary);
+  --shadow-b6-glow-band-secondary: 0 0 0 2px var(--b6-secondary);
+  --shadow-b6-glow-band-destructive: 0 0 0 2px var(--b6-destructive);
 
   /* Depth: a hard, unblurred ledge. `depth` is the resting height of a
    * pressable surface, `depth-sm` the same surface half-pressed, `depth-flush`
