@@ -3,12 +3,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
-import {
-  animate,
-  motion,
-  useReducedMotion,
-  useSpring,
-} from "motion/react";
+import { animate, motion, useReducedMotion, useSpring } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -47,7 +42,7 @@ const crossButtonVariants = cva(
   {
     variants: {
       variant: {
-        ghost: "hover:bg-muted text-muted-foreground hover:text-foreground",
+        ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
         outline:
           "border border-input bg-background text-foreground shadow-b6-xs hover:bg-muted",
         solid:
@@ -97,8 +92,7 @@ type NativeButtonProps = Omit<
 >;
 
 export interface CrossButtonProps
-  extends NativeButtonProps,
-    VariantProps<typeof crossButtonVariants> {
+  extends NativeButtonProps, VariantProps<typeof crossButtonVariants> {
   /** Interaction mode. @default "default" */
   mode?: CrossButtonMode;
 
@@ -226,130 +220,124 @@ function TimedBorder({
 /* Component                                                                   */
 /* -------------------------------------------------------------------------- */
 
-const CrossButton = React.forwardRef<HTMLButtonElement, CrossButtonProps>(
-  function CrossButton(
-    {
-      className,
-      variant,
-      size,
-      shape,
-      mode = "default",
-      duration = 3000,
-      onReady,
-      label = "Close",
-      disabled,
-      onClick,
-      ...props
-    },
-    forwardedRef,
-  ) {
-    const reducedMotion = useReducedMotion();
-    const scale = useSpring(1, SPRING_CONFIG);
-
-    /* ---- Timed mode state ----------------------------------------------- */
-    const [timedReady, setTimedReady] = React.useState(mode !== "timed");
-
-    const handleTimedComplete = React.useCallback(() => {
-      setTimedReady(true);
-      onReady?.();
-    }, [onReady]);
-
-    /* ---- Click handler -------------------------------------------------- */
-    const [clickPulse, setClickPulse] = React.useState(false);
-    const [shake, setShake] = React.useState(false);
-
-    const handleClick = React.useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (mode === "timed" && !timedReady) {
-          e.preventDefault();
-          if (!shake) {
-            setShake(true);
-            setTimeout(() => setShake(false), 400);
-          }
-          return;
-        }
-
-        if (mode === "timed" && timedReady) {
-          if (!clickPulse) {
-            setClickPulse(true);
-            setTimeout(() => setClickPulse(false), 150);
-          }
-        }
-
-        onClick?.(e);
-      },
-      [mode, timedReady, shake, clickPulse, onClick],
-    );
-
-    /* ---- Derived state -------------------------------------------------- */
-    const isDisabled = disabled || (mode === "timed" && !timedReady);
-
-    /* ---- Press animation ------------------------------------------------ */
-    const handlePointerDown = React.useCallback(() => {
-        if (isDisabled) return;
-        if (!reducedMotion) scale.set(0.9);
-      },
-      [reducedMotion, scale, isDisabled],
-    );
-
-    const handlePointerUp = React.useCallback(() => {
-      if (!reducedMotion) scale.set(1);
-    }, [reducedMotion, scale]);
-
-    return (
-      <motion.button
-        ref={forwardedRef}
-        type="button"
-        disabled={disabled} // Native disabled only for explicit disabled prop
-        aria-disabled={isDisabled}
-        aria-label={label}
-        className={cn(
-          crossButtonVariants({
-            variant,
-            size,
-            shape,
-          }),
-          mode === "timed" && !timedReady && "cursor-wait opacity-70",
-          className,
-        )}
-        style={{ scale }}
-        animate={shake && !reducedMotion ? { x: [-6, 6, -6, 6, -3, 3, 0] } : { x: 0 }}
-        transition={shake ? { duration: 0.4 } : undefined}
-        onClick={handleClick}
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-        data-mode={mode}
-        {...props}
-      >
-        {mode === "timed" && !timedReady && (
-          <TimedBorder
-            duration={duration}
-            onComplete={handleTimedComplete}
-            size={size}
-            shape={shape}
-          />
-        )}
-
-        <motion.span
-          initial={false}
-          animate={{
-            scale: clickPulse ? 0.6 : 1,
-            opacity: clickPulse ? 0.4 : 1,
-            filter: clickPulse ? "blur(2px)" : "blur(0px)",
-          }}
-          transition={{ type: "spring", stiffness: 600, damping: 20 }}
-          className="inline-flex items-center justify-center"
-        >
-          <X aria-hidden="true" />
-        </motion.span>
-
-        <span className="sr-only">
-          {label}
-        </span>
-      </motion.button>
-    );
+const CrossButton = React.forwardRef<HTMLButtonElement, CrossButtonProps>(function CrossButton(
+  {
+    className,
+    variant,
+    size,
+    shape,
+    mode = "default",
+    duration = 3000,
+    onReady,
+    label = "Close",
+    disabled,
+    onClick,
+    ...props
   },
-);
+  forwardedRef,
+) {
+  const reducedMotion = useReducedMotion();
+  const scale = useSpring(1, SPRING_CONFIG);
+
+  /* ---- Timed mode state ----------------------------------------------- */
+  const [timedReady, setTimedReady] = React.useState(mode !== "timed");
+
+  const handleTimedComplete = React.useCallback(() => {
+    setTimedReady(true);
+    onReady?.();
+  }, [onReady]);
+
+  /* ---- Click handler -------------------------------------------------- */
+  const [clickPulse, setClickPulse] = React.useState(false);
+  const [shake, setShake] = React.useState(false);
+
+  const handleClick = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (mode === "timed" && !timedReady) {
+        e.preventDefault();
+        if (!shake) {
+          setShake(true);
+          setTimeout(() => setShake(false), 400);
+        }
+        return;
+      }
+
+      if (mode === "timed" && timedReady) {
+        if (!clickPulse) {
+          setClickPulse(true);
+          setTimeout(() => setClickPulse(false), 150);
+        }
+      }
+
+      onClick?.(e);
+    },
+    [mode, timedReady, shake, clickPulse, onClick],
+  );
+
+  /* ---- Derived state -------------------------------------------------- */
+  const isDisabled = disabled || (mode === "timed" && !timedReady);
+
+  /* ---- Press animation ------------------------------------------------ */
+  const handlePointerDown = React.useCallback(() => {
+    if (isDisabled) return;
+    if (!reducedMotion) scale.set(0.9);
+  }, [reducedMotion, scale, isDisabled]);
+
+  const handlePointerUp = React.useCallback(() => {
+    if (!reducedMotion) scale.set(1);
+  }, [reducedMotion, scale]);
+
+  return (
+    <motion.button
+      ref={forwardedRef}
+      type="button"
+      disabled={disabled} // Native disabled only for explicit disabled prop
+      aria-disabled={isDisabled}
+      aria-label={label}
+      className={cn(
+        crossButtonVariants({
+          variant,
+          size,
+          shape,
+        }),
+        mode === "timed" && !timedReady && "cursor-wait opacity-70",
+        className,
+      )}
+      style={{ scale }}
+      animate={shake && !reducedMotion ? { x: [-6, 6, -6, 6, -3, 3, 0] } : { x: 0 }}
+      transition={shake ? { duration: 0.4 } : undefined}
+      onClick={handleClick}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+      data-mode={mode}
+      {...props}
+    >
+      {mode === "timed" && !timedReady && (
+        <TimedBorder
+          duration={duration}
+          onComplete={handleTimedComplete}
+          size={size}
+          shape={shape}
+        />
+      )}
+
+      <motion.span
+        initial={false}
+        animate={{
+          scale: clickPulse ? 0.6 : 1,
+          opacity: clickPulse ? 0.4 : 1,
+          filter: clickPulse ? "blur(2px)" : "blur(0px)",
+        }}
+        transition={{ type: "spring", stiffness: 600, damping: 20 }}
+        className="inline-flex items-center justify-center"
+      >
+        <X aria-hidden="true" />
+      </motion.span>
+
+      <span className="sr-only">{label}</span>
+    </motion.button>
+  );
+});
 
 export { CrossButton, crossButtonVariants };

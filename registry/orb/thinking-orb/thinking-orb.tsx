@@ -91,22 +91,11 @@ const thinkingOrbVariants = cva(
  * `cluster` and `dots` each have their own painter (a breathing wireframe
  * sphere, a meridian ring, a dotted disc, a dotted sphere, a dot diamond).
  */
-export type ThinkingOrbKind =
-  | "pulse"
-  | "dots"
-  | "wave"
-  | "cluster"
-  | "spark"
-  | "globe";
+export type ThinkingOrbKind = "pulse" | "dots" | "wave" | "cluster" | "spark" | "globe";
 
 /** Named states, each mapped to an orb motion and a default label. */
 export type ThinkingOrbPreset =
-  | "idle"
-  | "thinking"
-  | "listening"
-  | "working"
-  | "searching"
-  | "solving";
+  "idle" | "thinking" | "listening" | "working" | "searching" | "solving";
 
 interface ThinkingOrbPresetConfig {
   kind: ThinkingOrbKind;
@@ -129,8 +118,7 @@ const THINKING_ORB_PRESETS: Record<ThinkingOrbPreset, ThinkingOrbPresetConfig> =
 type NativeDivProps = React.ComponentPropsWithoutRef<"div">;
 
 export interface ThinkingOrbProps
-  extends NativeDivProps,
-    VariantProps<typeof thinkingOrbVariants> {
+  extends NativeDivProps, VariantProps<typeof thinkingOrbVariants> {
   /** Named state. Sets the orb motion and the default label. @default "thinking" */
   preset?: ThinkingOrbPreset;
 
@@ -242,10 +230,7 @@ const WAVE_PHI = Array.from({ length: WAVE_SEGMENTS + 1 }, (_, i) => {
   return 0.13 * Math.PI + f * 0.74 * Math.PI;
 });
 /** A fixed brightness per line, so some strokes always read stronger. */
-const WAVE_BRIGHT = Array.from(
-  { length: WAVE_MERIDIANS },
-  (_, m) => 0.4 + hash(m + 3.7) * 0.6,
-);
+const WAVE_BRIGHT = Array.from({ length: WAVE_MERIDIANS }, (_, m) => 0.4 + hash(m + 3.7) * 0.6);
 
 /* -------------------------------------------------------------------------- */
 /* Working: a dotted disc with an energy band travelling around its rim         */
@@ -628,8 +613,7 @@ function paintWave(ctx: CanvasRenderingContext2D, state: OrbState, t: number) {
   // Draw back meridians first so the front ones sit on top.
   const order = Array.from({ length: WAVE_MERIDIANS }, (_, m) => m).sort(
     (a, b) =>
-      Math.sin((a / WAVE_MERIDIANS) * TAU + yaw) -
-      Math.sin((b / WAVE_MERIDIANS) * TAU + yaw),
+      Math.sin((a / WAVE_MERIDIANS) * TAU + yaw) - Math.sin((b / WAVE_MERIDIANS) * TAU + yaw),
   );
 
   for (const m of order) {
@@ -918,8 +902,7 @@ function paintIdle(ctx: CanvasRenderingContext2D, state: OrbState, t: number) {
       1,
       (baseA + depth * 0.5) * facing * glow + centreness * (0.32 + centreBoost),
     );
-    const dotRadius =
-      baseDot * (0.68 + depth * 0.55 + centreness * (0.8 + centreBoost * 2));
+    const dotRadius = baseDot * (0.68 + depth * 0.55 + centreness * (0.8 + centreBoost * 2));
 
     if (centreness > 0.45) {
       ctx.shadowBlur = 5 * dpr * centreness * (0.6 + centreBoost);
@@ -1112,59 +1095,48 @@ function ParticleOrb({
 /* Component                                                                   */
 /* -------------------------------------------------------------------------- */
 
-const ThinkingOrb = React.forwardRef<HTMLDivElement, ThinkingOrbProps>(
-  function ThinkingOrb(
-    {
-      className,
-      size,
-      tone,
-      preset = "thinking",
-      kind,
-      label,
-      showLabel = true,
-      active = true,
-      speed = 1,
-      role,
-      ...props
-    },
-    forwardedRef,
-  ) {
-    const reducedMotion = useReducedMotion() ?? false;
-
-    const config = THINKING_ORB_PRESETS[preset];
-    const resolvedKind = kind ?? config.kind;
-    const resolvedLabel = label ?? config.label;
-    const resolvedSpeed = speed > 0 ? speed : 1;
-    const running = active && !reducedMotion;
-
-    return (
-      <div
-        ref={forwardedRef}
-        role={role ?? "status"}
-        aria-live="polite"
-        aria-label={showLabel ? undefined : resolvedLabel}
-        data-preset={preset}
-        data-kind={resolvedKind}
-        data-active={active || undefined}
-        className={cn(thinkingOrbVariants({ size, tone }), className)}
-        {...props}
-      >
-        <span
-          aria-hidden="true"
-          className="block size-(--orb-size) shrink-0 text-foreground"
-        >
-          <ParticleOrb
-            kind={resolvedKind}
-            running={running}
-            speed={resolvedSpeed}
-          />
-        </span>
-        {showLabel && (
-          <span className="truncate font-medium">{resolvedLabel}</span>
-        )}
-      </div>
-    );
+const ThinkingOrb = React.forwardRef<HTMLDivElement, ThinkingOrbProps>(function ThinkingOrb(
+  {
+    className,
+    size,
+    tone,
+    preset = "thinking",
+    kind,
+    label,
+    showLabel = true,
+    active = true,
+    speed = 1,
+    role,
+    ...props
   },
-);
+  forwardedRef,
+) {
+  const reducedMotion = useReducedMotion() ?? false;
+
+  const config = THINKING_ORB_PRESETS[preset];
+  const resolvedKind = kind ?? config.kind;
+  const resolvedLabel = label ?? config.label;
+  const resolvedSpeed = speed > 0 ? speed : 1;
+  const running = active && !reducedMotion;
+
+  return (
+    <div
+      ref={forwardedRef}
+      role={role ?? "status"}
+      aria-live="polite"
+      aria-label={showLabel ? undefined : resolvedLabel}
+      data-preset={preset}
+      data-kind={resolvedKind}
+      data-active={active || undefined}
+      className={cn(thinkingOrbVariants({ size, tone }), className)}
+      {...props}
+    >
+      <span aria-hidden="true" className="block size-(--orb-size) shrink-0 text-foreground">
+        <ParticleOrb kind={resolvedKind} running={running} speed={resolvedSpeed} />
+      </span>
+      {showLabel && <span className="truncate font-medium">{resolvedLabel}</span>}
+    </div>
+  );
+});
 
 export { ThinkingOrb, thinkingOrbVariants, THINKING_ORB_PRESETS };

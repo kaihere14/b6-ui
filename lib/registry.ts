@@ -238,11 +238,7 @@ export const components: ComponentMeta[] = [
     description:
       "A family of close or dismiss buttons with two interaction modes: a plain close, and a timed countdown that draws a border before enabling.",
     source: "registry/buttons/cross-button/cross-button.tsx",
-    dependencies: [
-      "motion",
-      "class-variance-authority",
-      "lucide-react",
-    ],
+    dependencies: ["motion", "class-variance-authority", "lucide-react"],
     props: [
       {
         name: "mode",
@@ -293,7 +289,8 @@ export const components: ComponentMeta[] = [
       {
         title: "Variants",
         preview: "cross-button/variants",
-        description: "Five visual styles to suit any context: ghost, outline, solid, soft, and destructive.",
+        description:
+          "Five visual styles to suit any context: ghost, outline, solid, soft, and destructive.",
         code: `<CrossButton variant="ghost" />
 <CrossButton variant="outline" />
 <CrossButton variant="solid" />
@@ -344,7 +341,7 @@ export const components: ComponentMeta[] = [
     ],
     accessibility: [
       "Renders as a native `<button>` element with full keyboard support.",
-      "Always carries an `aria-label` (defaults to \"Close\").",
+      'Always carries an `aria-label` (defaults to "Close").',
       "The X icon is `aria-hidden` and paired with a visually hidden label so screen readers announce the action.",
       "Timed mode sets `disabled` until the countdown completes, preventing premature interaction. Under `prefers-reduced-motion` the countdown completes instantly.",
       "All Motion animations honour `useReducedMotion()` and fall back to instant transitions.",
@@ -1086,13 +1083,198 @@ export const components: ComponentMeta[] = [
       },
     ],
     accessibility: [
-      "The pill is a live region: `role=\"status\"` with `aria-live=\"polite\"`, so a state change is announced without stealing focus.",
+      'The pill is a live region: `role="status"` with `aria-live="polite"`, so a state change is announced without stealing focus.',
       "The orb is a decorative `<canvas>` marked `aria-hidden`. The label carries the meaning.",
       "With `showLabel={false}` the label text moves to the pill's `aria-label` so the state is still announced.",
       "The particle loop runs on Motion's frame loop and honours `useReducedMotion()`: it paints one still frame and stops, the same frame `active={false}` shows.",
     ],
     responsive:
       "The pill shrink-wraps its content and never wraps mid-label; the label truncates if a container forces it narrower. All sizing comes from the `size` variant, so it renders the same at any viewport width.",
+  },
+  {
+    slug: "circular-music-player",
+    category: "Display",
+    isNew: true,
+    title: "Circular Music Player",
+    description:
+      "A round dot-matrix panel in the shape of a phone-back glyph: a dark disc of square pixels with a spectrum rising from the bottom and a progress ring around the rim, driven by the playback state you pass it.",
+    source: "registry/music-player/circular-music-player/circular-music-player.tsx",
+    dependencies: ["motion", "class-variance-authority"],
+    props: [
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Diameter of the disc. The box stays square at every size.",
+      },
+      {
+        name: "tone",
+        type: '"glyph" | "surface" | "muted" | "ghost"',
+        defaultValue: '"glyph"',
+        description:
+          "Panel material. `glyph` is the dark display face, the same in both themes because a pixel panel is an object rather than a surface. The other three follow the theme.",
+      },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Music player"',
+        description:
+          "Name announced for the player as a whole, applied as the group `aria-label`.",
+      },
+      {
+        name: "playing",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Whether the track is running. The spectrum animates while true and freezes on a still frame while false. The player displays this state; it never owns it, so pass what your audio element or Spotify endpoint reports.",
+      },
+      {
+        name: "progress",
+        type: "number",
+        defaultValue: "0",
+        description: "Position through the track, 0 to 1. Read by the progress ring.",
+      },
+      {
+        name: "columns",
+        type: "number",
+        defaultValue: "24",
+        description:
+          "On `CircularMusicPlayerMatrix`. Pixels across the grid. Rows match, so pixels stay square.",
+      },
+      {
+        name: "levels",
+        type: "number[]",
+        description:
+          "On `CircularMusicPlayerMatrix`. Bar heights, 0 to 1, one per column. Pass analyser data to drive the panel from real audio; leave it out for the built-in spectrum.",
+      },
+      {
+        name: "active",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "On `CircularMusicPlayerMatrix`. Run the spectrum. False freezes the panel on a still frame.",
+      },
+      {
+        name: "speed",
+        type: "number",
+        defaultValue: "1",
+        description:
+          "On `CircularMusicPlayerMatrix`. Timing multiplier. 2 runs twice as fast, 0.5 half speed.",
+      },
+      {
+        name: "peaks",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "On `CircularMusicPlayerMatrix`. Draw the decaying marker that hangs above each bar after a hit.",
+      },
+      {
+        name: "inset",
+        type: '"none" | "sm" | "md" | "lg"',
+        defaultValue: '"none"',
+        description:
+          "On `CircularMusicPlayerMatrix`. How far the pixel grid pulls back from the rim. Use `sm` to clear the band the progress ring sits in.",
+      },
+      {
+        name: "value",
+        type: "number",
+        description:
+          "On `CircularMusicPlayerProgress`. Position through the track, 0 to 1. Falls back to the player's `progress`.",
+      },
+      {
+        name: "segments",
+        type: "number",
+        defaultValue: "44",
+        description:
+          "On `CircularMusicPlayerProgress`. Strips a dashed ring is cut into. Ignored when `variant` is solid.",
+      },
+      {
+        name: "variant",
+        type: '"dashed" | "solid"',
+        defaultValue: '"dashed"',
+        description:
+          "On `CircularMusicPlayerProgress`. `dashed` cuts the ring into strips matching the pixel grid; `solid` draws one unbroken line.",
+      },
+      {
+        name: "thickness",
+        type: "number",
+        defaultValue: "1.8",
+        description:
+          "On `CircularMusicPlayerProgress`. Ring thickness in hundredths of the disc, so it scales with `size`.",
+      },
+    ],
+    examples: [
+      {
+        title: "Progress ring",
+        preview: "circular-music-player/ring",
+        description:
+          "The ring fills clockwise from twelve o'clock. `dashed` cuts it into strips that match the pixel grid, `solid` draws one line, and `thickness` scales with the disc. Pull the matrix back with `inset` so the pixels clear the ring band.",
+        code: `<CircularMusicPlayer progress={0.34}>
+  <CircularMusicPlayerProgress variant="dashed" />
+  <CircularMusicPlayerMatrix inset="sm" />
+</CircularMusicPlayer>
+
+<CircularMusicPlayer playing={false} progress={0.62}>
+  <CircularMusicPlayerProgress variant="solid" thickness={1.2} />
+  <CircularMusicPlayerMatrix inset="sm" />
+</CircularMusicPlayer>`,
+      },
+      {
+        title: "Driven by a now-playing endpoint",
+        preview: "circular-music-player/spotify",
+        description:
+          "The player takes playback state, it does not own it: pass what Spotify (or an `<audio>` element) reports and the panel follows. Nothing here plays or pauses anything, so a transport control is yours to add and wire.",
+        code: `const song = await getPlayback();
+
+<CircularMusicPlayer
+  size="sm"
+  label={\`\${song.name} by \${song.artists}\`}
+  playing={song.isPlaying}
+  progress={song.progressMs / song.durationMs}
+>
+  <CircularMusicPlayerProgress />
+  <CircularMusicPlayerMatrix columns={18} inset="sm" />
+</CircularMusicPlayer>`,
+      },
+      {
+        title: "Sizes",
+        preview: "circular-music-player/sizes",
+        description:
+          "Three diameters. Pixel count is set on the matrix, not the disc, so a small panel can stay coarse and a large one fine.",
+        code: `<CircularMusicPlayer size="sm"><CircularMusicPlayerMatrix columns={18} /></CircularMusicPlayer>
+<CircularMusicPlayer size="md"><CircularMusicPlayerMatrix /></CircularMusicPlayer>
+<CircularMusicPlayer size="lg"><CircularMusicPlayerMatrix columns={30} /></CircularMusicPlayer>`,
+      },
+      {
+        title: "Tones",
+        preview: "circular-music-player/tones",
+        description:
+          "The display face, a themed card, and a muted disc frozen on a still frame.",
+        code: `<CircularMusicPlayer tone="glyph"><CircularMusicPlayerMatrix /></CircularMusicPlayer>
+<CircularMusicPlayer tone="surface"><CircularMusicPlayerMatrix /></CircularMusicPlayer>
+<CircularMusicPlayer tone="muted"><CircularMusicPlayerMatrix active={false} /></CircularMusicPlayer>`,
+      },
+      {
+        title: "Anatomy",
+        preview: "circular-music-player/anatomy",
+        description:
+          "The disc sets the geometry and the panel material; the matrix draws the pixels. `CircularMusicPlayerDial`, `CircularMusicPlayerCenter` and `CircularMusicPlayerControls` layer over it when a player needs a progress ring, a track title or transport buttons.",
+        code: `<CircularMusicPlayer label="Now playing">
+  <CircularMusicPlayerMatrix />
+</CircularMusicPlayer>`,
+      },
+    ],
+    accessibility: [
+      "The root is a `role=\"group\"` labelled by `label`, so the player reads as one named region rather than a run of loose controls.",
+      "The matrix is a decorative `<canvas>` marked `aria-hidden` and taking no pointer events. It carries no meaning of its own, so nothing is lost when it is not rendered.",
+      "Play state arrives on the root and is handed down, so the ring and the spectrum can never disagree about whether the track is running.",
+      "The spectrum honours `useReducedMotion()`: it paints one still frame and stops, the same frame `active={false}` shows.",
+      "The progress ring is a `role=\"progressbar\"` carrying `aria-valuenow`, so the position is available without reading the arc.",
+      "The player renders no controls of its own, so nothing claims to play or pause a track it does not own. Put a real `<button>` or link in `CircularMusicPlayerControls` and wire it to whatever is playing.",
+      "Nothing here removes an outline, so focus stays visible through `--color-ring`.",
+    ],
+    responsive:
+      "The disc is a fixed square from the `size` variant and never grows to fill its container, so the circle can never be squashed into an ellipse. The canvas is redrawn from a `ResizeObserver`, so it stays sharp when the size changes or the page moves to another screen.",
   },
   {
     slug: "badge",

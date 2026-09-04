@@ -84,11 +84,19 @@ import { HandwrittenTextPreview } from "@/components/previews/handwritten-text-p
 import { WritingTextPreview } from "@/components/previews/writing-text-preview";
 import { CrossButtonPreview } from "@/components/previews/cross-button-preview";
 import { ThinkingOrbPreview } from "@/components/previews/thinking-orb-preview";
+import { CircularMusicPlayerPreview } from "@/components/previews/circular-music-player-preview";
 import {
   ThinkingOrbCustomExample,
   ThinkingOrbSizesExample,
   ThinkingOrbTonesExample,
 } from "@/components/previews/examples/thinking-orb-examples";
+import {
+  CircularMusicPlayerAnatomyExample,
+  CircularMusicPlayerRingExample,
+  CircularMusicPlayerSizesExample,
+  CircularMusicPlayerSpotifyExample,
+  CircularMusicPlayerTonesExample,
+} from "@/components/previews/examples/circular-music-player-examples";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
 export const previews: Record<string, ComponentType> = {
@@ -106,6 +114,7 @@ export const previews: Record<string, ComponentType> = {
   "handwritten-text": HandwrittenTextPreview,
   "cross-button": CrossButtonPreview,
   "thinking-orb": ThinkingOrbPreview,
+  "circular-music-player": CircularMusicPlayerPreview,
 };
 
 /**
@@ -161,4 +170,9 @@ export const exampleDemos: Record<string, ComponentType> = {
   "thinking-orb/sizes": ThinkingOrbSizesExample,
   "thinking-orb/tones": ThinkingOrbTonesExample,
   "thinking-orb/custom": ThinkingOrbCustomExample,
+  "circular-music-player/anatomy": CircularMusicPlayerAnatomyExample,
+  "circular-music-player/ring": CircularMusicPlayerRingExample,
+  "circular-music-player/spotify": CircularMusicPlayerSpotifyExample,
+  "circular-music-player/sizes": CircularMusicPlayerSizesExample,
+  "circular-music-player/tones": CircularMusicPlayerTonesExample,
 };

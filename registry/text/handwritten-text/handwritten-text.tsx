@@ -1374,194 +1374,196 @@ export interface HandwrittenTextProps
 /* Component                                                                   */
 /* -------------------------------------------------------------------------- */
 
-export const HandwrittenText = React.forwardRef<SVGSVGElement, HandwrittenTextProps>(function HandwrittenText(
-  {
-    className,
-    variant,
-    size,
-    text,
-    hand = "script",
-    speed = DEFAULT_SPEED,
-    startDelay = 0,
-    nib = false,
-    onWritten,
-    ...props
-  },
-  ref,
-) {
-  const shouldReduceMotion = useReducedMotion();
+export const HandwrittenText = React.forwardRef<SVGSVGElement, HandwrittenTextProps>(
+  function HandwrittenText(
+    {
+      className,
+      variant,
+      size,
+      text,
+      hand = "script",
+      speed = DEFAULT_SPEED,
+      startDelay = 0,
+      nib = false,
+      onWritten,
+      ...props
+    },
+    ref,
+  ) {
+    const shouldReduceMotion = useReducedMotion();
 
-  const pen = HANDS[hand];
-  const { strokes, width } = React.useMemo(() => layout(text, pen), [text, pen]);
-  const box = surface(pen, width);
+    const pen = HANDS[hand];
+    const { strokes, width } = React.useMemo(() => layout(text, pen), [text, pen]);
+    const box = surface(pen, width);
 
-  const paths = React.useRef<(SVGPathElement | null)[]>([]);
-  const timeline = React.useRef<Timeline | null>(null);
+    const paths = React.useRef<(SVGPathElement | null)[]>([]);
+    const timeline = React.useRef<Timeline | null>(null);
 
-  /** Pen travel so far. One value drives every stroke, so React never re-renders. */
-  const travel = useMotionValue(0);
+    /** Pen travel so far. One value drives every stroke, so React never re-renders. */
+    const travel = useMotionValue(0);
 
-  const nibX = useMotionValue(0);
-  const nibY = useMotionValue(0);
-  const nibOpacity = useMotionValue(0);
+    const nibX = useMotionValue(0);
+    const nibY = useMotionValue(0);
+    const nibOpacity = useMotionValue(0);
 
-  const onWrittenRef = React.useRef(onWritten);
-  React.useEffect(() => {
-    onWrittenRef.current = onWritten;
-  });
-
-  // Lengths come from the DOM, because only the browser knows how long a curve
-  // turned out to be. They land in a ref rather than in state: a measurement is
-  // not something the component renders, it is something the pen reads.
-  React.useEffect(() => {
-    const measured: Timeline = {
-      starts: [],
-      lifts: [],
-      lengths: [],
-      from: [],
-      to: [],
-      total: 0,
-    };
-
-    let cursor = 0;
-    let previous: Point | null = null;
-
-    for (let index = 0; index < strokes.length; index += 1) {
-      const path = paths.current[index];
-      if (!path) return;
-
-      const length = path.getTotalLength();
-      const head = path.getPointAtLength(0);
-      const tail = path.getPointAtLength(length);
-      const entry = { x: head.x + strokes[index]!.x, y: head.y };
-      const exit = { x: tail.x + strokes[index]!.x, y: tail.y };
-
-      measured.lifts.push(cursor);
-      if (previous) {
-        // The pen still has to get there. Charging the lift at a fraction of
-        // its distance is what puts a beat between a letter and its dot.
-        cursor += Math.hypot(entry.x - previous.x, entry.y - previous.y) / LIFT_SPEED;
-      }
-
-      measured.starts.push(cursor);
-      measured.lengths.push(length);
-      measured.from.push(previous);
-      measured.to.push(entry);
-
-      cursor += length;
-      previous = exit;
-    }
-
-    measured.total = cursor;
-    timeline.current = measured;
-
-    if (measured.total === 0) {
-      onWrittenRef.current?.();
-      return;
-    }
-
-    if (shouldReduceMotion) {
-      // The line is the content. Without motion it is simply already written.
-      travel.set(measured.total);
-      onWrittenRef.current?.();
-      return;
-    }
-
-    travel.set(0);
-    const controls = animate(travel, measured.total, {
-      duration: Math.max(MIN_DURATION, text.length / Math.max(1, speed)),
-      delay: startDelay,
-      ease: penEase,
-      onComplete: () => onWrittenRef.current?.(),
+    const onWrittenRef = React.useRef(onWritten);
+    React.useEffect(() => {
+      onWrittenRef.current = onWritten;
     });
 
-    return () => controls.stop();
-  }, [strokes, shouldReduceMotion, speed, startDelay, text, travel]);
+    // Lengths come from the DOM, because only the browser knows how long a curve
+    // turned out to be. They land in a ref rather than in state: a measurement is
+    // not something the component renders, it is something the pen reads.
+    React.useEffect(() => {
+      const measured: Timeline = {
+        starts: [],
+        lifts: [],
+        lengths: [],
+        from: [],
+        to: [],
+        total: 0,
+      };
 
-  // The nib is the only thing that has to know where the pen is, so it is the
-  // only thing that reads a point back out of the geometry.
-  useMotionValueEvent(travel, "change", (value) => {
-    const measured = timeline.current;
-    if (!nib || !measured || shouldReduceMotion) return;
+      let cursor = 0;
+      let previous: Point | null = null;
 
-    nibOpacity.set(value > 0 && value < measured.total ? 1 : 0);
+      for (let index = 0; index < strokes.length; index += 1) {
+        const path = paths.current[index];
+        if (!path) return;
 
-    for (let index = 0; index < measured.starts.length; index += 1) {
-      const start = measured.starts[index]!;
-      const length = measured.lengths[index]!;
+        const length = path.getTotalLength();
+        const head = path.getPointAtLength(0);
+        const tail = path.getPointAtLength(length);
+        const entry = { x: head.x + strokes[index]!.x, y: head.y };
+        const exit = { x: tail.x + strokes[index]!.x, y: tail.y };
 
-      if (value < start) {
-        const from = measured.from[index];
-        const to = measured.to[index]!;
-        if (!from) {
-          nibX.set(to.x);
-          nibY.set(to.y);
+        measured.lifts.push(cursor);
+        if (previous) {
+          // The pen still has to get there. Charging the lift at a fraction of
+          // its distance is what puts a beat between a letter and its dot.
+          cursor += Math.hypot(entry.x - previous.x, entry.y - previous.y) / LIFT_SPEED;
+        }
+
+        measured.starts.push(cursor);
+        measured.lengths.push(length);
+        measured.from.push(previous);
+        measured.to.push(entry);
+
+        cursor += length;
+        previous = exit;
+      }
+
+      measured.total = cursor;
+      timeline.current = measured;
+
+      if (measured.total === 0) {
+        onWrittenRef.current?.();
+        return;
+      }
+
+      if (shouldReduceMotion) {
+        // The line is the content. Without motion it is simply already written.
+        travel.set(measured.total);
+        onWrittenRef.current?.();
+        return;
+      }
+
+      travel.set(0);
+      const controls = animate(travel, measured.total, {
+        duration: Math.max(MIN_DURATION, text.length / Math.max(1, speed)),
+        delay: startDelay,
+        ease: penEase,
+        onComplete: () => onWrittenRef.current?.(),
+      });
+
+      return () => controls.stop();
+    }, [strokes, shouldReduceMotion, speed, startDelay, text, travel]);
+
+    // The nib is the only thing that has to know where the pen is, so it is the
+    // only thing that reads a point back out of the geometry.
+    useMotionValueEvent(travel, "change", (value) => {
+      const measured = timeline.current;
+      if (!nib || !measured || shouldReduceMotion) return;
+
+      nibOpacity.set(value > 0 && value < measured.total ? 1 : 0);
+
+      for (let index = 0; index < measured.starts.length; index += 1) {
+        const start = measured.starts[index]!;
+        const length = measured.lengths[index]!;
+
+        if (value < start) {
+          const from = measured.from[index];
+          const to = measured.to[index]!;
+          if (!from) {
+            nibX.set(to.x);
+            nibY.set(to.y);
+            return;
+          }
+
+          const lift = measured.lifts[index]!;
+          const carried = (value - lift) / Math.max(start - lift, 0.0001);
+          const clamped = Math.min(Math.max(carried, 0), 1);
+          nibX.set(from.x + (to.x - from.x) * clamped);
+          nibY.set(from.y + (to.y - from.y) * clamped);
           return;
         }
 
-        const lift = measured.lifts[index]!;
-        const carried = (value - lift) / Math.max(start - lift, 0.0001);
-        const clamped = Math.min(Math.max(carried, 0), 1);
-        nibX.set(from.x + (to.x - from.x) * clamped);
-        nibY.set(from.y + (to.y - from.y) * clamped);
-        return;
+        if (value <= start + length) {
+          const path = paths.current[index];
+          if (!path) return;
+          const point = path.getPointAtLength(value - start);
+          nibX.set(point.x + strokes[index]!.x);
+          nibY.set(point.y);
+          return;
+        }
       }
+    });
 
-      if (value <= start + length) {
-        const path = paths.current[index];
-        if (!path) return;
-        const point = path.getPointAtLength(value - start);
-        nibX.set(point.x + strokes[index]!.x);
-        nibY.set(point.y);
-        return;
-      }
-    }
-  });
+    return (
+      <svg
+        ref={ref}
+        data-slot="handwritten-text"
+        role="img"
+        aria-label={text}
+        viewBox={`${box.left} ${box.top} ${box.width} ${box.height}`}
+        width={`${box.width * SCALE}em`}
+        height={`${box.height * SCALE}em`}
+        shapeRendering="geometricPrecision"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={pen.strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={cn(handwrittenTextVariants({ variant, size }), className)}
+        {...props}
+      >
+        <g transform={`skewX(${pen.upright})`}>
+          {strokes.map((stroke, index) => (
+            <Ink
+              key={`${index}-${stroke.d}`}
+              stroke={stroke}
+              index={index}
+              travel={travel}
+              timeline={timeline}
+              register={(element) => {
+                paths.current[index] = element;
+              }}
+            />
+          ))}
 
-  return (
-    <svg
-      ref={ref}
-      data-slot="handwritten-text"
-      role="img"
-      aria-label={text}
-      viewBox={`${box.left} ${box.top} ${box.width} ${box.height}`}
-      width={`${box.width * SCALE}em`}
-      height={`${box.height * SCALE}em`}
-      shapeRendering="geometricPrecision"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={pen.strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn(handwrittenTextVariants({ variant, size }), className)}
-      {...props}
-    >
-      <g transform={`skewX(${pen.upright})`}>
-        {strokes.map((stroke, index) => (
-          <Ink
-            key={`${index}-${stroke.d}`}
-            stroke={stroke}
-            index={index}
-            travel={travel}
-            timeline={timeline}
-            register={(element) => {
-              paths.current[index] = element;
-            }}
-          />
-        ))}
-
-        {nib && (
-          <motion.circle
-            r={NIB_RADIUS}
-            fill="currentColor"
-            stroke="none"
-            style={{ x: nibX, y: nibY, opacity: nibOpacity }}
-          />
-        )}
-      </g>
-    </svg>
-  );
-});
+          {nib && (
+            <motion.circle
+              r={NIB_RADIUS}
+              fill="currentColor"
+              stroke="none"
+              style={{ x: nibX, y: nibY, opacity: nibOpacity }}
+            />
+          )}
+        </g>
+      </svg>
+    );
+  },
+);
 
 /* -------------------------------------------------------------------------- */
 /* One stroke                                                                  */

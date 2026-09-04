@@ -62,15 +62,15 @@ export function CrossButtonAdExample() {
       key={runId}
       className="relative w-full max-w-sm overflow-hidden rounded-lg border border-border bg-card p-5 text-card-foreground shadow-b6-sm"
     >
-      <span className="absolute left-3 top-3 rounded-xs bg-muted px-1.5 py-0.5 text-caption font-medium tracking-wide text-muted-foreground uppercase">
+      <span className="absolute top-3 left-3 rounded-xs bg-muted px-1.5 py-0.5 text-caption font-medium tracking-wide text-muted-foreground uppercase">
         Ad
       </span>
 
       <div className="mt-6 flex flex-col gap-2">
         <p className="text-body font-semibold">Your product name here</p>
         <p className="text-small text-muted-foreground">
-          The close control stays locked while the countdown traces its border.
-          Once it finishes, you can dismiss the ad.
+          The close control stays locked while the countdown traces its border. Once it
+          finishes, you can dismiss the ad.
         </p>
         <span className="mt-2 inline-flex w-fit rounded-md bg-primary px-3 py-1.5 text-small font-medium text-primary-foreground">
           Learn more
@@ -89,5 +89,3 @@ export function CrossButtonAdExample() {
     </div>
   );
 }
-
-

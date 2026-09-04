@@ -55,6 +55,15 @@
   --b6-terminal-option: oklch(0.555 0.114 53.1);
   --b6-terminal-argument: oklch(0.602 0.101 32.8);
 
+  /* Glyph: the face of a dot-matrix display panel. It does not follow the
+   * theme, in either direction. A pixel panel is a physical object with its own
+   * material, the way a phone back or an LED sign is: it reads as unlit glass
+   * with light punched through it, and inverting it in the dark theme would
+   * turn the lit pixels into holes. Both themes therefore get the same dark
+   * face and the same bright pixel. */
+  --b6-glyph: oklch(0.145 0.004 265);
+  --b6-glyph-foreground: oklch(0.985 0 0);
+
   /* Lines */
   --b6-border: oklch(0.895 0.004 17.5);
   --b6-input: oklch(0.93 0.004 17.5);
@@ -120,6 +129,10 @@
   --b6-terminal-option: oklch(0.703 0.079 45.5);
   --b6-terminal-argument: oklch(0.693 0.08 32.1);
 
+  /* Glyph: identical to the light theme on purpose. See the note there. */
+  --b6-glyph: oklch(0.145 0.004 265);
+  --b6-glyph-foreground: oklch(0.985 0 0);
+
   /* Lines */
   --b6-border: oklch(0.24 0 0);
   --b6-input: oklch(0.22 0 0);
@@ -163,6 +176,8 @@
   --color-terminal-command: var(--b6-terminal-command);
   --color-terminal-option: var(--b6-terminal-option);
   --color-terminal-argument: var(--b6-terminal-argument);
+  --color-glyph: var(--b6-glyph);
+  --color-glyph-foreground: var(--b6-glyph-foreground);
   --color-border: var(--b6-border);
   --color-input: var(--b6-input);
   --color-ring: var(--b6-ring);
