@@ -64,6 +64,14 @@ import {
   SeparatorVerticalExample,
 } from "@/components/previews/examples/separator-examples";
 import {
+  SwipeCardAxisExample,
+  SwipeCardControlsExample,
+  SwipeCardDeckExample,
+  SwipeCardDepthExample,
+  SwipeCardEmptyExample,
+  SwipeCardWashExample,
+} from "@/components/previews/examples/swipe-card-examples";
+import {
   CrossButtonAdExample,
   CrossButtonShapesExample,
   CrossButtonSizesExample,
@@ -80,6 +88,7 @@ import {
 import { BadgePreview } from "@/components/previews/badge-preview";
 import { ButtonBasePreview } from "@/components/previews/button-base-preview";
 import { CardBasePreview } from "@/components/previews/card-base-preview";
+import { SwipeCardPreview } from "@/components/previews/swipe-card-preview";
 import { ActivityGraphPreview } from "@/components/previews/activity-graph-preview";
 import { DepthButtonPreview } from "@/components/previews/depth-button-preview";
 import { DotMatrixGraphPreview } from "@/components/previews/dot-matrix-graph-preview";
@@ -114,6 +123,7 @@ export const previews: Record<string, ComponentType> = {
   "depth-button": DepthButtonPreview,
   "glow-button": GlowButtonPreview,
   "card-base": CardBasePreview,
+  "swipe-card": SwipeCardPreview,
   "activity-graph": ActivityGraphPreview,
   "dot-matrix-graph": DotMatrixGraphPreview,
   badge: BadgePreview,
@@ -155,6 +165,12 @@ export const exampleDemos: Record<string, ComponentType> = {
   "glow-button/as-link": GlowButtonAsLinkExample,
   "card-base/anatomy": CardBaseAnatomyExample,
   "card-base/interactive": CardBaseInteractiveExample,
+  "swipe-card/deck": SwipeCardDeckExample,
+  "swipe-card/controls": SwipeCardControlsExample,
+  "swipe-card/wash": SwipeCardWashExample,
+  "swipe-card/depth": SwipeCardDepthExample,
+  "swipe-card/axis": SwipeCardAxisExample,
+  "swipe-card/empty": SwipeCardEmptyExample,
   "badge/tones": BadgeTonesExample,
   "badge/icon": BadgeIconExample,
   "input/labelled": InputLabelledExample,

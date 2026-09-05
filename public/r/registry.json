@@ -472,6 +472,24 @@
       ]
     },
     {
+      "name": "swipe-card",
+      "type": "registry:ui",
+      "title": "Swipe Card",
+      "description": "A deck of cards stacked in depth, dragged away one at a time with spring physics.",
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/card/swipe-card/swipe-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/swipe-card.tsx"
+        }
+      ]
+    },
+    {
       "name": "activity-graph",
       "type": "registry:ui",
       "title": "Activity Graph",

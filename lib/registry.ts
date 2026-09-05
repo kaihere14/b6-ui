@@ -830,6 +830,271 @@ export const components: ComponentMeta[] = [
       "Cards fill their grid cell. Compose them inside a `grid` and change `padding` per breakpoint if needed.",
   },
   {
+    slug: "swipe-card",
+    category: "Layout",
+    isNew: true,
+    title: "Swipe Card",
+    description:
+      "A media-forward card deck stacked in depth, where the top card is dragged away with spring physics and the queue restacks behind it.",
+    source: "registry/card/swipe-card/swipe-card.tsx",
+    dependencies: ["class-variance-authority", "motion"],
+    props: [
+      {
+        name: "axis",
+        type: '"x" | "y" | "both"',
+        defaultValue: '"x"',
+        description: "Axis the gesture tracks. Arrow keys follow the same axis.",
+      },
+      {
+        name: "threshold",
+        type: "number",
+        defaultValue: "120",
+        description: "Pixels the card must travel before a release dismisses it.",
+      },
+      {
+        name: "velocityThreshold",
+        type: "number",
+        defaultValue: "500",
+        description:
+          "Pixels per second that dismiss the card regardless of distance, so a flick counts.",
+      },
+      {
+        name: "visibleCards",
+        type: "number",
+        defaultValue: "3",
+        description:
+          "How many cards are mounted. A long deck still renders this many, and a card entering the window grows in from behind the last slot.",
+      },
+      {
+        name: "scaleStep",
+        type: "number",
+        defaultValue: "0.05",
+        description: "Scale removed per card of depth.",
+      },
+      {
+        name: "offsetStep",
+        type: "number",
+        defaultValue: "16",
+        description: "Pixels of offset added per card of depth.",
+      },
+      {
+        name: "rotateStep",
+        type: "number",
+        defaultValue: "4",
+        description:
+          "Degrees the queue tilts by, alternating sign per card so the pile looks hand-stacked.",
+      },
+      {
+        name: "opacityStep",
+        type: "number",
+        defaultValue: "0.15",
+        description: "Opacity removed per card of depth.",
+      },
+      {
+        name: "stackFrom",
+        type: '"bottom" | "top"',
+        defaultValue: '"bottom"',
+        description: "Which edge the queue peeks out of.",
+      },
+      {
+        name: "loop",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Send a dismissed card to the back of the deck instead of dropping it.",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Block the gesture without changing how the deck looks.",
+      },
+      {
+        name: "spring",
+        type: "Transition",
+        defaultValue: "{ type: 'spring', stiffness: 300, damping: 32, mass: 0.9 }",
+        description:
+          "Spring driving the restack. Every deck transition is a spring, not a curve.",
+      },
+      {
+        name: "onSwipe",
+        type: "(direction: SwipeDirection, index: number) => void",
+        description: "Fired with the direction thrown and the index of the card that left.",
+      },
+      {
+        name: "onEmpty",
+        type: "() => void",
+        description: "Fired once the last card leaves. Never fires while `loop` is set.",
+      },
+      {
+        name: "empty",
+        type: "React.ReactNode",
+        description: "Rendered in place of the deck once every card is gone.",
+      },
+      {
+        name: "ref",
+        type: "Ref<SwipeCardStackHandle>",
+        description:
+          "Imperative control: `swipe(direction)` throws the top card, `reset()` refills the deck, `element` is the container.",
+      },
+      {
+        name: "variant (SwipeCard)",
+        type: '"outline" | "elevated" | "muted"',
+        defaultValue: '"elevated"',
+        description:
+          "Surface treatment of one card. A card in a deck carries its shadow by default, because it has cards under it.",
+      },
+      {
+        name: "padding (SwipeCard)",
+        type: '"none" | "sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description:
+          "The frame around the media well and the gap to the bar under it.",
+      },
+      {
+        name: "aspect (SwipeCardMedia)",
+        type: '"fill" | "square" | "portrait" | "video"',
+        defaultValue: '"fill"',
+        description:
+          "Shape of the media well. `fill` takes the height the card has left, which is what a fixed-height deck wants.",
+      },
+      {
+        name: "wash (SwipeCardMedia)",
+        type: '"none" | "brand" | "scrim"',
+        defaultValue: '"none"',
+        description:
+          "`brand` desaturates the media and blends the brand colour back in as hue alone, so the picture keeps its own light and dark. `scrim` fades the surface up over the media, for text laid on top.",
+      },
+      {
+        name: "position (SwipeCardMediaAction)",
+        type: '"top-right" | "top-left" | "bottom-right" | "bottom-left"',
+        defaultValue: '"top-right"',
+        description: "Corner of the media well the floating control sits in.",
+      },
+      {
+        name: "tone (SwipeCardStatus)",
+        type: '"brand" | "muted" | "destructive"',
+        defaultValue: '"muted"',
+        description: "Colour of the status dot. The word beside it carries the meaning.",
+      },
+      {
+        name: "as (SwipeCardTitle)",
+        type: '"h2" | "h3" | "h4"',
+        defaultValue: '"h3"',
+        description: "Heading level, so the card fits the page outline.",
+      },
+    ],
+    examples: [
+      {
+        title: "The deck",
+        preview: "swipe-card/deck",
+        description:
+          "A card is a media well with a bar under it: the picture takes the height the card has left, and the frame around it is the card's own padding. The stack sizes the cards, so every card fills it.",
+        code: `<SwipeCardStack loop className="h-96 w-full max-w-xs">
+  {people.map((person) => (
+    <SwipeCard key={person.name}>
+      <SwipeCardMedia wash="brand">
+        <img src={person.photo} alt="" draggable={false} />
+        <SwipeCardMediaAction aria-label={\`Share \${person.name}\`}>
+          <Share />
+        </SwipeCardMediaAction>
+      </SwipeCardMedia>
+      <SwipeCardFooter>
+        <SwipeCardHeader>
+          <SwipeCardTitle>{person.name}</SwipeCardTitle>
+          <SwipeCardStatus tone="brand">Online</SwipeCardStatus>
+        </SwipeCardHeader>
+        <ButtonBase size="sm" className="rounded-full" leftIcon={<UserRoundPlus />}>
+          Add
+        </ButtonBase>
+      </SwipeCardFooter>
+    </SwipeCard>
+  ))}
+</SwipeCardStack>`,
+      },
+      {
+        title: "Buttons and callbacks",
+        preview: "swipe-card/controls",
+        description:
+          "`swipe()` on the ref throws the top card exactly as a drag does, so a button and a gesture produce the same animation and the same `onSwipe` call.",
+        code: `const stack = React.useRef<SwipeCardStackHandle>(null);
+
+<SwipeCardStack ref={stack} loop onSwipe={(direction) => setLast(direction)}>
+  {/* cards */}
+</SwipeCardStack>
+
+<ButtonBase size="icon" aria-label="Skip" onClick={() => stack.current?.swipe("left")}>
+  <X />
+</ButtonBase>
+<ButtonBase size="icon" aria-label="Keep" onClick={() => stack.current?.swipe("right")}>
+  <Heart />
+</ButtonBase>`,
+      },
+      {
+        title: "Washing the media",
+        preview: "swipe-card/wash",
+        description:
+          "B6's palette is achromatic apart from the brand colour, so a tint has to come from `brand` or from nothing. `brand` blends hue into a greyscale picture rather than laying a colour over it: a flat colour hides the subject, a blended one replaces what the greyscale never had. `scrim` keeps the colour and fades the surface up instead, for text on top of the picture.",
+        code: `<SwipeCardMedia aspect="portrait" wash="brand">
+  <img src={photo} alt="" />
+</SwipeCardMedia>
+
+<SwipeCardMedia aspect="portrait" wash="scrim">
+  <img src={photo} alt="" />
+</SwipeCardMedia>`,
+      },
+      {
+        title: "Depth",
+        preview: "swipe-card/depth",
+        description:
+          "Depth is four values at once: scale, offset, alternating tilt and opacity. Each has its own step, so the pile can read as tight and neat or loose and hand-stacked.",
+        code: `<SwipeCardStack
+  visibleCards={4}
+  scaleStep={0.07}
+  offsetStep={22}
+  rotateStep={7}
+  opacityStep={0.1}
+>
+  {/* cards */}
+</SwipeCardStack>`,
+      },
+      {
+        title: "Vertical",
+        preview: "swipe-card/axis",
+        description:
+          'With `axis="y"` the card is thrown up or down and the arrow keys follow. `stackFrom="top"` moves the queue to the other edge, closer to a wallet than to a review deck.',
+        code: `<SwipeCardStack axis="y" stackFrom="top">
+  {/* cards */}
+</SwipeCardStack>`,
+      },
+      {
+        title: "Running out",
+        preview: "swipe-card/empty",
+        description:
+          "Without `loop`, a thrown card is gone. `empty` renders once the deck is exhausted and `onEmpty` fires at the same moment.",
+        code: `<SwipeCardStack
+  ref={stack}
+  onEmpty={() => console.log("done")}
+  empty={<p>That is the last one.</p>}
+>
+  {/* cards */}
+</SwipeCardStack>`,
+      },
+    ],
+    accessibility: [
+      "The top card is focusable and the arrow keys throw it, along the same axis the drag uses, so the deck is fully operable without a pointer.",
+      "Focus follows the deck: a thrown card hands focus to the new top card, but only when focus was already inside the stack, so a swipe never pulls focus across the page.",
+      "Queue cards are `aria-hidden` and take no pointer events: only the card on top is reachable, by any input.",
+      "A polite live region announces which card is on top and that the arrow keys work, then announces the empty deck.",
+      'The container is a `group` with `aria-roledescription="card stack"`. Pass `aria-label` to say what the deck holds.',
+      "A control on the media swallows its own pointerdown, so pressing it never starts a drag: a button the thumb lands on stays a button.",
+      "`SwipeCardMediaAction` is icon-only and needs an `aria-label`. Give a decorative photograph `alt=\"\"` so it is skipped rather than announced by its file name.",
+      "`SwipeCardStatus` puts the word beside the dot, so the state never rests on colour alone.",
+      "Under `prefers-reduced-motion` the springs and the drag tilt are dropped: cards restack and leave instantly, and the deck still works the same way.",
+    ],
+    responsive:
+      "The stack sizes the cards: give it a height and a width and every card fills it, and the media well takes whatever height the bar under it leaves. The queue peeks outside that box by `offsetStep` per card, so leave room on the `stackFrom` edge.",
+  },
+  {
     slug: "activity-graph",
     category: "Graphs",
     isNew: true,
@@ -1379,11 +1644,11 @@ export const components: ComponentMeta[] = [
       },
     ],
     accessibility: [
-      "The root is a `role=\"group\"` labelled by `label`, so the player reads as one named region rather than a run of loose controls.",
+      'The root is a `role="group"` labelled by `label`, so the player reads as one named region rather than a run of loose controls.',
       "The matrix is a decorative `<canvas>` marked `aria-hidden` and taking no pointer events. It carries no meaning of its own, so nothing is lost when it is not rendered.",
       "Play state arrives on the root and is handed down, so the ring and the spectrum can never disagree about whether the track is running.",
       "The spectrum honours `useReducedMotion()`: it paints one still frame and stops, the same frame `active={false}` shows.",
-      "The progress ring is a `role=\"progressbar\"` carrying `aria-valuenow`, so the position is available without reading the arc.",
+      'The progress ring is a `role="progressbar"` carrying `aria-valuenow`, so the position is available without reading the arc.',
       "The player renders no controls of its own, so nothing claims to play or pause a track it does not own. Put a real `<button>` or link in `CircularMusicPlayerControls` and wire it to whatever is playing.",
       "Nothing here removes an outline, so focus stays visible through `--color-ring`.",
     ],
