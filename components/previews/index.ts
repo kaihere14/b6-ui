@@ -100,6 +100,7 @@ import { HandwrittenTextPreview } from "@/components/previews/handwritten-text-p
 import { WritingTextPreview } from "@/components/previews/writing-text-preview";
 import { CrossButtonPreview } from "@/components/previews/cross-button-preview";
 import { ThinkingOrbPreview } from "@/components/previews/thinking-orb-preview";
+import { WaterLoadingPreview } from "@/components/previews/water-loading-preview";
 import { CircularMusicPlayerPreview } from "@/components/previews/circular-music-player-preview";
 import { GlowButtonPreview } from "@/components/previews/glow-button-preview";
 import {
@@ -107,6 +108,12 @@ import {
   ThinkingOrbSizesExample,
   ThinkingOrbTonesExample,
 } from "@/components/previews/examples/thinking-orb-examples";
+import {
+  WaterLoadingControlledExample,
+  WaterLoadingInfiniteExample,
+  WaterLoadingSizesExample,
+  WaterLoadingThresholdExample,
+} from "@/components/previews/examples/water-loading-examples";
 import {
   CircularMusicPlayerAnatomyExample,
   CircularMusicPlayerRingExample,
@@ -133,6 +140,7 @@ export const previews: Record<string, ComponentType> = {
   "handwritten-text": HandwrittenTextPreview,
   "cross-button": CrossButtonPreview,
   "thinking-orb": ThinkingOrbPreview,
+  "water-loading": WaterLoadingPreview,
   "circular-music-player": CircularMusicPlayerPreview,
 };
 
@@ -199,6 +207,10 @@ export const exampleDemos: Record<string, ComponentType> = {
   "thinking-orb/sizes": ThinkingOrbSizesExample,
   "thinking-orb/tones": ThinkingOrbTonesExample,
   "thinking-orb/custom": ThinkingOrbCustomExample,
+  "water-loading/sizes": WaterLoadingSizesExample,
+  "water-loading/controlled": WaterLoadingControlledExample,
+  "water-loading/threshold": WaterLoadingThresholdExample,
+  "water-loading/infinite": WaterLoadingInfiniteExample,
   "circular-music-player/anatomy": CircularMusicPlayerAnatomyExample,
   "circular-music-player/ring": CircularMusicPlayerRingExample,
   "circular-music-player/spotify": CircularMusicPlayerSpotifyExample,
