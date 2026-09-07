@@ -1471,6 +1471,136 @@ export const components: ComponentMeta[] = [
       "The pill shrink-wraps its content and never wraps mid-label; the label truncates if a container forces it narrower. All sizing comes from the `size` variant, so it renders the same at any viewport width.",
   },
   {
+    slug: "water-loading",
+    category: "Display",
+    isNew: true,
+    title: "Water Loading",
+    description:
+      "A pull-to-refresh container with an infinite-scroll buffer: drag the feed down to reload, or scroll near the end to load more, and the same oceanic water blob plays at the top strip or the bottom buffer.",
+    source: "registry/loading/water-loading/water-loading.tsx",
+    dependencies: ["motion", "class-variance-authority"],
+    props: [
+      {
+        name: "children",
+        type: "React.ReactNode",
+        required: true,
+        description: "The scrollable content the gesture pulls down.",
+      },
+      {
+        name: "refreshing",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Controlled refresh state. While true the indicator strip is held open and the water animation runs. Set it back to false when the reload resolves.",
+      },
+      {
+        name: "onRefresh",
+        type: "() => void | Promise<void>",
+        description:
+          "Called once the pull passes the threshold and the pointer is released. Return a promise to keep the indicator open until the reload settles.",
+      },
+      {
+        name: "duration",
+        type: "number",
+        defaultValue: "4200",
+        description:
+          "How long the strip stays open when the component runs its own timer, in milliseconds. Ignored when `refreshing` is controlled or `onRefresh` returns a promise.",
+      },
+      {
+        name: "threshold",
+        type: "number",
+        defaultValue: "64",
+        description: "Pull distance in pixels that arms a refresh on release.",
+      },
+      {
+        name: "disabled",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Turn the pull-to-refresh gesture off while keeping the content rendered.",
+      },
+      {
+        name: "onLoadMore",
+        type: "() => void | Promise<void>",
+        description:
+          "Called as the feed nears its end, for infinite scroll. Return a promise to hold the bottom loader open until the next page has been appended.",
+      },
+      {
+        name: "loadingMore",
+        type: "boolean",
+        description:
+          "Controlled bottom-loader state. Leave undefined to let the component manage it from `onLoadMore` (its own timer, or the promise it returns).",
+      },
+      {
+        name: "hasMore",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Whether more pages exist. When false the bottom loader never shows and `onLoadMore` stops firing.",
+      },
+      {
+        name: "loadMoreOffset",
+        type: "number",
+        defaultValue: "160",
+        description:
+          "How far in pixels from the end of the content `onLoadMore` fires, so the next page starts loading before the reader reaches the bottom.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description:
+          "Height of the top strip and bottom buffer the water blob plays in.",
+      },
+    ],
+    examples: [
+      {
+        title: "Sizes",
+        preview: "water-loading/sizes",
+        description: "Three strip heights revealed behind the feed.",
+        code: `<WaterLoading size="sm">{feed}</WaterLoading>
+<WaterLoading size="md">{feed}</WaterLoading>
+<WaterLoading size="lg">{feed}</WaterLoading>`,
+      },
+      {
+        title: "Controlled refreshing",
+        preview: "water-loading/controlled",
+        description:
+          "Drive the strip from your own state instead of the gesture: hold it open while a reload runs, close it when the data lands.",
+        code: `const [refreshing, setRefreshing] = useState(false);
+
+<WaterLoading refreshing={refreshing}>{feed}</WaterLoading>`,
+      },
+      {
+        title: "Custom threshold",
+        preview: "water-loading/threshold",
+        description: "A longer pull before the release arms a refresh.",
+        code: `<WaterLoading threshold={120}>{feed}</WaterLoading>`,
+      },
+      {
+        title: "Infinite scroll",
+        preview: "water-loading/infinite",
+        description:
+          "`onLoadMore` fires from an IntersectionObserver as the end nears; the bottom buffer holds the water blob open until the promise resolves. `hasMore` stops it at the last page.",
+        code: `<WaterLoading
+  onRefresh={reload}
+  onLoadMore={loadNextPage}
+  hasMore={page < totalPages}
+>
+  {items}
+</WaterLoading>`,
+      },
+    ],
+    accessibility: [
+      'The content sits in a live region: `role="region"` with `aria-live="polite"`, and `aria-busy` while a refresh runs, so a reload is announced without stealing focus.',
+      "The top strip and bottom buffer are decorative and marked `aria-hidden`; the refreshed or appended content carries the meaning.",
+      "`disabled` turns the pull gesture off without unmounting the content, so a keyboard or programmatic reload path stays available. Infinite scroll keeps working.",
+      "The water blob (teardrop that morphs into waves) honours `useReducedMotion()`: it holds a single still frame with no tween or loop.",
+    ],
+    responsive:
+      "The container fills its parent's width and the content scrolls inside it. The strip and buffer heights come from the `size` variant, so they are the same at every viewport width. `loadMoreOffset` is device-independent pixels.",
+  },
+  {
     slug: "circular-music-player",
     category: "Display",
     isNew: true,

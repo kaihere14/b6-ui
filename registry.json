@@ -544,6 +544,24 @@
       ]
     },
     {
+      "name": "water-loading",
+      "type": "registry:ui",
+      "title": "Water Loading",
+      "description": "A pull-to-refresh container with an infinite-scroll buffer: drag the feed down to reload, or scroll near the end to load more, and the same oceanic water blob plays at the top strip or the bottom buffer.",
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/loading/water-loading/water-loading.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/water-loading.tsx"
+        }
+      ]
+    },
+    {
       "name": "circular-music-player",
       "type": "registry:ui",
       "title": "Circular Music Player",
