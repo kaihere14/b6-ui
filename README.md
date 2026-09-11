@@ -1,3 +1,4 @@
+
 # B6 UI
 
 **Components you own.**
@@ -106,17 +107,17 @@ import { ButtonBase } from "@/components/ui/button-base";
 
 ### Components
 
-| Component     | Install                                    |
-| ------------- | ------------------------------------------ |
-| Button Base   | `bunx --bun shadcn add @b6-ui/button-base` |
-| Card Base     | `bunx --bun shadcn add @b6-ui/card-base`   |
-| Badge         | `bunx --bun shadcn add @b6-ui/badge`       |
-| Input         | `bunx --bun shadcn add @b6-ui/input`       |
-| Separator     | `bunx --bun shadcn add @b6-ui/separator`   |
-| Design tokens | `bunx --bun shadcn add @b6-ui/tokens`      |
+| Component         | Install                                         |
+| ----------------- | ----------------------------------------------- |
+| Button Base       | `bunx --bun shadcn add @b6-ui/button-base`      |
+| Card Base         | `bunx --bun shadcn add @b6-ui/card-base`        |
+| Badge             | `bunx --bun shadcn add @b6-ui/badge`            |
+| Input             | `bunx --bun shadcn add @b6-ui/input`            |
+| Separator         | `bunx --bun shadcn add @b6-ui/separator`        |
+| Sortable Dropdown | `bunx --bun shadcn add @b6-ui/sortable-dropdown` |
+| Design tokens     | `bunx --bun shadcn add @b6-ui/tokens`           |
 
 ---
-
 ## How the pipeline works
 
 ```
