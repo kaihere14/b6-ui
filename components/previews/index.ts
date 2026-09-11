@@ -103,6 +103,7 @@ import { ThinkingOrbPreview } from "@/components/previews/thinking-orb-preview";
 import { WaterLoadingPreview } from "@/components/previews/water-loading-preview";
 import { CircularMusicPlayerPreview } from "@/components/previews/circular-music-player-preview";
 import { GlowButtonPreview } from "@/components/previews/glow-button-preview";
+import { SortableDropdownPreview } from "@/components/previews/sortable-dropdown-preview";
 import {
   ThinkingOrbCustomExample,
   ThinkingOrbSizesExample,
@@ -121,6 +122,11 @@ import {
   CircularMusicPlayerSpotifyExample,
   CircularMusicPlayerTonesExample,
 } from "@/components/previews/examples/circular-music-player-examples";
+import {
+  SortableDropdownApplyVariantsExample,
+  SortableDropdownAsyncExample,
+  SortableDropdownVariantsExample,
+} from "@/components/previews/examples/sortable-dropdown-examples";
 
 /** Slug → the demo at the top of the component page. Keys match `lib/registry.ts` slugs. */
 export const previews: Record<string, ComponentType> = {
@@ -142,6 +148,7 @@ export const previews: Record<string, ComponentType> = {
   "thinking-orb": ThinkingOrbPreview,
   "water-loading": WaterLoadingPreview,
   "circular-music-player": CircularMusicPlayerPreview,
+  "sortable-dropdown": SortableDropdownPreview,
 };
 
 /**
@@ -216,4 +223,8 @@ export const exampleDemos: Record<string, ComponentType> = {
   "circular-music-player/spotify": CircularMusicPlayerSpotifyExample,
   "circular-music-player/sizes": CircularMusicPlayerSizesExample,
   "circular-music-player/tones": CircularMusicPlayerTonesExample,
+  "sortable-dropdown/anatomy": SortableDropdownPreview,
+  "sortable-dropdown/variants": SortableDropdownVariantsExample,
+  "sortable-dropdown/async": SortableDropdownAsyncExample,
+  "sortable-dropdown/apply-variants": SortableDropdownApplyVariantsExample,
 };

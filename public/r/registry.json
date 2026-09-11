@@ -663,6 +663,25 @@
           "target": "components/ui/separator.tsx"
         }
       ]
+    },
+    {
+      "name": "sortable-dropdown",
+      "type": "registry:ui",
+      "title": "Sortable Dropdown",
+      "description": "A trigger that opens a popover holding a drag-to-rank list, for settings where order is the value.",
+      "dependencies": [
+        "class-variance-authority",
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/dropdown/sortable-dropdown/sortable-dropdown.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/sortable-dropdown.tsx"
+        }
+      ]
     }
   ]
 }

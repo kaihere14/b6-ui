@@ -947,8 +947,7 @@ export const components: ComponentMeta[] = [
         name: "padding (SwipeCard)",
         type: '"none" | "sm" | "md" | "lg"',
         defaultValue: '"md"',
-        description:
-          "The frame around the media well and the gap to the bar under it.",
+        description: "The frame around the media well and the gap to the bar under it.",
       },
       {
         name: "aspect (SwipeCardMedia)",
@@ -1087,7 +1086,7 @@ export const components: ComponentMeta[] = [
       "A polite live region announces which card is on top and that the arrow keys work, then announces the empty deck.",
       'The container is a `group` with `aria-roledescription="card stack"`. Pass `aria-label` to say what the deck holds.',
       "A control on the media swallows its own pointerdown, so pressing it never starts a drag: a button the thumb lands on stays a button.",
-      "`SwipeCardMediaAction` is icon-only and needs an `aria-label`. Give a decorative photograph `alt=\"\"` so it is skipped rather than announced by its file name.",
+      '`SwipeCardMediaAction` is icon-only and needs an `aria-label`. Give a decorative photograph `alt=""` so it is skipped rather than announced by its file name.',
       "`SwipeCardStatus` puts the word beside the dot, so the state never rests on colour alone.",
       "Under `prefers-reduced-motion` the springs and the drag tilt are dropped: cards restack and leave instantly, and the deck still works the same way.",
     ],
@@ -1516,8 +1515,7 @@ export const components: ComponentMeta[] = [
         name: "disabled",
         type: "boolean",
         defaultValue: "false",
-        description:
-          "Turn the pull-to-refresh gesture off while keeping the content rendered.",
+        description: "Turn the pull-to-refresh gesture off while keeping the content rendered.",
       },
       {
         name: "onLoadMore",
@@ -1549,8 +1547,7 @@ export const components: ComponentMeta[] = [
         name: "size",
         type: '"sm" | "md" | "lg"',
         defaultValue: '"md"',
-        description:
-          "Height of the top strip and bottom buffer the water blob plays in.",
+        description: "Height of the top strip and bottom buffer the water blob plays in.",
       },
     ],
     examples: [
@@ -2150,6 +2147,237 @@ export const components: ComponentMeta[] = [
     ],
     responsive:
       "Horizontal rules fill their container; vertical rules stretch to the parent's height via `self-stretch`.",
+  },
+  {
+    slug: "sortable-dropdown",
+    category: "Forms",
+    isNew: true,
+    title: "Sortable Dropdown",
+    description:
+      "A trigger that opens a popover holding a drag-to-rank list, for settings where order is the value: fallback chains, routing priority, channel order.",
+    source: "registry/dropdown/sortable-dropdown/sortable-dropdown.tsx",
+    dependencies: ["class-variance-authority", "motion", "lucide-react"],
+    props: [
+      {
+        name: "items",
+        type: "SortableDropdownItem[]",
+        required: true,
+        description: "Every item the list can rank, keyed by `id`.",
+      },
+      {
+        name: "order",
+        type: "string[]",
+        description: "Ranked ids, most important first. Omit to manage the order internally.",
+      },
+      {
+        name: "defaultOrder",
+        type: "string[]",
+        defaultValue: "items.map((item) => item.id)",
+        description: "Starting order when uncontrolled.",
+      },
+      {
+        name: "onOrderChange",
+        type: "(order: string[]) => void",
+        description: "Fires on every drag or keyboard reorder, controlled or not.",
+      },
+      {
+        name: "open",
+        type: "boolean",
+        description: "Controls the popover. Omit to manage it internally.",
+      },
+      {
+        name: "defaultOpen",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Starting open state when uncontrolled.",
+      },
+      {
+        name: "onOpenChange",
+        type: "(open: boolean) => void",
+        description: "Fires when the popover opens or closes.",
+      },
+      {
+        name: "variant",
+        type: '"outline" | "ghost"',
+        defaultValue: '"outline"',
+        description: "Visual weight of the trigger.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Trigger height and padding.",
+      },
+      {
+        name: "align",
+        type: '"start" | "end"',
+        defaultValue: '"end"',
+        description: "Side the panel is anchored to on wide screens.",
+      },
+      {
+        name: "triggerIcon",
+        type: "React.ReactNode",
+        description: "Icon shown before the trigger label.",
+      },
+      {
+        name: "label",
+        type: "React.ReactNode",
+        required: true,
+        description: "Trigger label, and the panel's default eyebrow.",
+      },
+      {
+        name: "eyebrow",
+        type: "React.ReactNode",
+        description: "Small caps heading inside the panel. Defaults to `label`.",
+      },
+      {
+        name: "description",
+        type: "React.ReactNode",
+        description: "Helper copy under the eyebrow.",
+      },
+      {
+        name: "note",
+        type: "React.ReactNode",
+        description:
+          "Callout rendered under the description, for a caveat about one of the items.",
+      },
+      {
+        name: "onApply",
+        type: "(order: string[]) => void | Promise<void>",
+        description:
+          "Renders the built-in apply button. The button tracks the call itself: `loading` while the promise is in flight, then `success` or `error` depending on whether it resolves or rejects, before auto-resetting to `idle`.",
+      },
+      {
+        name: "applyLabel",
+        type: "React.ReactNode",
+        defaultValue: '"Apply order"',
+        description: "Idle-state label.",
+      },
+      {
+        name: "applyLoadingLabel",
+        type: "React.ReactNode",
+        defaultValue: '"Applying…"',
+        description: "Label shown while `onApply` is in flight.",
+      },
+      {
+        name: "applySuccessLabel",
+        type: "React.ReactNode",
+        defaultValue: '"Applied"',
+        description: "Label shown after `onApply` resolves, before auto-reset.",
+      },
+      {
+        name: "applyErrorLabel",
+        type: "React.ReactNode",
+        defaultValue: '"Couldn\'t apply"',
+        description: "Label shown after `onApply` rejects, before auto-reset.",
+      },
+      {
+        name: "applyResetDelay",
+        type: "number",
+        defaultValue: "2000",
+        description:
+          "Milliseconds spent in `success` or `error` before returning to `idle`. `0` disables auto-reset.",
+      },
+      {
+        name: "applyVariant",
+        type: '"primary" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
+        defaultValue: '"primary"',
+        description: "Visual weight of the apply button.",
+      },
+      {
+        name: "applySize",
+        type: '"sm" | "md" | "lg" | "icon"',
+        defaultValue: '"md"',
+        description: "Apply button height and padding.",
+      },
+      {
+        name: "applyStatus",
+        type: '"idle" | "loading" | "success" | "error"',
+        description:
+          "Drives the apply button's status from outside (e.g. a mutation library) instead of tracking it internally. `onApply` still fires on click.",
+      },
+      {
+        name: "footer",
+        type: "React.ReactNode",
+        description: "Replaces the built-in apply button entirely.",
+      },
+      {
+        name: "staggerDelay",
+        type: "number",
+        defaultValue: "0.09",
+        description:
+          "Seconds between each row's entrance as the list cascades in on open. Lower is faster.",
+      },
+    ],
+    examples: [
+      {
+        title: "Anatomy",
+        preview: "sortable-dropdown/anatomy",
+        description:
+          "Uncontrolled by default: open state and order both live inside the component until you pass `order` or `open`.",
+        code: `const items = [
+  { id: "push", label: "Push", icon: <ChannelIcon icon={Bell} /> },
+  { id: "email", label: "Email", icon: <ChannelIcon icon={Mail} /> },
+  { id: "sms", label: "SMS", icon: <ChannelIcon icon={MessageSquare} /> },
+];
+
+<SortableDropdown
+  items={items}
+  label="Notify me by"
+  eyebrow="Notification priority"
+  description="Drag to rank. The top channel fires first, the rest are fallbacks in order."
+/>`,
+      },
+      {
+        title: "Variants and sizes",
+        preview: "sortable-dropdown/variants",
+        description:
+          "`variant` and `size` shape the trigger only. The panel and rows stay the same at every size.",
+        code: `<SortableDropdown items={regions} label="Failover order" variant="outline" size="sm" />
+<SortableDropdown items={regions} label="Failover order" variant="ghost" size="md" />`,
+      },
+      {
+        title: "Controlled order, async apply, and a note",
+        preview: "sortable-dropdown/async",
+        description:
+          "`order` and `onOrderChange` make the ranking controlled. The apply button tracks `onApply` itself: it goes to `loading` while the promise runs, then `success` if it resolves or `error` (with a shake) if it rejects, before auto-resetting to `idle`.",
+        code: `const [order, setOrder] = React.useState(providers.map((item) => item.id));
+
+const handleApply = async (next: string[]) => {
+  await saveProviderPriority(next);
+  setOrder(next);
+};
+
+<SortableDropdown
+  items={providers}
+  order={order}
+  onOrderChange={setOrder}
+  label="AI Priority"
+  note="Sarvam has a small context window: the pipeline trims context to fit before calling it."
+  applyErrorLabel="Can't be primary"
+  onApply={handleApply}
+/>`,
+      },
+      {
+        title: "Apply button variants",
+        preview: "sortable-dropdown/apply-variants",
+        description:
+          "`applyVariant` and `applySize` style the built-in apply button with the same variant set as Stateful Button and Button Base, so the action can match the surface it's dropped into.",
+        code: `<SortableDropdown items={regions} label="Failover order" applyVariant="primary" onApply={saveOrder} />
+<SortableDropdown items={regions} label="Failover order" applyVariant="secondary" onApply={saveOrder} />
+<SortableDropdown items={regions} label="Failover order" applyVariant="outline" onApply={saveOrder} />
+<SortableDropdown items={regions} label="Failover order" applyVariant="destructive" onApply={saveOrder} />`,
+      },
+    ],
+    accessibility: [
+      "Dragging is the fast path, not the only path: every row carries `aria-label`led up/down buttons, so ranking works without a pointer.",
+      "The trigger carries `aria-haspopup` and `aria-expanded`. `Escape` closes the panel and returns focus to the trigger.",
+      "The apply button is disabled until the order actually changes, so it never fires on an accidental open and close, and it blocks repeat clicks for the rest of its loading/success/error cycle.",
+      "The apply button's status change is announced through `aria-live`, and `aria-busy` marks it while `onApply` is in flight, so the outcome doesn't depend on seeing the icon or colour change.",
+      "Colour never carries the ranking alone: position and the `Primary` / `Fallback n` caption both say it.",
+    ],
+    responsive:
+      "The trigger is full width below `sm` and shrinks to its content above it. The panel matches that on open and gains a fixed width at `sm` and `md`.",
   },
 ];
 
