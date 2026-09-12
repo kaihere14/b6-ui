@@ -463,6 +463,8 @@ export const SortableDropdown = React.forwardRef<HTMLDivElement, SortableDropdow
       left?: number;
       right?: number;
     }>();
+    /** Which side of the trigger the panel actually landed on, after the flip check below. Drives animation direction and transform-origin. */
+    const [placement, setPlacement] = React.useState<"bottom" | "top">("bottom");
 
     const itemsById = React.useMemo(() => {
       const map = new Map<string, SortableDropdownItem>();
@@ -526,28 +528,58 @@ export const SortableDropdown = React.forwardRef<HTMLDivElement, SortableDropdow
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
 
+    const GAP = 8;
+
     // The panel is portaled to `document.body`, so it has to be positioned by
     // hand from the trigger's own rect instead of an `absolute` inset. Reruns
-    // on scroll and resize so the panel tracks the trigger while it is open.
-    React.useEffect(() => {
+    // on scroll and resize so the panel tracks the trigger while it is open,
+    // and via ResizeObserver so a height change (e.g. the panel mounting for
+    // the first time, going from 0 to its real height) re-checks the flip.
+    //
+    // First open, `contentRef.current` is still null (the panel only renders
+    // once `coords` is set), so the first pass has no real height to check
+    // against and places the panel below like a first guess. `coords !==
+    // undefined` in the deps below re-triggers this effect as soon as that
+    // guess causes the panel to mount, at which point its real height is
+    // measurable and the placement decision below is corrected in the same
+    // paint (useLayoutEffect, not useEffect) so nothing visibly jumps.
+    React.useLayoutEffect(() => {
       if (!open) return;
       const updatePosition = () => {
         const rect = triggerRef.current?.getBoundingClientRect();
         if (!rect) return;
+        const contentHeight = contentRef.current?.offsetHeight ?? 0;
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        // Flip only once the real height is known and below genuinely
+        // doesn't fit, and only onto the side with more room, so a panel
+        // that overflows on both sides still opens toward the bigger gap.
+        const opensUp =
+          contentHeight > 0 && spaceBelow < contentHeight + GAP && spaceAbove > spaceBelow;
+        const top = opensUp
+          ? Math.max(GAP, rect.top - contentHeight - GAP)
+          : rect.bottom + GAP;
+        setPlacement(opensUp ? "top" : "bottom");
         setCoords(
           align === "start"
-            ? { top: rect.bottom + 8, left: rect.left }
-            : { top: rect.bottom + 8, right: window.innerWidth - rect.right },
+            ? { top, left: rect.left }
+            : { top, right: window.innerWidth - rect.right },
         );
       };
       updatePosition();
       window.addEventListener("resize", updatePosition);
       window.addEventListener("scroll", updatePosition, true);
+      const resizeObserver = contentRef.current
+        ? new ResizeObserver(updatePosition)
+        : undefined;
+      if (contentRef.current && resizeObserver) resizeObserver.observe(contentRef.current);
       return () => {
         window.removeEventListener("resize", updatePosition);
         window.removeEventListener("scroll", updatePosition, true);
+        resizeObserver?.disconnect();
       };
-    }, [open, align]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open, align, coords !== undefined]);
 
     const moveBy = (index: number, delta: number) => {
       const target = index + delta;
@@ -590,7 +622,12 @@ export const SortableDropdown = React.forwardRef<HTMLDivElement, SortableDropdow
     };
 
     const prefersReducedMotion = useReducedMotion();
-    const hidden = prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.97 };
+    // Slides in from the side it's anchored to: down from the trigger when
+    // below it, up from the trigger when flipped above.
+    const closedY = placement === "top" ? 6 : -6;
+    const hidden = prefersReducedMotion
+      ? { opacity: 0 }
+      : { opacity: 0, y: closedY, scale: 0.97 };
     const shown = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 };
 
     // Rows cascade in top to bottom on open instead of appearing all at once:
@@ -663,7 +700,7 @@ export const SortableDropdown = React.forwardRef<HTMLDivElement, SortableDropdow
                   animate={shown}
                   exit={hidden}
                   transition={POPOVER_SPRING}
-                  style={{ transformOrigin: "top", ...coords }}
+                  style={{ transformOrigin: placement === "top" ? "bottom" : "top", ...coords }}
                   className={sortableDropdownContentClass}
                 >
                   {(eyebrow ?? label) && (
