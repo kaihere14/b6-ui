@@ -18,13 +18,7 @@ const regions: SortableDropdownItem[] = [
 export function SortableDropdownVariantsExample() {
   return (
     <div className="flex flex-wrap items-start gap-4">
-      <SortableDropdown
-        items={regions}
-        label="Failover order"
-        variant="outline"
-        size="sm"
-        defaultOpen
-      />
+      <SortableDropdown items={regions} label="Failover order" variant="outline" size="sm" />
       <SortableDropdown items={regions} label="Failover order" variant="ghost" size="md" />
     </div>
   );
@@ -72,7 +66,6 @@ export function SortableDropdownAsyncExample() {
       note="Sarvam has a small context window: the pipeline trims context to fit before calling it. Drag it to the top and apply to see the error state."
       applyErrorLabel="Can't be primary"
       onApply={handleApply}
-      defaultOpen
     />
   );
 }
@@ -89,7 +82,6 @@ export function SortableDropdownApplyVariantsExample() {
         label="Failover order"
         applyVariant="primary"
         onApply={fakeApiCall}
-        defaultOpen
       />
       <SortableDropdown
         items={regions}
