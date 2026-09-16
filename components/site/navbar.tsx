@@ -62,12 +62,12 @@ export function Navbar() {
           : "border-transparent bg-transparent",
       )}
     >
-      <div className="absolute left-1/8 flex h-6 max-w-5xl items-center gap-6 rotate-180 top-2">
+      <div className="absolute left-1/2 top-2 hidden h-6 max-w-6xl -translate-x-1/2 rotate-180 items-center gap-6 md:flex">
         {nav_svg}
       </div>
       <nav
         aria-label="Main"
-        className="absolute left-[21%] mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6"
+        className="absolute left-1/2 flex h-14 min-w-4xl max-w-4xl -translate-x-1/2 items-center gap-6 px-4 sm:px-6"
       >
         <Link href="/" className="flex">
           <Logo />

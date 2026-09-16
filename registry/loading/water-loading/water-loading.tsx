@@ -407,6 +407,25 @@ const SETTLE: Transition = { type: "spring", stiffness: 260, damping: 30 };
 /** Fallback strip height in px if it cannot be measured yet. */
 const ZONE_FALLBACK = 56;
 
+/**
+ * The track itself never scrolls (its content is only translated via `y`), so
+ * a scrolled-down pull must be judged against whichever ancestor the consumer
+ * actually made scrollable (e.g. wrapping the track in `overflow-y-auto`, as
+ * the infinite-scroll example does). Walk up from the real pointerdown target
+ * to find it.
+ */
+function nearestScrollable(el: Element | null, boundary: Element | null): HTMLElement | null {
+  let node = el instanceof HTMLElement ? el : el?.parentElement ?? null;
+  while (node && node !== boundary) {
+    const style = getComputedStyle(node);
+    if (/(auto|scroll)/.test(style.overflowY) && node.scrollHeight > node.clientHeight) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return null;
+}
+
 const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(function WaterLoading(
   {
     className,
@@ -547,14 +566,18 @@ const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(functio
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!canPull) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
-    const track = trackRef.current;
-    if (track && track.scrollTop > 0) return;
+    const scrollParent = nearestScrollable(event.target as Element | null, trackRef.current?.parentElement ?? null);
+    if (scrollParent && scrollParent.scrollTop > 0) return;
     startYRef.current = event.clientY;
+    // Claim the pointer stream immediately so a fast/hard pull can't hand the
+    // gesture to a scrollable ancestor before the first move is processed.
+    trackRef.current?.setPointerCapture?.(event.pointerId);
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const startY = startYRef.current;
     if (startY === null) return;
+    event.preventDefault();
     const delta = (event.clientY - startY) * PULL_RESISTANCE;
     if (delta <= 0) {
       pull.set(0);
@@ -563,8 +586,6 @@ const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(functio
       if (armed) setArmed(false);
       return;
     }
-    event.preventDefault();
-    trackRef.current?.setPointerCapture?.(event.pointerId);
     const next = Math.min(delta, maxPull);
     pull.set(next);
     y.set(next);
@@ -626,6 +647,7 @@ const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(functio
         className={cn(
           "relative z-10 bg-inherit",
           disabled ? "cursor-default" : "cursor-grab active:cursor-grabbing",
+          phase === "pulling" && "select-none",
         )}
       >
         {children}

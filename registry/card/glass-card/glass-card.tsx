@@ -60,6 +60,9 @@ type MotionSafeProps<Tag extends keyof React.JSX.IntrinsicElements> = Omit<
 const BOUNCE: Transition = { type: "spring", duration: 0.4, bounce: 0.4 };
 const INSTANT: Transition = { duration: 0 };
 
+/** Carousel position/scale/rotation settle: same spring family as `BOUNCE` but no overshoot, since a card sliding to centre should glide, not wobble. */
+const SMOOTH: Transition = { type: "spring", duration: 0.5, bounce: 0 };
+
 /**
  * The one-shot entrance a card plays when `intro` is set: slower and far less
  * bouncy than `BOUNCE`, because a card arriving on screen for the first time
@@ -752,6 +755,13 @@ export const GlassCardCarousel = React.forwardRef<HTMLDivElement, GlassCardCarou
               expanded: isActive ? expandedActive : false,
               onExpandedChange: isActive ? setExpandedActive : undefined,
               expandedClassName: isActive ? "w-4/5" : undefined,
+              // The fanned neighbours read as glass on purpose (see the file
+              // banner), but the centred card is the one actually being
+              // looked at, so it drops the tint and sits fully opaque.
+              className: cn(
+                (card.props as { className?: string }).className,
+                isActive && "bg-glyph",
+              ),
             });
 
             return (
@@ -779,7 +789,7 @@ export const GlassCardCarousel = React.forwardRef<HTMLDivElement, GlassCardCarou
                       : Math.max(0.2, 1 - magnitude * opacityStep),
                   filter: isActive ? "blur(0px)" : `blur(${Math.min(magnitude, 2) * 1.5}px)`,
                 }}
-                transition={reduced ? INSTANT : BOUNCE}
+                transition={reduced ? INSTANT : SMOOTH}
               >
                 {isActive ? (
                   item
@@ -828,7 +838,7 @@ export const GlassCardCarousel = React.forwardRef<HTMLDivElement, GlassCardCarou
                   aria-current={isActive || undefined}
                   onClick={() => setActive(index)}
                   className={cn(
-                    "relative h-1.5 shrink-0 overflow-hidden rounded-full bg-glyph-foreground/20",
+                    "relative h-1.5 shrink-0 cursor-pointer overflow-hidden rounded-full bg-glyph-foreground/20",
                     "transition-[width] duration-300 ease-b6-out",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                     isActive ? "w-6" : "w-1.5",

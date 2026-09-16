@@ -44,8 +44,10 @@ export interface ComponentMeta {
   description: string;
   /** Sidebar grouping. */
   category: ComponentCategory;
-  /** Flags the component as recently added in the sidebar. */
+  /** Flags the component as recently added in the sidebar. Derived, not authored. */
   isNew?: boolean;
+  /** ISO date the component's source file was added, e.g. from `git log --diff-filter=A`. Drives `isNew`. */
+  addedAt: string;
   /** Source file, relative to the repository root. */
   source: string;
   /** npm packages the component pulls in. */

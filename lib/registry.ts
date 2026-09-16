@@ -8,9 +8,10 @@ import { componentCategories, type ComponentMeta } from "@/types";
  * `shadcn add`. Adding a component means adding one entry here and one entry
  * in `registry.json`.
  */
-export const components: ComponentMeta[] = [
+const componentsData: Omit<ComponentMeta, "isNew">[] = [
   {
     slug: "button-base",
+    addedAt: "2026-08-28",
     category: "Buttons",
     title: "Button Base",
     description:
@@ -115,8 +116,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "magnetic-button",
+    addedAt: "2026-08-28",
     category: "Buttons",
-    isNew: true,
     title: "Magnetic Button",
     description:
       "A standalone button that leans toward the pointer while the pointer is over it, and springs back when it leaves.",
@@ -232,8 +233,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "cross-button",
+    addedAt: "2026-09-01",
     category: "Buttons",
-    isNew: true,
     title: "Cross Button",
     description:
       "A family of close or dismiss buttons with two interaction modes: a plain close, and a timed countdown that draws a border before enabling.",
@@ -351,8 +352,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "stateful-button",
+    addedAt: "2026-08-29",
     category: "Buttons",
-    isNew: true,
     title: "Stateful Button",
     description:
       "A button that progresses through four visual states (idle, loading, success and error) with animated icon transitions and an error shake.",
@@ -528,8 +529,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "glow-button",
+    addedAt: "2026-09-05",
     category: "Buttons",
-    isNew: true,
     title: "Glow Button",
     description:
       "A solid button lit from the inside: an inset glow and a hairline inset ring, both brightening on hover.",
@@ -642,8 +643,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "depth-button",
+    addedAt: "2026-08-29",
     category: "Buttons",
-    isNew: true,
     title: "Depth Button",
     description:
       "A button that sits on a hard, unblurred ledge and travels down into it: half-way on hover, flush with the page on press.",
@@ -756,6 +757,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "card-base",
+    addedAt: "2026-08-28",
     category: "Layout",
     title: "Card Base",
     description:
@@ -831,14 +833,20 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "swipe-card",
+    addedAt: "2026-09-05",
     category: "Layout",
-    isNew: true,
     title: "Swipe Card",
     description:
       "A media-forward card deck stacked in depth, where the top card is dragged away with spring physics and the queue restacks behind it.",
     source: "registry/card/swipe-card/swipe-card.tsx",
     dependencies: ["class-variance-authority", "motion"],
     props: [
+      {
+        name: "children (SwipeCardStack)",
+        type: "React.ReactNode",
+        required: true,
+        description: "Cards, front of the deck first.",
+      },
       {
         name: "axis",
         type: '"x" | "y" | "both"',
@@ -1095,8 +1103,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "glass-card",
+    addedAt: "2026-09-16",
     category: "Layout",
-    isNew: true,
     title: "Glass Card",
     description:
       "A poster-forward carousel card: a dark glass surface over a media well with a play button and a callout, a title strip, and an optional detail panel. `GlassCardCarousel` fans several in depth and brings a clicked one to the centre with a bounce.",
@@ -1139,6 +1147,12 @@ export const components: ComponentMeta[] = [
         description: "Fired whenever `expanded` would change, controlled or not.",
       },
       {
+        name: "expandedClassName",
+        type: "string",
+        description:
+          "Extra classes applied only while `expanded` is true, merged in after the card's own variant classes, e.g. `expandedClassName=\"w-4/5\"` to grow into a wider rectangle.",
+      },
+      {
         name: "intro",
         type: "boolean",
         defaultValue: "false",
@@ -1157,6 +1171,12 @@ export const components: ComponentMeta[] = [
         type: '"h2" | "h3" | "h4"',
         defaultValue: '"h3"',
         description: "Heading level, so the card fits the page outline.",
+      },
+      {
+        name: "children (GlassCardCarousel)",
+        type: "React.ReactNode",
+        required: true,
+        description: "Cards, left to right. Each is expected to be a `GlassCard` element.",
       },
       {
         name: "active (GlassCardCarousel)",
@@ -1188,6 +1208,19 @@ export const components: ComponentMeta[] = [
         defaultValue: "0.14 / 0.32 / 28 / 130",
         description:
           "Scale removed, opacity removed, degrees of Y rotation, and pixels shifted, per step a card sits away from the centre.",
+      },
+      {
+        name: "autoPlay (GlassCardCarousel)",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Advance `active` on a timer, wrapping past the last card back to the first. Paused on hover and while a card's details are open.",
+      },
+      {
+        name: "autoPlayInterval (GlassCardCarousel)",
+        type: "number",
+        defaultValue: "3000",
+        description: "Milliseconds between automatic advances while `autoPlay` is on.",
       },
     ],
     examples: [
@@ -1307,8 +1340,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "activity-graph",
+    addedAt: "2026-08-29",
     category: "Graphs",
-    isNew: true,
     title: "Activity Graph",
     description:
       "A configurable seven-day stacked-bar graph for any activity series, with derived totals and optional hatched fills.",
@@ -1418,8 +1451,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "dot-matrix-graph",
+    addedAt: "2026-08-30",
     category: "Graphs",
-    isNew: true,
     title: "Dot Matrix Graph",
     description:
       "A column graph drawn in dots instead of bars: one dot per unit, stacked from the baseline up, with two periods comparable inside one plot.",
@@ -1585,8 +1618,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "thinking-orb",
+    addedAt: "2026-09-02",
     category: "Display",
-    isNew: true,
     title: "Thinking Orb",
     description:
       "A status pill that pairs an animated orb with a label, for showing what an agent is doing: thinking, listening, searching, working, solving.",
@@ -1683,8 +1716,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "water-loading",
+    addedAt: "2026-09-08",
     category: "Display",
-    isNew: true,
     title: "Water Loading",
     description:
       "A pull-to-refresh container with an infinite-scroll buffer: drag the feed down to reload, or scroll near the end to load more, and the same oceanic water blob plays at the top strip or the bottom buffer.",
@@ -1811,8 +1844,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "circular-music-player",
+    addedAt: "2026-09-04",
     category: "Display",
-    isNew: true,
     title: "Circular Music Player",
     description:
       "A round dot-matrix panel in the shape of a phone-back glyph: a dark disc of square pixels with a spectrum rising from the bottom and a progress ring around the rim, driven by the playback state you pass it.",
@@ -1887,11 +1920,23 @@ export const components: ComponentMeta[] = [
           "On `CircularMusicPlayerMatrix`. Draw the decaying marker that hangs above each bar after a hit.",
       },
       {
-        name: "inset",
+        name: "inset (CircularMusicPlayerMatrix)",
         type: '"none" | "sm" | "md" | "lg"',
         defaultValue: '"none"',
         description:
-          "On `CircularMusicPlayerMatrix`. How far the pixel grid pulls back from the rim. Use `sm` to clear the band the progress ring sits in.",
+          "How far the pixel grid pulls back from the rim. Use `sm` to clear the band the progress ring sits in.",
+      },
+      {
+        name: "inset (CircularMusicPlayerDial)",
+        type: '"none" | "sm" | "md" | "lg"',
+        defaultValue: '"sm"',
+        description: "How far the dial face pulls back from the rim.",
+      },
+      {
+        name: "label (CircularMusicPlayerProgress)",
+        type: "string",
+        defaultValue: '"Playback progress"',
+        description: "Name announced for the progress ring.",
       },
       {
         name: "value",
@@ -1996,6 +2041,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "badge",
+    addedAt: "2026-08-28",
     category: "Display",
     title: "Badge",
     description: "A compact status marker in five tones and two sizes.",
@@ -2044,6 +2090,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "input",
+    addedAt: "2026-08-28",
     category: "Forms",
     title: "Input",
     description:
@@ -2112,11 +2159,11 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "writing-text",
+    addedAt: "2026-08-30",
     category: "Text",
     title: "Writing Text",
     description:
       "Text that writes itself in one character at a time behind a blinking caret, at a speed you set.",
-    isNew: true,
     source: "registry/text/writing-text/writing-text.tsx",
     dependencies: ["class-variance-authority", "motion"],
     props: [
@@ -2202,11 +2249,11 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "handwritten-text",
+    addedAt: "2026-08-31",
     category: "Text",
     title: "Handwritten Text",
     description:
       "A line written by a pen: connected script drawn stroke by stroke, in the order a hand would draw it, in either of two hands.",
-    isNew: true,
     source: "registry/text/handwritten-text/handwritten-text.tsx",
     dependencies: ["class-variance-authority", "motion"],
     props: [
@@ -2313,6 +2360,7 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "separator",
+    addedAt: "2026-08-28",
     category: "Layout",
     title: "Separator",
     description: "A one-pixel rule, horizontal or vertical, optionally captioned.",
@@ -2362,8 +2410,8 @@ export const components: ComponentMeta[] = [
   },
   {
     slug: "sortable-dropdown",
+    addedAt: "2026-09-11",
     category: "Forms",
-    isNew: true,
     title: "Sortable Dropdown",
     description:
       "A trigger that opens a popover holding a drag-to-rank list, for settings where order is the value: fallback chains, routing priority, channel order.",
@@ -2520,6 +2568,17 @@ export const components: ComponentMeta[] = [
         description:
           "Seconds between each row's entrance as the list cascades in on open. Lower is faster.",
       },
+      {
+        name: "src (SortableDropdownAvatar)",
+        type: "string",
+        description: "Image shown when it loads. Falls back to the first letter of `alt`.",
+      },
+      {
+        name: "alt (SortableDropdownAvatar)",
+        type: "string",
+        required: true,
+        description: "Letter fallback source, and the image's alt text when `src` loads.",
+      },
     ],
     examples: [
       {
@@ -2592,6 +2651,26 @@ const handleApply = async (next: string[]) => {
       "The trigger is full width below `sm` and shrinks to its content above it. The panel matches that on open and gains a fixed width at `sm` and `md`.",
   },
 ];
+
+/** How many of the most recently added registry items carry the "New" tag. */
+const NEW_TAG_COUNT = 3;
+
+/**
+ * Registry items with `isNew` derived from `addedAt`, not array position:
+ * `componentsData` is grouped by category, not chronology, so the newest
+ * `NEW_TAG_COUNT` dates get the tag automatically as new components land.
+ */
+const newestSlugs = new Set(
+  [...componentsData]
+    .sort((a, b) => b.addedAt.localeCompare(a.addedAt))
+    .slice(0, NEW_TAG_COUNT)
+    .map((component) => component.slug),
+);
+
+export const components: ComponentMeta[] = componentsData.map((component) => ({
+  ...component,
+  isNew: newestSlugs.has(component.slug),
+}));
 
 export function getComponent(slug: string): ComponentMeta | undefined {
   return components.find((component) => component.slug === slug);

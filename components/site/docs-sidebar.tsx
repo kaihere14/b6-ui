@@ -10,6 +10,7 @@ import {
   MousePointerClick,
   Rocket,
   Rows3,
+  Sparkles,
   TextCursorInput,
   Type,
   type LucideIcon,
@@ -18,7 +19,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { Badge } from "@/components/ui/badge";
 import { docsNav, easeB6Out } from "@/lib/constants";
-import { getComponentsByCategory } from "@/lib/registry";
+import { components, getComponentsByCategory } from "@/lib/registry";
 import { cn } from "@/lib/utils";
 import type { ComponentCategory } from "@/types";
 
@@ -51,6 +52,19 @@ const sections: { label: string; icon: LucideIcon; links: SidebarLink[] }[] = [
     label: "Getting started",
     icon: Rocket,
     links: docsNav.map((item) => ({ href: item.href, title: item.title })),
+  },
+  {
+    // Cross-cutting: surfaces the newest components regardless of category,
+    // in addition to (not instead of) their listing under that category below.
+    label: "New",
+    icon: Sparkles,
+    links: components
+      .filter((component) => component.isNew)
+      .map((component) => ({
+        href: `/components/${component.slug}`,
+        title: component.title,
+        isNew: true,
+      })),
   },
   ...getComponentsByCategory().map((group) => ({
     label: group.category,

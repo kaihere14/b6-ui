@@ -10,16 +10,13 @@ import { cn } from "@/lib/utils";
 /**
  * B6 UI: Cross Button
  *
- * A family of close/dismiss buttons built around the X icon. Three behaviours
+ * A family of close/dismiss buttons built around the X icon. Two behaviours
  * are baked in:
  *
  * **default** — a plain close button.
  * **timed** — the border draws itself around the button over `duration` ms.
  *   The button is disabled until the border completes, at which point
  *   `onReady` fires and the button becomes pressable.
- * **confirm** — pressing once morphs the button into a confirmation state;
- *   pressing again fires the real action. Resets after `confirmTimeout` ms
- *   if the second press never comes.
  *
  * This file is standalone by design. It repeats the B6 button styling rather
  * than importing Button Base, because a registry item must work in a project
