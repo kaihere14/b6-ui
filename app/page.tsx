@@ -5,6 +5,7 @@ import { ComponentCard } from "@/components/site/component-card";
 import { Hero } from "@/components/site/hero";
 import { RotatingInstallCommand } from "@/components/site/install-command";
 import { SectionHeader } from "@/components/site/section-header";
+import { SmoothScroll } from "@/components/site/smooth-scroll";
 import { ButtonBase } from "@/components/ui/button-base";
 import {
   CardBase,
@@ -37,8 +38,8 @@ const pillars = [
 
 export default function HomePage() {
   return (
-    <>
-      <section className="relative isolate overflow-hidden px-4 pt-20 pb-16 sm:px-6 md:pt-28">
+    <SmoothScroll>
+      <section className="relative isolate overflow-hidden px-4 pt-24 pb-24 sm:px-6 md:pt-32 md:pb-28">
         <div aria-hidden className="absolute inset-0 -z-10 b6-grid-bg opacity-60" />
         <Hero componentCount={components.length} />
       </section>
@@ -84,6 +85,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-    </>
+    </SmoothScroll>
   );
 }

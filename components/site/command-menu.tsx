@@ -38,6 +38,14 @@ const entries: SearchEntry[] = [
   })),
 ];
 
+interface CommandMenuProps {
+  /** Trigger footprint: the compact navbar chip, or the hero's larger bar. */
+  size?: "sm" | "lg";
+  /** Label shown on the closed trigger. */
+  label?: string;
+  className?: string;
+}
+
 /**
  * Search over the documentation, opened with the search button or ⌘K / Ctrl+K.
  *
@@ -45,7 +53,7 @@ const entries: SearchEntry[] = [
  * platform already gives the focus trap, the backdrop and Escape-to-close, and
  * the list is small enough that a substring match is the whole search engine.
  */
-export function CommandMenu() {
+export function CommandMenu({ size = "sm", label = "Search docs", className }: CommandMenuProps) {
   const router = useRouter();
   const dialog = React.useRef<HTMLDialogElement>(null);
   const [query, setQuery] = React.useState("");
@@ -110,10 +118,16 @@ export function CommandMenu() {
       <button
         type="button"
         onClick={open}
-        className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-small text-muted-foreground transition-colors duration-150 ease-b6 hover:bg-muted hover:text-foreground sm:w-56"
+        className={cn(
+          "inline-flex items-center gap-2 border border-border bg-card text-muted-foreground transition-colors duration-150 ease-b6 hover:bg-muted hover:text-foreground",
+          size === "lg"
+            ? "h-12 w-full rounded-full px-4 text-body shadow-b6-xs sm:w-72"
+            : "h-9 rounded-md px-2.5 text-small sm:w-56",
+          className,
+        )}
       >
         <Search aria-hidden className="size-4 shrink-0" />
-        <span className="hidden sm:inline">Search docs</span>
+        <span className="hidden sm:inline">{label}</span>
         <span className="sr-only sm:hidden">Search documentation</span>
         <kbd className="ml-auto hidden items-center justify-center rounded-sm border bg-primary/5 p-[2] sm:flex">
           <kbd className="ml-auto hidden rounded border bg-primary-foreground px-2 font-mono text-caption text-muted-foreground drop-shadow-sm drop-shadow-neutral-600 sm:inline dark:drop-shadow-neutral-950">

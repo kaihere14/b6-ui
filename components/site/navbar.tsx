@@ -35,6 +35,21 @@ export function Navbar() {
    */
   const separated = pathname !== "/" || scrolled;
 
+  const nav_svg = (
+    <svg
+      width="3420"
+      height="252"
+      viewBox="0 0 3420 252"
+      xmlns="http://www.w3.org/2000/svg"
+      className="fill-white dark:fill-black"
+    >
+      <path
+        d="M0 251H260L401.5 0.5H2950L3096 251H3419.5"
+        className="stroke-black dark:stroke-white"
+      />
+    </svg>
+  );
+
   return (
     <header
       className={cn(
@@ -44,9 +59,12 @@ export function Navbar() {
           : "border-transparent bg-transparent",
       )}
     >
+      <div className="absolute left-1/8 flex h-6 max-w-5xl items-center gap-6 rotate-180 top-2">
+        {nav_svg}
+      </div>
       <nav
         aria-label="Main"
-        className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6"
+        className="absolute left-[21%] mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6"
       >
         <Link href="/" className="flex">
           <Logo />
@@ -62,7 +80,7 @@ export function Navbar() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "rounded-sm px-3 py-1.5 text-small transition-colors duration-150 ease-b6",
-                    active ? "text-brand" : "text-muted-foreground hover:text-foreground",
+                    active ? "text-brand underline" : "text-muted-foreground hover:text-foreground hover:underline",
                   )}
                 >
                   {item.title}

@@ -13,7 +13,7 @@ export const siteConfig = {
    * Landing headline, one array entry per rendered line. The hero reveals it a
    * word at a time, so the line break is a content decision, not a wrap.
    */
-  heroHeadline: ["Components you own,", "not a dependency."],
+  heroHeadline: ["Design Less.", "Ship Better."],
   /** Stack line shown in the hero pill beside the registry count. */
   heroStack: "Tailwind v4 + React 19",
 } as const;
