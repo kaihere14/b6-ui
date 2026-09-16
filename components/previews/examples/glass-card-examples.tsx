@@ -131,7 +131,7 @@ export function GlassCardIntroExample() {
 
 export function GlassCardCarouselExample() {
   return (
-    <GlassCardCarousel className="w-full py-8">
+    <GlassCardCarousel className="w-full py-8" autoPlay={true} autoPlayInterval={3000}>
       {films.map((film) => (
         <GlassCard key={film.title} expandable className="w-56">
           <GlassCardMedia>

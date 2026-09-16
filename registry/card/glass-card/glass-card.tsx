@@ -585,6 +585,15 @@ export interface GlassCardCarouselProps extends Omit<
   rotateStep?: number;
   /** Pixels a card shifts per step away from centre. */
   offsetStep?: number;
+  /**
+   * Advance `active` on a timer, wrapping past the last card back to the
+   * first: an infinite right-to-left loop, since advancing the index is
+   * exactly what a manual click on the next card over already does. Off by
+   * default: a plain carousel only moves when clicked.
+   */
+  autoPlay?: boolean;
+  /** Milliseconds between automatic advances while `autoPlay` is on. */
+  autoPlayInterval?: number;
 }
 
 /**
@@ -604,6 +613,15 @@ export interface GlassCardCarouselProps extends Omit<
  * and the centred card widens to four-fifths of the row via `expandedClassName`,
  * so it reads as a wider rectangle with room for what it just revealed rather
  * than the same small card with text stuffed underneath.
+ *
+ * A row of dots sits under the fan, one per card and each a click-to-jump
+ * shortcut of its own. The active one is drawn as a pill rather than a plain
+ * dot, and while `autoPlay` is actually ticking it fills from empty to full
+ * in lockstep with `autoPlayInterval`, the way a story or slide counter
+ * shows how long until the next advance rather than just which one is
+ * current. It mounts fresh — and so restarts from empty — every time a
+ * different card becomes active, whether that change came from the timer or
+ * a click.
  */
 export const GlassCardCarousel = React.forwardRef<HTMLDivElement, GlassCardCarouselProps>(
   function GlassCardCarousel(
@@ -618,7 +636,11 @@ export const GlassCardCarousel = React.forwardRef<HTMLDivElement, GlassCardCarou
       opacityStep = 0.32,
       rotateStep = 28,
       offsetStep = 130,
+      autoPlay = false,
+      autoPlayInterval = 3000,
       style,
+      onMouseEnter,
+      onMouseLeave,
       ...props
     },
     ref,
@@ -650,97 +672,194 @@ export const GlassCardCarousel = React.forwardRef<HTMLDivElement, GlassCardCarou
       [isControlled, onActiveChange],
     );
 
+    // Paused on hover so a viewer can actually read the card they stopped
+    // on, and while a card's details are open, so the spotlight moment
+    // isn't yanked away out from under someone reading it. `reduced` opts a
+    // carousel out of driving itself at all: an auto-advancing loop is
+    // exactly the kind of motion that setting exists to suppress. Shared
+    // with the dots below, so the progress pill only ever fills while a
+    // tick is actually scheduled to land.
+    const [hovered, setHovered] = React.useState(false);
+    const timerRunning =
+      autoPlay && !reduced && !hovered && !expandedActive && cards.length > 1;
+
+    // One card settles, holds for the full `autoPlayInterval`, then the next
+    // one comes: the timer is the only thing pacing that gap. It's a fresh
+    // `setInterval` every tick (this effect re-runs whenever `resolvedActive`
+    // changes) rather than one long-lived interval, so a tick can never
+    // silently drift out of step with a stale `resolvedActive` closure — each
+    // one is scheduled off the card that is actually active right now, and
+    // the wait between cards is always this interval, never whatever the
+    // very first render happened to schedule.
+    React.useEffect(() => {
+      if (!timerRunning) return;
+      const id = window.setInterval(() => {
+        setActive((resolvedActive + 1) % cards.length);
+      }, autoPlayInterval);
+      return () => window.clearInterval(id);
+    }, [timerRunning, autoPlayInterval, cards.length, resolvedActive, setActive]);
+
     return (
-      <div
-        ref={ref}
-        data-slot="glass-card-carousel"
-        // No `place-items-center` here: a grid item centred by
-        // `justify-items` shrinks to fit its content, which leaves
-        // `expandedClassName`'s `w-4/5` with no definite width to resolve
-        // its percentage against (the classic auto-width/percentage-width
-        // circularity). Left at the grid default (`stretch`), each item
-        // spans the full column instead, so the card inside has a real
-        // width to be a fraction of, and centres itself via the wrapper's
-        // own `flex justify-center` below.
-        className={cn("grid grid-cols-1", className)}
-        style={{ perspective: "1600px", ...style }}
-        {...props}
-      >
-        {cards.map((card, index) => {
-          const distance = index - resolvedActive;
-          const magnitude = Math.abs(distance);
-          if (magnitude > visible) return null;
-          const side = Math.sign(distance);
-          const isActive = magnitude === 0;
-          // The centred card opening its details is a spotlight moment: every
-          // other card gets out of the way instead of sitting dimmed behind it,
-          // and the centred one is given room to grow into.
-          const eclipsed = !isActive && expandedActive;
+      <div className="flex flex-col items-center">
+        <div
+          ref={ref}
+          data-slot="glass-card-carousel"
+          // No `place-items-center` here: a grid item centred by
+          // `justify-items` shrinks to fit its content, which leaves
+          // `expandedClassName`'s `w-4/5` with no definite width to resolve
+          // its percentage against (the classic auto-width/percentage-width
+          // circularity). Left at the grid default (`stretch`), each item
+          // spans the full column instead, so the card inside has a real
+          // width to be a fraction of, and centres itself via the wrapper's
+          // own `flex justify-center` below.
+          className={cn("grid grid-cols-1", className)}
+          style={{ perspective: "1600px", ...style }}
+          onMouseEnter={(event) => {
+            onMouseEnter?.(event);
+            setHovered(true);
+          }}
+          onMouseLeave={(event) => {
+            onMouseLeave?.(event);
+            setHovered(false);
+          }}
+          {...props}
+        >
+          {cards.map((card, index) => {
+            // The shortest signed distance around the ring, not the plain
+            // index difference: wrapping past the last card lands adjacent to
+            // the first rather than jumping across the whole row, so an
+            // autoplay loop reads as one continuous ring with no seam where
+            // it resets back to the start.
+            const length = cards.length;
+            let distance = (index - resolvedActive) % length;
+            if (distance > length / 2) distance -= length;
+            else if (distance < -length / 2) distance += length;
+            const magnitude = Math.abs(distance);
+            if (magnitude > visible) return null;
+            const side = Math.sign(distance);
+            const isActive = magnitude === 0;
+            // The centred card opening its details is a spotlight moment: every
+            // other card gets out of the way instead of sitting dimmed behind it,
+            // and the centred one is given room to grow into.
+            const eclipsed = !isActive && expandedActive;
 
-          // Children are documented as `GlassCard` elements: the carousel owns
-          // which one is expanded, so a card leaving the centre cannot stay open.
-          // Growing into `expandedClassName`'s width is how the centred card
-          // takes the room its now-hidden neighbours gave up, rather than just
-          // scaling up: a wider box, not a bigger copy of the same shape.
-          const item = React.cloneElement(card as React.ReactElement<GlassCardProps>, {
-            expanded: isActive ? expandedActive : false,
-            onExpandedChange: isActive ? setExpandedActive : undefined,
-            expandedClassName: isActive ? "w-4/5" : undefined,
-          });
+            // Children are documented as `GlassCard` elements: the carousel owns
+            // which one is expanded, so a card leaving the centre cannot stay open.
+            // Growing into `expandedClassName`'s width is how the centred card
+            // takes the room its now-hidden neighbours gave up, rather than just
+            // scaling up: a wider box, not a bigger copy of the same shape.
+            const item = React.cloneElement(card as React.ReactElement<GlassCardProps>, {
+              expanded: isActive ? expandedActive : false,
+              onExpandedChange: isActive ? setExpandedActive : undefined,
+              expandedClassName: isActive ? "w-4/5" : undefined,
+            });
 
-          return (
-            <motion.div
-              key={card.key ?? index}
-              data-slot="glass-card-carousel-item"
-              // Fills the full grid column (see the container's className
-              // above) and re-centres its child itself, so a card growing
-              // into `expandedClassName` visibly expands outward from its
-              // own centred position rather than from a stray edge.
-              className="flex items-center justify-center"
-              style={{ gridArea: "1 / 1", zIndex: isActive ? cards.length + 1 : cards.length - magnitude }}
-              initial={false}
-              animate={{
-                x: side * magnitude * offsetStep,
-                rotateY: isActive ? 0 : -side * rotateStep,
-                scale: isActive ? 1 : Math.max(0.4, 1 - magnitude * scaleStep),
-                opacity: eclipsed ? 0 : isActive ? 1 : Math.max(0.2, 1 - magnitude * opacityStep),
-                filter: isActive ? "blur(0px)" : `blur(${Math.min(magnitude, 2) * 1.5}px)`,
-              }}
-              transition={reduced ? INSTANT : BOUNCE}
-            >
-              {isActive ? (
-                item
-              ) : (
-                <div
-                  role="button"
-                  tabIndex={eclipsed ? -1 : 0}
-                  aria-hidden={eclipsed || undefined}
-                  aria-label={
-                    (card.props as { "aria-label"?: string })["aria-label"] ??
-                    `Show card ${index + 1} of ${cards.length}`
-                  }
-                  onClick={() => {
-                    if (eclipsed) return;
-                    setActive(index);
-                  }}
-                  onKeyDown={(event) => {
-                    if (eclipsed || (event.key !== "Enter" && event.key !== " ")) return;
-                    event.preventDefault();
-                    setActive(index);
-                  }}
+            return (
+              <motion.div
+                key={card.key ?? index}
+                data-slot="glass-card-carousel-item"
+                // Fills the full grid column (see the container's className
+                // above) and re-centres its child itself, so a card growing
+                // into `expandedClassName` visibly expands outward from its
+                // own centred position rather than from a stray edge.
+                className="flex items-center justify-center"
+                style={{
+                  gridArea: "1 / 1",
+                  zIndex: isActive ? cards.length + 1 : cards.length - magnitude,
+                }}
+                initial={false}
+                animate={{
+                  x: side * magnitude * offsetStep,
+                  rotateY: isActive ? 0 : -side * rotateStep,
+                  scale: isActive ? 1 : Math.max(0.4, 1 - magnitude * scaleStep),
+                  opacity: eclipsed
+                    ? 0
+                    : isActive
+                      ? 1
+                      : Math.max(0.2, 1 - magnitude * opacityStep),
+                  filter: isActive ? "blur(0px)" : `blur(${Math.min(magnitude, 2) * 1.5}px)`,
+                }}
+                transition={reduced ? INSTANT : BOUNCE}
+              >
+                {isActive ? (
+                  item
+                ) : (
+                  <div
+                    role="button"
+                    tabIndex={eclipsed ? -1 : 0}
+                    aria-hidden={eclipsed || undefined}
+                    aria-label={
+                      (card.props as { "aria-label"?: string })["aria-label"] ??
+                      `Show card ${index + 1} of ${cards.length}`
+                    }
+                    onClick={() => {
+                      if (eclipsed) return;
+                      setActive(index);
+                    }}
+                    onKeyDown={(event) => {
+                      if (eclipsed || (event.key !== "Enter" && event.key !== " ")) return;
+                      event.preventDefault();
+                      setActive(index);
+                    }}
+                    className={cn(
+                      "cursor-pointer rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                      eclipsed && "pointer-events-none",
+                    )}
+                  >
+                    <div inert className="pointer-events-none">
+                      {item}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {cards.length > 1 ? (
+          <div data-slot="glass-card-carousel-dots" className="mt-4 flex items-center gap-1.5">
+            {cards.map((card, index) => {
+              const isActive = index === resolvedActive;
+              return (
+                <button
+                  key={card.key ?? index}
+                  type="button"
+                  aria-label={`Go to card ${index + 1} of ${cards.length}`}
+                  aria-current={isActive || undefined}
+                  onClick={() => setActive(index)}
                   className={cn(
-                    "cursor-pointer rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                    eclipsed && "pointer-events-none",
+                    "relative h-1.5 shrink-0 overflow-hidden rounded-full bg-glyph-foreground/20",
+                    "transition-[width] duration-300 ease-b6-out",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                    isActive ? "w-6" : "w-1.5",
                   )}
                 >
-                  <div inert className="pointer-events-none">
-                    {item}
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          );
-        })}
+                  {isActive ? (
+                    // Mounts fresh every time this dot becomes the active
+                    // one (React remounts it, since its parent button was
+                    // just rendering `null` a moment ago), so the fill
+                    // always restarts from empty on a card change, exactly
+                    // like a countdown resetting. It only actually animates
+                    // while `timerRunning`: paused (hovered, an open detail
+                    // panel, `autoPlay` off, or `reduced`) shows a plain
+                    // filled pill instead of a frozen mid-count one.
+                    <motion.span
+                      aria-hidden="true"
+                      className="absolute inset-y-0 left-0 rounded-full bg-glyph-foreground"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={
+                        timerRunning
+                          ? { duration: autoPlayInterval / 1000, ease: "linear" }
+                          : INSTANT
+                      }
+                    />
+                  ) : null}
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     );
   },
