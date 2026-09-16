@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { CommandMenuDialog } from "@/components/site/command-menu";
 import { Footer } from "@/components/site/footer";
 import { Navbar } from "@/components/site/navbar";
 import { ThemeScript } from "@/components/site/theme-script";
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <CommandMenuDialog />
       </body>
     </html>
   );

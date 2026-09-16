@@ -10,6 +10,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*data-scroll-behavior="smooth"*.b6-code  */
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   /* Surfaces & text */
   --b6-background: oklch(0.985 0.001 17.5);

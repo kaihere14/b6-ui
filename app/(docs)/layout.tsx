@@ -11,7 +11,7 @@ import { DocsSidebar } from "@/components/site/docs-sidebar";
  */
 export default function DocsLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="mx-auto grid max-w-7xl gap-x-12 px-4 sm:px-6 lg:grid-cols-[14rem_minmax(0,1fr)] xl:grid-cols-[14rem_minmax(0,1fr)_12rem]">
+    <div className="mx-auto grid max-w-7xl gap-x-12 px-4 pt-16 sm:px-6 lg:grid-cols-[14rem_minmax(0,1fr)] xl:grid-cols-[14rem_minmax(0,1fr)_12rem]">
       <DocsSidebar />
       {children}
     </div>

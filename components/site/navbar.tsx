@@ -44,8 +44,11 @@ export function Navbar() {
       className="fill-white dark:fill-black"
     >
       <path
-        d="M0 251H260L401.5 0.5H2950L3096 251H3419.5"
-        className="stroke-black dark:stroke-white"
+        d="M0 251 L220 251 Q260 251 279.67 216.17 L381.83 35.33 Q401.5 0.5 441.5 0.5 L2910 0.5 Q2950 0.5 2970.14 35.06 L3075.86 216.44 Q3096 251 3136 251 L3419.5 251"
+        strokeWidth="6"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+        className="stroke-black/50 dark:stroke-white/50"
       />
     </svg>
   );
