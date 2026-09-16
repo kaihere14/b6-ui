@@ -1,0 +1,6 @@
+# Fast checks only. A commit happens dozens of times a day, so anything slow
+# here gets bypassed with --no-verify and then protects nothing.
+#
+# lint-staged only touches the files you staged, so a commit can never
+# introduce a lint/formatting failure that later fails on push or in CI.
+bunx lint-staged

@@ -1150,7 +1150,7 @@ const componentsData: Omit<ComponentMeta, "isNew">[] = [
         name: "expandedClassName",
         type: "string",
         description:
-          "Extra classes applied only while `expanded` is true, merged in after the card's own variant classes, e.g. `expandedClassName=\"w-4/5\"` to grow into a wider rectangle.",
+          'Extra classes applied only while `expanded` is true, merged in after the card\'s own variant classes, e.g. `expandedClassName="w-4/5"` to grow into a wider rectangle.',
       },
       {
         name: "intro",

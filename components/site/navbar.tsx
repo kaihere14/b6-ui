@@ -62,12 +62,12 @@ export function Navbar() {
           : "border-transparent bg-transparent",
       )}
     >
-      <div className="absolute left-1/2 top-2 hidden h-6 max-w-6xl -translate-x-1/2 rotate-180 items-center gap-6 md:flex">
+      <div className="absolute top-2 left-1/2 hidden h-6 max-w-6xl -translate-x-1/2 rotate-180 items-center gap-6 md:flex">
         {nav_svg}
       </div>
       <nav
         aria-label="Main"
-        className="absolute left-1/2 flex h-14 min-w-4xl max-w-4xl -translate-x-1/2 items-center gap-6 px-4 sm:px-6"
+        className="absolute left-1/2 flex h-14 max-w-4xl min-w-4xl -translate-x-1/2 items-center gap-6 px-4 sm:px-6"
       >
         <Link href="/" className="flex">
           <Logo />
@@ -83,7 +83,9 @@ export function Navbar() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "rounded-sm px-3 py-1.5 text-small transition-colors duration-150 ease-b6",
-                    active ? "text-brand underline" : "text-muted-foreground hover:text-foreground hover:underline",
+                    active
+                      ? "text-brand underline"
+                      : "text-muted-foreground hover:text-foreground hover:underline",
                   )}
                 >
                   {item.title}

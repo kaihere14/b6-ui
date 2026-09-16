@@ -60,7 +60,11 @@ interface CommandMenuProps {
 }
 
 /** A button that opens the shared search dialog. Safe to render more than once. */
-export function CommandMenu({ size = "sm", label = "Search docs", className }: CommandMenuProps) {
+export function CommandMenu({
+  size = "sm",
+  label = "Search docs",
+  className,
+}: CommandMenuProps) {
   // The modifier key never changes, so it is read from the platform rather than
   // held in state. The server snapshot assumes ⌘; hydration corrects it.
   const isApple = React.useSyncExternalStore(

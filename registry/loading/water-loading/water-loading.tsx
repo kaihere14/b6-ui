@@ -415,7 +415,7 @@ const ZONE_FALLBACK = 56;
  * to find it.
  */
 function nearestScrollable(el: Element | null, boundary: Element | null): HTMLElement | null {
-  let node = el instanceof HTMLElement ? el : el?.parentElement ?? null;
+  let node = el instanceof HTMLElement ? el : (el?.parentElement ?? null);
   while (node && node !== boundary) {
     const style = getComputedStyle(node);
     if (/(auto|scroll)/.test(style.overflowY) && node.scrollHeight > node.clientHeight) {
@@ -566,7 +566,10 @@ const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(functio
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!canPull) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
-    const scrollParent = nearestScrollable(event.target as Element | null, trackRef.current?.parentElement ?? null);
+    const scrollParent = nearestScrollable(
+      event.target as Element | null,
+      trackRef.current?.parentElement ?? null,
+    );
     if (scrollParent && scrollParent.scrollTop > 0) return;
     startYRef.current = event.clientY;
     // Claim the pointer stream immediately so a fast/hard pull can't hand the

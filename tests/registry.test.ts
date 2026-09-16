@@ -12,10 +12,13 @@ const registry = JSON.parse(readFileSync(path.join(root, "registry.json"), "utf8
     name: string;
     type: string;
     files?: { path: string; target?: string }[];
+    dependencies?: string[];
     registryDependencies?: string[];
     cssVars?: Record<string, Record<string, string>>;
   }[];
 };
+
+const publicRegistryDir = path.join(root, "public/r");
 
 const uiItems = registry.items.filter((item) => item.type === "registry:ui");
 
@@ -46,6 +49,58 @@ describe("registry.json", () => {
     expect(base?.name).toBe("base");
     expect(base?.files?.[0]?.target).toBe("lib/utils.ts");
     expect(base?.cssVars).toEqual(tokens!.cssVars!);
+  });
+});
+
+describe("published package (public/r)", () => {
+  // `bun run registry:build` is a separate, manual step from editing
+  // `registry/`. Nothing forces a contributor to re-run it, so the committed
+  // JSON a consumer actually installs can silently drift from the source
+  // that is meant to be shipping. This suite is what catches that.
+
+  test("every component item has a built package file", () => {
+    for (const item of uiItems) {
+      expect(existsSync(path.join(publicRegistryDir, `${item.name}.json`))).toBe(true);
+    }
+  });
+
+  test("built package content matches the current source, not a stale build", () => {
+    for (const item of uiItems) {
+      const builtPath = path.join(publicRegistryDir, `${item.name}.json`);
+      if (!existsSync(builtPath)) continue;
+
+      const built = JSON.parse(readFileSync(builtPath, "utf8")) as {
+        files?: { content?: string }[];
+      };
+      const sourcePath = item.files?.[0]?.path;
+      if (!sourcePath) continue;
+
+      const sourceContent = readFileSync(path.join(root, sourcePath), "utf8");
+      expect(built.files?.[0]?.content).toBe(sourceContent);
+    }
+  });
+
+  test("built package declares the same npm dependencies as registry.json", () => {
+    for (const item of uiItems) {
+      const builtPath = path.join(publicRegistryDir, `${item.name}.json`);
+      if (!existsSync(builtPath)) continue;
+
+      const built = JSON.parse(readFileSync(builtPath, "utf8")) as {
+        dependencies?: string[];
+      };
+      expect((built.dependencies ?? []).toSorted()).toEqual(
+        (item.dependencies ?? []).toSorted(),
+      );
+    }
+  });
+
+  test("base and tokens items publish the same design tokens they declare", () => {
+    const base = registry.items.find((item) => item.type === "registry:base");
+    const builtPath = path.join(publicRegistryDir, `${base!.name}.json`);
+    const built = JSON.parse(readFileSync(builtPath, "utf8")) as {
+      cssVars?: Record<string, Record<string, string>>;
+    };
+    expect(built.cssVars).toEqual(base!.cssVars!);
   });
 });
 
