@@ -80,14 +80,16 @@ export function CommandMenu({
       className={cn(
         "inline-flex items-center gap-2 border border-border bg-card text-muted-foreground transition-colors duration-150 ease-b6 hover:bg-muted hover:text-foreground",
         size === "lg"
-          ? "h-12 w-full rounded-full px-4 text-body shadow-b6-xs sm:w-72"
+          ? "h-12 rounded-full px-4 text-body shadow-b6-xs sm:w-72"
           : "h-9 rounded-md px-2.5 text-small sm:w-56",
         className,
       )}
     >
       <Search aria-hidden className="size-4 shrink-0" />
-      <span className="hidden sm:inline">{label}</span>
-      <span className="sr-only sm:hidden">Search documentation</span>
+      <span className={cn("truncate", size === "lg" ? "inline" : "hidden sm:inline")}>
+        {label}
+      </span>
+      {size === "lg" ? null : <span className="sr-only sm:hidden">Search documentation</span>}
       <kbd className="ml-auto hidden items-center justify-center rounded-sm border bg-primary/5 p-[2] sm:flex">
         <kbd className="ml-auto hidden rounded border bg-primary-foreground px-2 font-mono text-caption text-muted-foreground drop-shadow-sm drop-shadow-neutral-600 sm:inline dark:drop-shadow-neutral-950">
           {isApple ? "⌘K" : "Ctrl K"}
