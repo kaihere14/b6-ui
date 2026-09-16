@@ -1,3 +1,4 @@
+
 # B6 UI
 
 B6 UI is an original React component library distributed as source code through the shadcn CLI. Components install directly into your repository as individual TypeScript files, giving you full ownership and customization control with no runtime package dependencies.
@@ -113,10 +114,10 @@ The repository defines the following components across six primary categories:
 | Graphs   | `activity-graph`        | Activity Graph        | `registry/graphs/activity-graph/activity-graph.tsx`                     |
 | Graphs   | `dot-matrix-graph`      | Dot Matrix Graph      | `registry/graphs/dot-matrix-graph/dot-matrix-graph.tsx`                 |
 | Layout   | `card-base`             | Card Base             | `registry/card/card-base/card-base.tsx`                                 |
+| Layout   | `glass-card`            | Glass Card            | `registry/card/glass-card/glass-card.tsx`                               |
 | Layout   | `swipe-card`            | Swipe Card            | `registry/card/swipe-card/swipe-card.tsx`                               |
 | Layout   | `separator`             | Separator             | `registry/separator/separator/separator.tsx`                            |
 | Layout   | `sortable-dropdown`     | Sortable Dropdown     | `registry/dropdown/sortable-dropdown/sortable-dropdown.tsx`             |
-
 ## Development Scripts
 
 Project scripts defined in `package.json` are executed using Bun:
