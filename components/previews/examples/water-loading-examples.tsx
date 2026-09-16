@@ -20,9 +20,7 @@ function Feed() {
             <Icon className="size-4" aria-hidden="true" />
           </span>
           <span className="flex-1 truncate text-small font-medium">{title}</span>
-          <span className="shrink-0 font-mono text-caption text-muted-foreground">
-            {at}
-          </span>
+          <span className="shrink-0 font-mono text-caption text-muted-foreground">{at}</span>
         </li>
       ))}
     </ul>
@@ -48,9 +46,7 @@ export function WaterLoadingSizesExample() {
           key={size}
           className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-b6-md"
         >
-          <div className="px-4 pt-4 pb-3 text-caption text-muted-foreground">
-            size {size}
-          </div>
+          <div className="px-4 pt-4 pb-3 text-caption text-muted-foreground">size {size}</div>
           <WaterLoading size={size}>
             <Feed />
           </WaterLoading>
@@ -123,9 +119,7 @@ export function WaterLoadingInfiniteExample() {
             {Array.from({ length: count }, (_, i) => (
               <li key={i} className="px-4 py-4 text-small">
                 <p className="font-medium">Post {i + 1}</p>
-                <p className="text-muted-foreground">
-                  Scroll on to pull the next page in.
-                </p>
+                <p className="text-muted-foreground">Scroll on to pull the next page in.</p>
               </li>
             ))}
           </ul>

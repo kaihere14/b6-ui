@@ -34,9 +34,7 @@ function RowItem({ icon: Icon, title, body, at }: Row) {
       <div className="min-w-0 flex-1 space-y-1">
         <div className="flex items-baseline justify-between gap-3">
           <p className="truncate font-medium">{title}</p>
-          <span className="shrink-0 font-mono text-caption text-muted-foreground">
-            {at}
-          </span>
+          <span className="shrink-0 font-mono text-caption text-muted-foreground">{at}</span>
         </div>
         <p className="text-small text-muted-foreground">{body}</p>
       </div>

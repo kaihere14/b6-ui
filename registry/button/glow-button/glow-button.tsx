@@ -47,13 +47,13 @@ const glowButtonVariants = cva(
       variant: {
         primary: [
           "bg-primary text-primary-foreground shadow-b6-glow-band",
-          "inset-ring inset-ring-glow inset-shadow-b6-glow",
-          "hover:inset-ring-glow-strong hover:inset-shadow-b6-glow-strong",
+          "inset-shadow-b6-glow inset-ring inset-ring-glow",
+          "hover:inset-shadow-b6-glow-strong hover:inset-ring-glow-strong",
         ],
         secondary: [
           "bg-secondary text-secondary-foreground shadow-b6-glow-band-secondary",
-          "inset-ring inset-ring-glow-secondary inset-shadow-b6-glow-secondary",
-          "hover:inset-ring-glow-secondary-strong hover:inset-shadow-b6-glow-secondary-strong",
+          "inset-shadow-b6-glow-secondary inset-ring inset-ring-glow-secondary",
+          "hover:inset-shadow-b6-glow-secondary-strong hover:inset-ring-glow-secondary-strong",
         ],
         outline: [
           "border border-border bg-background text-foreground",
@@ -62,8 +62,8 @@ const glowButtonVariants = cva(
         ],
         destructive: [
           "bg-destructive text-destructive-foreground shadow-b6-glow-band-destructive",
-          "inset-ring inset-ring-glow-destructive inset-shadow-b6-glow-destructive",
-          "hover:inset-ring-glow-destructive-strong hover:inset-shadow-b6-glow-destructive-strong",
+          "inset-shadow-b6-glow-destructive inset-ring inset-ring-glow-destructive",
+          "hover:inset-shadow-b6-glow-destructive-strong hover:inset-ring-glow-destructive-strong",
         ],
       },
       size: {
@@ -86,8 +86,7 @@ const glowButtonVariants = cva(
 );
 
 export interface GlowButtonProps
-  extends React.ComponentPropsWithoutRef<"button">,
-    VariantProps<typeof glowButtonVariants> {
+  extends React.ComponentPropsWithoutRef<"button">, VariantProps<typeof glowButtonVariants> {
   /** Render the child element instead of a `<button>`, keeping all styling. */
   asChild?: boolean;
   /** Show a spinner, block interaction and mark the control busy. */

@@ -30,6 +30,7 @@ B6 UI is an original React component library distributed as source code through 
 ## Installation
 
 ### 1. Install the Base
+
 Run the base item installer once per project to write `lib/utils.ts` and merge B6 design tokens into your CSS variables:
 
 ```bash
@@ -43,6 +44,7 @@ bunx --bun shadcn@latest add https://ui.armandev.space/r/base.json
 ```
 
 ### 2. Add a Component
+
 Install individual components directly using their registry item URL:
 
 ```bash
@@ -52,6 +54,7 @@ npx shadcn@latest add https://ui.armandev.space/r/button-base.json
 ## Configuration
 
 ### Optional: Register the `@b6-ui` Namespace
+
 To install components using short names instead of full URLs, register the `@b6-ui` registry namespace:
 
 ```bash
@@ -92,88 +95,100 @@ npx shadcn@latest add @b6-ui/button-base
 
 The repository defines the following components across six primary categories:
 
-| Category | Slug | Title | Source Path |
-| --- | --- | --- | --- |
-| Buttons | `button-base` | Button Base | `registry/button/button-base/button-base.tsx` |
-| Buttons | `magnetic-button` | Magnetic Button | `registry/button/magnetic-button/magnetic-button.tsx` |
-| Buttons | `cross-button` | Cross Button | `registry/buttons/cross-button/cross-button.tsx` |
-| Buttons | `stateful-button` | Stateful Button | `registry/button/stateful-button/stateful-button.tsx` |
-| Buttons | `glow-button` | Glow Button | `registry/button/glow-button/glow-button.tsx` |
-| Buttons | `depth-button` | Depth Button | `registry/button/depth-button/depth-button.tsx` |
-| Forms | `input` | Input | `registry/input/input/input.tsx` |
-| Display | `badge` | Badge | `registry/badge/badge/badge.tsx` |
-| Display | `thinking-orb` | Thinking Orb | `registry/orb/thinking-orb/thinking-orb.tsx` |
-| Display | `water-loading` | Water Loading | `registry/loading/water-loading/water-loading.tsx` |
-| Display | `circular-music-player` | Circular Music Player | `registry/music-player/circular-music-player/circular-music-player.tsx` |
-| Text | `handwritten-text` | Handwritten Text | `registry/text/handwritten-text/handwritten-text.tsx` |
-| Text | `writing-text` | Writing Text | `registry/text/writing-text/writing-text.tsx` |
-| Graphs | `activity-graph` | Activity Graph | `registry/graphs/activity-graph/activity-graph.tsx` |
-| Graphs | `dot-matrix-graph` | Dot Matrix Graph | `registry/graphs/dot-matrix-graph/dot-matrix-graph.tsx` |
-| Layout | `card-base` | Card Base | `registry/card/card-base/card-base.tsx` |
-| Layout | `swipe-card` | Swipe Card | `registry/card/swipe-card/swipe-card.tsx` |
-| Layout | `separator` | Separator | `registry/separator/separator/separator.tsx` |
-| Layout | `sortable-dropdown` | Sortable Dropdown | `registry/dropdown/sortable-dropdown/sortable-dropdown.tsx` |
+| Category | Slug                    | Title                 | Source Path                                                             |
+| -------- | ----------------------- | --------------------- | ----------------------------------------------------------------------- |
+| Buttons  | `button-base`           | Button Base           | `registry/button/button-base/button-base.tsx`                           |
+| Buttons  | `magnetic-button`       | Magnetic Button       | `registry/button/magnetic-button/magnetic-button.tsx`                   |
+| Buttons  | `cross-button`          | Cross Button          | `registry/buttons/cross-button/cross-button.tsx`                        |
+| Buttons  | `stateful-button`       | Stateful Button       | `registry/button/stateful-button/stateful-button.tsx`                   |
+| Buttons  | `glow-button`           | Glow Button           | `registry/button/glow-button/glow-button.tsx`                           |
+| Buttons  | `depth-button`          | Depth Button          | `registry/button/depth-button/depth-button.tsx`                         |
+| Forms    | `input`                 | Input                 | `registry/input/input/input.tsx`                                        |
+| Display  | `badge`                 | Badge                 | `registry/badge/badge/badge.tsx`                                        |
+| Display  | `thinking-orb`          | Thinking Orb          | `registry/orb/thinking-orb/thinking-orb.tsx`                            |
+| Display  | `water-loading`         | Water Loading         | `registry/loading/water-loading/water-loading.tsx`                      |
+| Display  | `circular-music-player` | Circular Music Player | `registry/music-player/circular-music-player/circular-music-player.tsx` |
+| Text     | `handwritten-text`      | Handwritten Text      | `registry/text/handwritten-text/handwritten-text.tsx`                   |
+| Text     | `writing-text`          | Writing Text          | `registry/text/writing-text/writing-text.tsx`                           |
+| Graphs   | `activity-graph`        | Activity Graph        | `registry/graphs/activity-graph/activity-graph.tsx`                     |
+| Graphs   | `dot-matrix-graph`      | Dot Matrix Graph      | `registry/graphs/dot-matrix-graph/dot-matrix-graph.tsx`                 |
+| Layout   | `card-base`             | Card Base             | `registry/card/card-base/card-base.tsx`                                 |
+| Layout   | `swipe-card`            | Swipe Card            | `registry/card/swipe-card/swipe-card.tsx`                               |
+| Layout   | `separator`             | Separator             | `registry/separator/separator/separator.tsx`                            |
+| Layout   | `sortable-dropdown`     | Sortable Dropdown     | `registry/dropdown/sortable-dropdown/sortable-dropdown.tsx`             |
 
 ## Development Scripts
 
 Project scripts defined in `package.json` are executed using Bun:
 
 Start the Next.js development server:
+
 ```bash
 bun run dev
 ```
 
 Build the Next.js production site:
+
 ```bash
 bun run build
 ```
 
 Start the production server:
+
 ```bash
 bun run start
 ```
 
 Run ESLint checks:
+
 ```bash
 bun run lint
 ```
 
 Automatically fix ESLint errors:
+
 ```bash
 bun run lint:fix
 ```
 
 Run TypeScript type checking without emitting files:
+
 ```bash
 bun run typecheck
 ```
 
 Format repository files with Prettier:
+
 ```bash
 bun run format
 ```
 
 Check repository formatting with Prettier:
+
 ```bash
 bun run format:check
 ```
 
 Execute the test suite:
+
 ```bash
 bun run test
 ```
 
 Build registry JSON files using shadcn CLI:
+
 ```bash
 bun run registry:build
 ```
 
 Check registry consistency between `registry.json`, `lib/registry.ts`, and component files:
+
 ```bash
 bun run registry:check
 ```
 
 Run all verification steps (registry check, typecheck, lint, test, build):
+
 ```bash
 bun run verify
 ```
@@ -214,6 +229,7 @@ bun run test
 ```
 
 Tests in `tests/registry.test.ts` verify:
+
 - `registry.json` correctly declares the `b6-ui` namespace, theme, and base items.
 - Component items map to valid single-file paths and install targets.
 - Documentation metadata in `lib/registry.ts` matches all UI items in `registry.json`.

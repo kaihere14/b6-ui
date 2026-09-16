@@ -104,7 +104,8 @@ function clamp01(value: number) {
 }
 
 export interface CircularMusicPlayerProps
-  extends React.ComponentPropsWithoutRef<"div">,
+  extends
+    React.ComponentPropsWithoutRef<"div">,
     VariantProps<typeof circularMusicPlayerVariants> {
   /**
    * Name announced for the player as a whole. Every layer inside is decorative
@@ -317,8 +318,7 @@ const matrixVariants = cva("pointer-events-none absolute z-0", {
 });
 
 export interface CircularMusicPlayerMatrixProps
-  extends React.ComponentPropsWithoutRef<"div">,
-    VariantProps<typeof matrixVariants> {
+  extends React.ComponentPropsWithoutRef<"div">, VariantProps<typeof matrixVariants> {
   /** Pixels across the grid. Rows match, so the pixels stay square. @default 24 */
   columns?: number;
 
@@ -487,8 +487,7 @@ function ringPoint(angle: number) {
   };
 }
 
-export interface CircularMusicPlayerProgressProps
-  extends React.ComponentPropsWithoutRef<"div"> {
+export interface CircularMusicPlayerProgressProps extends React.ComponentPropsWithoutRef<"div"> {
   /** Position through the track, 0 to 1. Defaults to the player's `progress`. */
   value?: number;
 
@@ -611,8 +610,7 @@ const dialVariants = cva("pointer-events-none absolute inset-0 rounded-full", {
 });
 
 export interface CircularMusicPlayerDialProps
-  extends React.ComponentPropsWithoutRef<"div">,
-    VariantProps<typeof dialVariants> {}
+  extends React.ComponentPropsWithoutRef<"div">, VariantProps<typeof dialVariants> {}
 
 /**
  * A ring layer over the panel, for a progress track drawn around the rim. It

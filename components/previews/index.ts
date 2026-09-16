@@ -72,6 +72,12 @@ import {
   SwipeCardWashExample,
 } from "@/components/previews/examples/swipe-card-examples";
 import {
+  GlassCardAnatomyExample,
+  GlassCardCarouselExample,
+  GlassCardIntroExample,
+  GlassCardMinimalExample,
+} from "@/components/previews/examples/glass-card-examples";
+import {
   CrossButtonAdExample,
   CrossButtonShapesExample,
   CrossButtonSizesExample,
@@ -89,6 +95,7 @@ import { BadgePreview } from "@/components/previews/badge-preview";
 import { ButtonBasePreview } from "@/components/previews/button-base-preview";
 import { CardBasePreview } from "@/components/previews/card-base-preview";
 import { SwipeCardPreview } from "@/components/previews/swipe-card-preview";
+import { GlassCardPreview } from "@/components/previews/glass-card-preview";
 import { ActivityGraphPreview } from "@/components/previews/activity-graph-preview";
 import { DepthButtonPreview } from "@/components/previews/depth-button-preview";
 import { DotMatrixGraphPreview } from "@/components/previews/dot-matrix-graph-preview";
@@ -137,6 +144,7 @@ export const previews: Record<string, ComponentType> = {
   "glow-button": GlowButtonPreview,
   "card-base": CardBasePreview,
   "swipe-card": SwipeCardPreview,
+  "glass-card": GlassCardPreview,
   "activity-graph": ActivityGraphPreview,
   "dot-matrix-graph": DotMatrixGraphPreview,
   badge: BadgePreview,
@@ -186,6 +194,10 @@ export const exampleDemos: Record<string, ComponentType> = {
   "swipe-card/depth": SwipeCardDepthExample,
   "swipe-card/axis": SwipeCardAxisExample,
   "swipe-card/empty": SwipeCardEmptyExample,
+  "glass-card/anatomy": GlassCardAnatomyExample,
+  "glass-card/minimal": GlassCardMinimalExample,
+  "glass-card/carousel": GlassCardCarouselExample,
+  "glass-card/intro": GlassCardIntroExample,
   "badge/tones": BadgeTonesExample,
   "badge/icon": BadgeIconExample,
   "input/labelled": InputLabelledExample,

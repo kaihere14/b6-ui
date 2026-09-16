@@ -49,12 +49,7 @@ export function SwipeCardPreview() {
 
   return (
     <div className="flex w-full max-w-xs flex-col items-center gap-6 py-2">
-      <SwipeCardStack
-        ref={stack}
-        loop
-        aria-label="Suggested contacts"
-        className="h-112 w-full"
-      >
+      <SwipeCardStack ref={stack} loop aria-label="Suggested contacts" className="h-112 w-full">
         {people.map((person) => (
           <SwipeCard key={person.name}>
             <SwipeCardMedia wash="brand">

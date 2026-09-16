@@ -287,8 +287,7 @@
   --inset-shadow-b6-glow-secondary-strong: inset 0 0 20px 0 var(--b6-glow-secondary-strong);
 
   --inset-shadow-b6-glow-destructive: inset 0 0 10px 0 var(--b6-glow-destructive);
-  --inset-shadow-b6-glow-destructive-strong: inset 0 0 20px 0
-    var(--b6-glow-destructive-strong);
+  --inset-shadow-b6-glow-destructive-strong: inset 0 0 20px 0 var(--b6-glow-destructive-strong);
 
   /* The band a lit face sits on: 2px of the face's own colour immediately
    * outside it, so the inset ring reads as a line drawn *inside* an object

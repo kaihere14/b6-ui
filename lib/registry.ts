@@ -1094,6 +1094,218 @@ export const components: ComponentMeta[] = [
       "The stack sizes the cards: give it a height and a width and every card fills it, and the media well takes whatever height the bar under it leaves. The queue peeks outside that box by `offsetStep` per card, so leave room on the `stackFrom` edge.",
   },
   {
+    slug: "glass-card",
+    category: "Layout",
+    isNew: true,
+    title: "Glass Card",
+    description:
+      "A poster-forward carousel card: a dark glass surface over a media well with a play button and a callout, a title strip, and an optional detail panel. `GlassCardCarousel` fans several in depth and brings a clicked one to the centre with a bounce.",
+    source: "registry/card/glass-card/glass-card.tsx",
+    dependencies: ["class-variance-authority", "motion"],
+    props: [
+      {
+        name: "padding",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Outer padding and the gap between the media well and the title strip.",
+      },
+      {
+        name: "tilt",
+        type: '"none" | "left" | "right"',
+        defaultValue: '"none"',
+        description:
+          "A resting rotation for a card sitting off-centre in a carousel. Static, not a hover or drag effect. `GlassCardCarousel` drives its own rotation and ignores this.",
+      },
+      {
+        name: "expandable",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Make the whole card a toggle for its `GlassCardDetails`.",
+      },
+      {
+        name: "expanded",
+        type: "boolean",
+        description: "Whether `GlassCardDetails` is open. Omit for an uncontrolled card.",
+      },
+      {
+        name: "defaultExpanded",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Initial open state for an uncontrolled card.",
+      },
+      {
+        name: "onExpandedChange",
+        type: "(expanded: boolean) => void",
+        description: "Fired whenever `expanded` would change, controlled or not.",
+      },
+      {
+        name: "intro",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "Play a one-shot cinematic entrance on mount: the card scales, slides and untilts into place, its header controls and title strip stagger in after it, and once settled it carries a very subtle idle float and an occasional light sweep across the glass.",
+      },
+      {
+        name: "aspect (GlassCardMedia)",
+        type: '"square" | "video" | "portrait" | "fill"',
+        defaultValue: '"square"',
+        description:
+          "Shape of the media well. `fill` takes the height the card has left, for a fixed-height card.",
+      },
+      {
+        name: "as (GlassCardTitle)",
+        type: '"h2" | "h3" | "h4"',
+        defaultValue: '"h3"',
+        description: "Heading level, so the card fits the page outline.",
+      },
+      {
+        name: "active (GlassCardCarousel)",
+        type: "number",
+        description:
+          "Index of the centred, focused card. Controlled: pair with `onActiveChange`.",
+      },
+      {
+        name: "defaultActive (GlassCardCarousel)",
+        type: "number",
+        description:
+          "Initial centred index for an uncontrolled carousel. Defaults to the middle child.",
+      },
+      {
+        name: "onActiveChange (GlassCardCarousel)",
+        type: "(index: number) => void",
+        description:
+          "Fired whenever the centred index would change, controlled or not, including a click on a neighbour.",
+      },
+      {
+        name: "visible (GlassCardCarousel)",
+        type: "number",
+        defaultValue: "2",
+        description: "Neighbours rendered on each side before fading out of the layout.",
+      },
+      {
+        name: "scaleStep / opacityStep / rotateStep / offsetStep (GlassCardCarousel)",
+        type: "number",
+        defaultValue: "0.14 / 0.32 / 28 / 130",
+        description:
+          "Scale removed, opacity removed, degrees of Y rotation, and pixels shifted, per step a card sits away from the centre.",
+      },
+    ],
+    examples: [
+      {
+        title: "Anatomy",
+        preview: "glass-card/anatomy",
+        description:
+          "`GlassCardPlayButton` and `GlassCardMediaAction` sit inside `GlassCardMedia`, positioned to overlay it. `GlassCardTitle` and `GlassCardMeta` sit in `GlassCardInfo`, and `GlassCardRating` sits inline inside `GlassCardMeta`.",
+        code: `<GlassCard>
+  <GlassCardMedia>
+    <GlassCardPlayButton aria-label="Play trailer">
+      <Play className="ml-0.5 fill-current" />
+    </GlassCardPlayButton>
+    <GlassCardMediaAction>
+      <Play className="fill-current" />
+      Watch Trailer
+    </GlassCardMediaAction>
+  </GlassCardMedia>
+  <GlassCardInfo>
+    <GlassCardTitle>Dune: Part Two</GlassCardTitle>
+    <GlassCardMeta>
+      2024 · Epic Sci-Fi ·{" "}
+      <GlassCardRating>
+        <Star className="fill-current text-brand" />
+        8.8
+      </GlassCardRating>
+    </GlassCardMeta>
+  </GlassCardInfo>
+</GlassCard>`,
+      },
+      {
+        title: "Just a play button",
+        preview: "glass-card/minimal",
+        description:
+          "`GlassCardMediaAction` is optional. A track or an episode often needs only the round `GlassCardPlayButton`, with a shorter `GlassCardMeta` line underneath.",
+        code: `<GlassCard tilt="left">
+  <GlassCardMedia aspect="video">
+    <GlassCardPlayButton aria-label="Play episode">
+      <Play className="ml-0.5 fill-current" />
+    </GlassCardPlayButton>
+  </GlassCardMedia>
+  <GlassCardInfo>
+    <GlassCardTitle>Deep Field</GlassCardTitle>
+    <GlassCardMeta>Podcast · 42 min</GlassCardMeta>
+  </GlassCardInfo>
+</GlassCard>`,
+      },
+      {
+        title: "Carousel",
+        preview: "glass-card/carousel",
+        description:
+          "`GlassCardCarousel` fans its children in depth around the centred one: rotation, scale, opacity and position all spring to a new target when `active` changes, the way `SwipeCardStack` derives depth from queue position. Clicking a neighbour brings it to the centre. `expandable` plus `GlassCardDetails` lets the centred card itself open into a synopsis, closed again by `GlassCardClose`.",
+        code: `<GlassCardCarousel>
+  {films.map((film) => (
+    <GlassCard key={film.title} expandable className="w-56">
+      <GlassCardMedia>
+        <GlassCardPlayButton aria-label={\`Play \${film.title} trailer\`}>
+          <Play className="ml-0.5 fill-current" />
+        </GlassCardPlayButton>
+        <GlassCardMediaAction>
+          <Play className="fill-current" />
+          Watch Trailer
+        </GlassCardMediaAction>
+      </GlassCardMedia>
+      <GlassCardInfo>
+        <GlassCardTitle>{film.title}</GlassCardTitle>
+        <GlassCardMeta>{film.meta}</GlassCardMeta>
+        <GlassCardDetails>
+          <p className="line-clamp-2 min-w-0 flex-1">{film.synopsis}</p>
+          <GlassCardClose />
+        </GlassCardDetails>
+      </GlassCardInfo>
+    </GlassCard>
+  ))}
+</GlassCardCarousel>`,
+      },
+      {
+        title: "Cinematic entrance",
+        preview: "glass-card/intro",
+        description:
+          '`intro` plays once on mount: the card tumbles in from a slight scale, offset and 3D pitch, the play button, the callout, the title and the meta line stagger in after it during the same settle, and once still it carries a very subtle idle float and an occasional light sweep across the glass. A horizontal `aspect="video"` well reads better than a square one for a broadcast-style card like this.',
+        code: `<GlassCard intro expandable className="w-80">
+  <GlassCardMedia aspect="video">
+    <GlassCardPlayButton aria-label="Play trailer">
+      <Play className="ml-0.5 fill-current" />
+    </GlassCardPlayButton>
+    <GlassCardMediaAction>
+      <Play className="fill-current" />
+      Watch Trailer
+    </GlassCardMediaAction>
+  </GlassCardMedia>
+  <GlassCardInfo>
+    <GlassCardTitle>Dune: Part Two</GlassCardTitle>
+    <GlassCardMeta>2024 · Epic Sci-Fi · ★ 8.8</GlassCardMeta>
+    <GlassCardDetails>
+      <p className="line-clamp-2 min-w-0 flex-1">Paul Atreides unites with the Fremen to seek revenge against the conspirators who destroyed his family.</p>
+      <GlassCardClose />
+    </GlassCardDetails>
+  </GlassCardInfo>
+</GlassCard>`,
+      },
+    ],
+    accessibility: [
+      '`GlassCard` is a plain `<div>` unless `expandable`, when it becomes `role="button"` with `aria-expanded` and is reachable and operable from the keyboard (Enter or Space), not just a pointer.',
+      "Set `GlassCardTitle`'s `as` prop so headings never skip a level.",
+      "`GlassCardPlayButton` is icon-only and needs an `aria-label`. `GlassCardMediaAction` carries a visible label already. Both swallow their own click, so pressing one never also toggles the card's details.",
+      "`GlassCardDetails` mounts and unmounts with the expanded state rather than toggling visibility, so `GlassCardClose` and anything else inside it leave the tab order entirely while closed.",
+      "`GlassCardMedia` ships empty by design. Give it a real poster image with `alt` text, or a labelled player, before shipping: an empty well carries no semantics on its own.",
+      '`GlassCardCarousel` gives every card but the centred one a labelled, focusable `role="button"` overlay that brings it to the centre, and marks the real content underneath `inert`, so a background card\'s own play button cannot take focus or a click while it is only there for depth.',
+      "Bringing a new card to the centre closes whatever was expanded, so a background card is never left announcing an open details panel it can no longer show.",
+      "While the centred card's details are open, every other card's overlay is also `aria-hidden` and `tabIndex={-1}`: a card that has faded out for the spotlight cannot still be tabbed to or clicked underneath it.",
+      "`intro`'s idle float and light sweep are purely decorative (`aria-hidden` where they add an element at all) and never move focus or reflow layout, only transform and opacity.",
+      "Every spring in this file, including `intro`'s entrance, drops to an instant cut under `prefers-reduced-motion`, landing on the same end state.",
+    ],
+    responsive:
+      "The card fills its container's width; give it a `max-w-*` on the page. `GlassCardMedia` sizes itself from `aspect`, so the card's height follows its width unless `aspect=\"fill\"` is set inside a container with a fixed height. `GlassCardCarousel`'s `offsetStep` is in pixels, so tune it to whatever width the cards inside it are given.",
+  },
+  {
     slug: "activity-graph",
     category: "Graphs",
     isNew: true,

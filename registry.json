@@ -8,10 +8,7 @@
       "type": "registry:base",
       "title": "B6 Base",
       "description": "Everything every B6 UI component assumes is already there: the design tokens and the cn() class merger. Install it once, before any component.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -325,10 +322,7 @@
       "type": "registry:lib",
       "title": "B6 Utils",
       "description": "The cn() class merger, configured for B6's named type scale so a size utility never overwrites a colour utility.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "lib/utils.ts",
@@ -342,11 +336,7 @@
       "type": "registry:ui",
       "title": "Button Base",
       "description": "The foundation B6 button: six variants, four sizes, loading state and icon slots.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot",
-        "lucide-react"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -381,11 +371,7 @@
       "type": "registry:ui",
       "title": "Cross Button",
       "description": "A family of close or dismiss buttons with three interaction modes: a plain close, a timed countdown that draws a border before enabling, and a confirm-to-close that requires a double press.",
-      "dependencies": [
-        "motion",
-        "class-variance-authority",
-        "lucide-react"
-      ],
+      "dependencies": ["motion", "class-variance-authority", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -420,11 +406,7 @@
       "type": "registry:ui",
       "title": "Depth Button",
       "description": "A button that sits on a hard, unblurred ledge and travels down into it \u2014 half-way on hover, flush with the page on press.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot",
-        "lucide-react"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -439,11 +421,7 @@
       "type": "registry:ui",
       "title": "Glow Button",
       "description": "A solid button lit from the inside: an inset glow and a hairline inset ring, both brightening on hover.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot",
-        "lucide-react"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -458,10 +436,7 @@
       "type": "registry:ui",
       "title": "Card Base",
       "description": "A composable surface with header, content and footer slots.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
       "registryDependencies": [],
       "files": [
         {
@@ -476,10 +451,7 @@
       "type": "registry:ui",
       "title": "Swipe Card",
       "description": "A deck of cards stacked in depth, dragged away one at a time with spring physics.",
-      "dependencies": [
-        "class-variance-authority",
-        "motion"
-      ],
+      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "files": [
         {
@@ -490,14 +462,26 @@
       ]
     },
     {
+      "name": "glass-card",
+      "type": "registry:ui",
+      "title": "Glass Card",
+      "description": "A poster-forward carousel card: a media well with a play button and a callout, a title strip, and a card that fans in depth and expands on click.",
+      "dependencies": ["class-variance-authority", "motion"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/card/glass-card/glass-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/glass-card.tsx"
+        }
+      ]
+    },
+    {
       "name": "activity-graph",
       "type": "registry:ui",
       "title": "Activity Graph",
       "description": "A configurable seven-day stacked-bar graph for any activity series, with derived totals and optional hatched fills.",
-      "dependencies": [
-        "class-variance-authority",
-        "motion"
-      ],
+      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "files": [
         {
@@ -512,10 +496,7 @@
       "type": "registry:ui",
       "title": "Dot Matrix Graph",
       "description": "A column graph drawn in dots instead of bars: one dot per unit, stacked from the baseline up, with two periods comparable inside one plot.",
-      "dependencies": [
-        "class-variance-authority",
-        "motion"
-      ],
+      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "files": [
         {
@@ -530,10 +511,7 @@
       "type": "registry:ui",
       "title": "Thinking Orb",
       "description": "A status pill that pairs an animated orb with a label, for showing what an agent is doing: thinking, listening, searching, working, solving.",
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -548,10 +526,7 @@
       "type": "registry:ui",
       "title": "Water Loading",
       "description": "A pull-to-refresh container with an infinite-scroll buffer: drag the feed down to reload, or scroll near the end to load more, and the same oceanic water blob plays at the top strip or the bottom buffer.",
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -566,10 +541,7 @@
       "type": "registry:ui",
       "title": "Circular Music Player",
       "description": "A round dot-matrix panel in the shape of a phone-back glyph: a dark disc of square pixels with a spectrum rising from the bottom and a progress ring around the rim, driven by the playback state you pass it.",
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -584,9 +556,7 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status marker in five tones and two sizes.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -601,9 +571,7 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "A single-line text field with size and tone tokens, icon slots and an invalid state.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "files": [
         {
@@ -618,10 +586,7 @@
       "type": "registry:ui",
       "title": "Writing Text",
       "description": "Text that writes itself in one character at a time behind a blinking caret, at a speed you set.",
-      "dependencies": [
-        "class-variance-authority",
-        "motion"
-      ],
+      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "files": [
         {
@@ -636,10 +601,7 @@
       "type": "registry:ui",
       "title": "Handwritten Text",
       "description": "A line written by a pen: connected script drawn stroke by stroke, in the order a hand would draw it, in either of two hands.",
-      "dependencies": [
-        "class-variance-authority",
-        "motion"
-      ],
+      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "files": [
         {
@@ -669,11 +631,7 @@
       "type": "registry:ui",
       "title": "Sortable Dropdown",
       "description": "A trigger that opens a popover holding a drag-to-rank list, for settings where order is the value.",
-      "dependencies": [
-        "class-variance-authority",
-        "motion",
-        "lucide-react"
-      ],
+      "dependencies": ["class-variance-authority", "motion", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {

@@ -48,7 +48,7 @@ import { cn } from "@/lib/utils";
 
 const waterLoadingVariants = cva(
   [
-    "relative isolate overflow-hidden w-full",
+    "relative isolate w-full overflow-hidden",
     // Oceanic default for the droplet fill. Both are plain custom properties, so
     // a consumer overrides them from `className` (`[--water-from:...]`) or an
     // ancestor without touching the component.
@@ -77,8 +77,7 @@ type Phase = "idle" | "pulling" | "refreshing";
 type NativeDivProps = Omit<React.ComponentPropsWithoutRef<"div">, "onDrag">;
 
 export interface WaterLoadingProps
-  extends NativeDivProps,
-    VariantProps<typeof waterLoadingVariants> {
+  extends NativeDivProps, VariantProps<typeof waterLoadingVariants> {
   /**
    * Controlled refresh state. While true the strip is held open and the droplet
    * shows. Leave it undefined to let the component run its own timer.
@@ -347,11 +346,7 @@ const WaterBlob = React.memo(function WaterBlob({
       // Opacity rides `style` (it can be a MotionValue driven by the pull), so
       // changing it never interrupts the looping `d` / scale / rotate below.
       style={{ opacity }}
-      animate={
-        drifting
-          ? { scale: SVG_SCALE, rotate: SVG_ROTATE }
-          : { scale: 1, rotate: 0 }
-      }
+      animate={drifting ? { scale: SVG_SCALE, rotate: SVG_ROTATE } : { scale: 1, rotate: 0 }}
       transition={
         drifting
           ? {
@@ -412,261 +407,250 @@ const SETTLE: Transition = { type: "spring", stiffness: 260, damping: 30 };
 /** Fallback strip height in px if it cannot be measured yet. */
 const ZONE_FALLBACK = 56;
 
-const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(
-  function WaterLoading(
-    {
-      className,
-      size,
-      children,
-      refreshing: refreshingProp,
-      onRefresh,
-      duration = 4200,
-      threshold = 64,
-      disabled = false,
-      onLoadMore,
-      loadingMore: loadingMoreProp,
-      hasMore = true,
-      loadMoreOffset = 160,
-      ...props
-    },
-    forwardedRef,
-  ) {
-    const controlled = refreshingProp !== undefined;
-    const controlledMore = loadingMoreProp !== undefined;
+const WaterLoading = React.forwardRef<HTMLDivElement, WaterLoadingProps>(function WaterLoading(
+  {
+    className,
+    size,
+    children,
+    refreshing: refreshingProp,
+    onRefresh,
+    duration = 4200,
+    threshold = 64,
+    disabled = false,
+    onLoadMore,
+    loadingMore: loadingMoreProp,
+    hasMore = true,
+    loadMoreOffset = 160,
+    ...props
+  },
+  forwardedRef,
+) {
+  const controlled = refreshingProp !== undefined;
+  const controlledMore = loadingMoreProp !== undefined;
 
-    // `phase` and `armed` change only at gesture boundaries, so React re-renders
-    // a handful of times per pull. The pull distance itself lives in a
-    // MotionValue: setting it every pointermove drives the translate and the
-    // blob's fade with no React render, so the looping morph never stutters.
-    const [phase, setPhase] = React.useState<Phase>("idle");
-    const [armed, setArmed] = React.useState(false);
-    const [selfMore, setSelfMore] = React.useState(false);
+  // `phase` and `armed` change only at gesture boundaries, so React re-renders
+  // a handful of times per pull. The pull distance itself lives in a
+  // MotionValue: setting it every pointermove drives the translate and the
+  // blob's fade with no React render, so the looping morph never stutters.
+  const [phase, setPhase] = React.useState<Phase>("idle");
+  const [armed, setArmed] = React.useState(false);
+  const [selfMore, setSelfMore] = React.useState(false);
 
-    const y = useMotionValue(0);
-    const pull = useMotionValue(0);
-    const blobOpacity = useTransform(pull, [0, Math.max(1, threshold)], [0, 1], {
-      clamp: true,
-    });
+  const y = useMotionValue(0);
+  const pull = useMotionValue(0);
+  const blobOpacity = useTransform(pull, [0, Math.max(1, threshold)], [0, 1], {
+    clamp: true,
+  });
 
-    const trackRef = React.useRef<HTMLDivElement>(null);
-    const stripRef = React.useRef<HTMLDivElement>(null);
-    const sentinelRef = React.useRef<HTMLDivElement>(null);
-    const startYRef = React.useRef<number | null>(null);
-    const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-    const moreTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-    const moreBusyRef = React.useRef(false);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const stripRef = React.useRef<HTMLDivElement>(null);
+  const sentinelRef = React.useRef<HTMLDivElement>(null);
+  const startYRef = React.useRef<number | null>(null);
+  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const moreTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const moreBusyRef = React.useRef(false);
 
-    const refreshing = controlled ? Boolean(refreshingProp) : phase === "refreshing";
-    const loadingMore = controlledMore ? Boolean(loadingMoreProp) : selfMore;
-    const displayPhase: Phase = refreshing ? "refreshing" : phase;
-    const maxPull = threshold * MAX_PULL_FACTOR;
+  const refreshing = controlled ? Boolean(refreshingProp) : phase === "refreshing";
+  const loadingMore = controlledMore ? Boolean(loadingMoreProp) : selfMore;
+  const displayPhase: Phase = refreshing ? "refreshing" : phase;
+  const maxPull = threshold * MAX_PULL_FACTOR;
 
-    const zonePx = React.useCallback(
-      () => stripRef.current?.offsetHeight ?? ZONE_FALLBACK,
-      [],
-    );
+  const zonePx = React.useCallback(() => stripRef.current?.offsetHeight ?? ZONE_FALLBACK, []);
 
-    React.useEffect(() => {
-      return () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        if (moreTimerRef.current) clearTimeout(moreTimerRef.current);
-      };
-    }, []);
-
-    // A parent that controls `loadingMore` clears the re-entry guard when it
-    // flips the flag back off.
-    React.useEffect(() => {
-      if (controlledMore && !loadingMoreProp) moreBusyRef.current = false;
-    }, [controlledMore, loadingMoreProp]);
-
-    // Drive the open/closed translate from a controlled `refreshing` prop.
-    React.useEffect(() => {
-      if (!controlled) return;
-      const controls = animate(y, refreshingProp ? zonePx() : 0, SETTLE);
-      return () => controls.stop();
-    }, [controlled, refreshingProp, y, zonePx]);
-
-    const endRefresh = React.useCallback(() => {
-      setPhase("idle");
-      animate(y, 0, SETTLE);
-    }, [y]);
-
-    const beginRefresh = React.useCallback(() => {
-      setPhase("refreshing");
-      setArmed(false);
-      animate(y, zonePx(), SETTLE);
-
-      const result = onRefresh?.();
-      if (result && typeof result.then === "function") {
-        result.finally(() => {
-          if (!controlled) endRefresh();
-        });
-        return;
-      }
-      // No promise to wait on: run the built-in timer, unless a parent controls
-      // `refreshing` and will close the strip itself.
-      if (controlled) return;
+  React.useEffect(() => {
+    return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(endRefresh, duration);
-    }, [controlled, duration, endRefresh, onRefresh, y, zonePx]);
-
-    const triggerLoadMore = React.useCallback(() => {
-      if (moreBusyRef.current || refreshing || !hasMore || !onLoadMore) return;
-      moreBusyRef.current = true;
-      if (!controlledMore) setSelfMore(true);
-
-      const result = onLoadMore();
-      if (result && typeof result.then === "function") {
-        result.finally(() => {
-          moreBusyRef.current = false;
-          if (!controlledMore) setSelfMore(false);
-        });
-        return;
-      }
-      // A controlled parent flips `loadingMore` itself; otherwise show the
-      // loader for `duration` to stand in for the fetch.
-      if (controlledMore) {
-        moreBusyRef.current = false;
-        return;
-      }
       if (moreTimerRef.current) clearTimeout(moreTimerRef.current);
-      moreTimerRef.current = setTimeout(() => {
+    };
+  }, []);
+
+  // A parent that controls `loadingMore` clears the re-entry guard when it
+  // flips the flag back off.
+  React.useEffect(() => {
+    if (controlledMore && !loadingMoreProp) moreBusyRef.current = false;
+  }, [controlledMore, loadingMoreProp]);
+
+  // Drive the open/closed translate from a controlled `refreshing` prop.
+  React.useEffect(() => {
+    if (!controlled) return;
+    const controls = animate(y, refreshingProp ? zonePx() : 0, SETTLE);
+    return () => controls.stop();
+  }, [controlled, refreshingProp, y, zonePx]);
+
+  const endRefresh = React.useCallback(() => {
+    setPhase("idle");
+    animate(y, 0, SETTLE);
+  }, [y]);
+
+  const beginRefresh = React.useCallback(() => {
+    setPhase("refreshing");
+    setArmed(false);
+    animate(y, zonePx(), SETTLE);
+
+    const result = onRefresh?.();
+    if (result && typeof result.then === "function") {
+      result.finally(() => {
+        if (!controlled) endRefresh();
+      });
+      return;
+    }
+    // No promise to wait on: run the built-in timer, unless a parent controls
+    // `refreshing` and will close the strip itself.
+    if (controlled) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(endRefresh, duration);
+  }, [controlled, duration, endRefresh, onRefresh, y, zonePx]);
+
+  const triggerLoadMore = React.useCallback(() => {
+    if (moreBusyRef.current || refreshing || !hasMore || !onLoadMore) return;
+    moreBusyRef.current = true;
+    if (!controlledMore) setSelfMore(true);
+
+    const result = onLoadMore();
+    if (result && typeof result.then === "function") {
+      result.finally(() => {
         moreBusyRef.current = false;
-        setSelfMore(false);
-      }, duration);
-    }, [controlledMore, duration, hasMore, onLoadMore, refreshing]);
+        if (!controlledMore) setSelfMore(false);
+      });
+      return;
+    }
+    // A controlled parent flips `loadingMore` itself; otherwise show the
+    // loader for `duration` to stand in for the fetch.
+    if (controlledMore) {
+      moreBusyRef.current = false;
+      return;
+    }
+    if (moreTimerRef.current) clearTimeout(moreTimerRef.current);
+    moreTimerRef.current = setTimeout(() => {
+      moreBusyRef.current = false;
+      setSelfMore(false);
+    }, duration);
+  }, [controlledMore, duration, hasMore, onLoadMore, refreshing]);
 
-    // Fire `onLoadMore` as the end of the content nears the viewport.
-    React.useEffect(() => {
-      if (!hasMore || !onLoadMore) return;
-      const el = sentinelRef.current;
-      if (!el || typeof IntersectionObserver === "undefined") return;
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) triggerLoadMore();
-        },
-        { rootMargin: `0px 0px ${Math.max(0, loadMoreOffset)}px 0px` },
-      );
-      io.observe(el);
-      return () => io.disconnect();
-    }, [hasMore, onLoadMore, loadMoreOffset, triggerLoadMore]);
+  // Fire `onLoadMore` as the end of the content nears the viewport.
+  React.useEffect(() => {
+    if (!hasMore || !onLoadMore) return;
+    const el = sentinelRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) triggerLoadMore();
+      },
+      { rootMargin: `0px 0px ${Math.max(0, loadMoreOffset)}px 0px` },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [hasMore, onLoadMore, loadMoreOffset, triggerLoadMore]);
 
-    const canPull = !disabled && !refreshing;
+  const canPull = !disabled && !refreshing;
 
-    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-      if (!canPull) return;
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      const track = trackRef.current;
-      if (track && track.scrollTop > 0) return;
-      startYRef.current = event.clientY;
-    };
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!canPull) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    const track = trackRef.current;
+    if (track && track.scrollTop > 0) return;
+    startYRef.current = event.clientY;
+  };
 
-    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-      const startY = startYRef.current;
-      if (startY === null) return;
-      const delta = (event.clientY - startY) * PULL_RESISTANCE;
-      if (delta <= 0) {
-        pull.set(0);
-        y.set(0);
-        if (phase === "pulling") setPhase("idle");
-        if (armed) setArmed(false);
-        return;
-      }
-      event.preventDefault();
-      trackRef.current?.setPointerCapture?.(event.pointerId);
-      const next = Math.min(delta, maxPull);
-      pull.set(next);
-      y.set(next);
-      if (phase !== "pulling") setPhase("pulling");
-      const nextArmed = next >= threshold;
-      if (nextArmed !== armed) setArmed(nextArmed);
-    };
-
-    const finishGesture = () => {
-      if (startYRef.current === null) return;
-      startYRef.current = null;
-      const reached = pull.get() >= threshold;
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const startY = startYRef.current;
+    if (startY === null) return;
+    const delta = (event.clientY - startY) * PULL_RESISTANCE;
+    if (delta <= 0) {
       pull.set(0);
-      if (reached && !disabled) {
-        beginRefresh();
-      } else {
-        setPhase("idle");
-        setArmed(false);
-        animate(y, 0, SETTLE);
-      }
-    };
+      y.set(0);
+      if (phase === "pulling") setPhase("idle");
+      if (armed) setArmed(false);
+      return;
+    }
+    event.preventDefault();
+    trackRef.current?.setPointerCapture?.(event.pointerId);
+    const next = Math.min(delta, maxPull);
+    pull.set(next);
+    y.set(next);
+    if (phase !== "pulling") setPhase("pulling");
+    const nextArmed = next >= threshold;
+    if (nextArmed !== armed) setArmed(nextArmed);
+  };
 
-    const blobMode: WaterBlobMode = refreshing
-      ? "refreshing"
-      : armed
-        ? "arming"
-        : "rest";
+  const finishGesture = () => {
+    if (startYRef.current === null) return;
+    startYRef.current = null;
+    const reached = pull.get() >= threshold;
+    pull.set(0);
+    if (reached && !disabled) {
+      beginRefresh();
+    } else {
+      setPhase("idle");
+      setArmed(false);
+      animate(y, 0, SETTLE);
+    }
+  };
 
-    return (
-      <div
-        ref={forwardedRef}
-        data-phase={displayPhase}
-        data-refreshing={refreshing || undefined}
-        data-loading-more={loadingMore || undefined}
-        data-disabled={disabled || undefined}
-        className={cn(waterLoadingVariants({ size }), className)}
-        {...props}
-      >
-        {/* Indicator strip. One blob: a teardrop that tracks the pull and morphs
+  const blobMode: WaterBlobMode = refreshing ? "refreshing" : armed ? "arming" : "rest";
+
+  return (
+    <div
+      ref={forwardedRef}
+      data-phase={displayPhase}
+      data-refreshing={refreshing || undefined}
+      data-loading-more={loadingMore || undefined}
+      data-disabled={disabled || undefined}
+      className={cn(waterLoadingVariants({ size }), className)}
+      {...props}
+    >
+      {/* Indicator strip. One blob: a teardrop that tracks the pull and morphs
             into the wave swell the moment a refresh starts. */}
-        <div
-          ref={stripRef}
-          aria-hidden={!refreshing}
-          data-state={displayPhase}
-          className="pointer-events-none absolute inset-x-0 top-0 z-0 flex h-(--water-zone) items-center justify-center overflow-hidden"
-        >
-          {(refreshing || phase === "pulling") && (
-            <WaterBlob mode={blobMode} opacity={refreshing ? 1 : blobOpacity} />
-          )}
-        </div>
-
-        {/* Content track. A downward drag translates it to reveal the strip. */}
-        <motion.div
-          ref={trackRef}
-          role="region"
-          aria-live="polite"
-          aria-busy={refreshing || undefined}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={finishGesture}
-          onPointerCancel={finishGesture}
-          style={{ y, touchAction: canPull ? "pan-x" : undefined }}
-          className={cn(
-            "relative z-10 bg-inherit",
-            disabled ? "cursor-default" : "cursor-grab active:cursor-grabbing",
-          )}
-        >
-          {children}
-          {/* Sits at the end of the content; when it nears the viewport the
-              observer above asks for the next page. */}
-          {hasMore && (
-            <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
-          )}
-        </motion.div>
-
-        {/* Bottom buffer. Same blob as the pull-to-refresh strip, shown while
-            the next page loads on infinite scroll. */}
-        {hasMore && (
-          <div
-            aria-hidden={!loadingMore}
-            data-state={loadingMore ? "loading" : "idle"}
-            className="pointer-events-none flex items-center justify-center overflow-hidden"
-            style={{
-              height: loadingMore ? "var(--water-zone)" : 0,
-              transition: "height 220ms var(--ease-b6, ease)",
-            }}
-          >
-            {loadingMore && <WaterBlob mode="refreshing" />}
-          </div>
+      <div
+        ref={stripRef}
+        aria-hidden={!refreshing}
+        data-state={displayPhase}
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 flex h-(--water-zone) items-center justify-center overflow-hidden"
+      >
+        {(refreshing || phase === "pulling") && (
+          <WaterBlob mode={blobMode} opacity={refreshing ? 1 : blobOpacity} />
         )}
       </div>
-    );
-  },
-);
+
+      {/* Content track. A downward drag translates it to reveal the strip. */}
+      <motion.div
+        ref={trackRef}
+        role="region"
+        aria-live="polite"
+        aria-busy={refreshing || undefined}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={finishGesture}
+        onPointerCancel={finishGesture}
+        style={{ y, touchAction: canPull ? "pan-x" : undefined }}
+        className={cn(
+          "relative z-10 bg-inherit",
+          disabled ? "cursor-default" : "cursor-grab active:cursor-grabbing",
+        )}
+      >
+        {children}
+        {/* Sits at the end of the content; when it nears the viewport the
+              observer above asks for the next page. */}
+        {hasMore && <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />}
+      </motion.div>
+
+      {/* Bottom buffer. Same blob as the pull-to-refresh strip, shown while
+            the next page loads on infinite scroll. */}
+      {hasMore && (
+        <div
+          aria-hidden={!loadingMore}
+          data-state={loadingMore ? "loading" : "idle"}
+          className="pointer-events-none flex items-center justify-center overflow-hidden"
+          style={{
+            height: loadingMore ? "var(--water-zone)" : 0,
+            transition: "height 220ms var(--ease-b6, ease)",
+          }}
+        >
+          {loadingMore && <WaterBlob mode="refreshing" />}
+        </div>
+      )}
+    </div>
+  );
+});
 
 export { WaterLoading, waterLoadingVariants };

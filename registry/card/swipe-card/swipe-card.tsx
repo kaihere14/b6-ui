@@ -117,8 +117,7 @@ const swipeCardVariants = cva(
 );
 
 export interface SwipeCardProps
-  extends React.ComponentPropsWithoutRef<"div">,
-    VariantProps<typeof swipeCardVariants> {}
+  extends React.ComponentPropsWithoutRef<"div">, VariantProps<typeof swipeCardVariants> {}
 
 export const SwipeCard = React.forwardRef<HTMLDivElement, SwipeCardProps>(function SwipeCard(
   { className, variant, padding, ...props },
@@ -178,8 +177,7 @@ const WASH_OVERLAY = {
 } as const;
 
 export interface SwipeCardMediaProps
-  extends React.ComponentPropsWithoutRef<"div">,
-    VariantProps<typeof swipeCardMediaVariants> {}
+  extends React.ComponentPropsWithoutRef<"div">, VariantProps<typeof swipeCardMediaVariants> {}
 
 export const SwipeCardMedia = React.forwardRef<HTMLDivElement, SwipeCardMediaProps>(
   function SwipeCardMedia({ className, aspect, wash, children, ...props }, ref) {
@@ -228,7 +226,8 @@ const swipeCardMediaActionVariants = cva(
 );
 
 export interface SwipeCardMediaActionProps
-  extends React.ComponentPropsWithoutRef<"button">,
+  extends
+    React.ComponentPropsWithoutRef<"button">,
     VariantProps<typeof swipeCardMediaActionVariants> {}
 
 /**
@@ -320,7 +319,8 @@ const swipeCardStatusDotVariants = cva("size-2 shrink-0 rounded-full", {
 });
 
 export interface SwipeCardStatusProps
-  extends React.ComponentPropsWithoutRef<"span">,
+  extends
+    React.ComponentPropsWithoutRef<"span">,
     VariantProps<typeof swipeCardStatusDotVariants> {}
 
 /**
@@ -335,7 +335,11 @@ export const SwipeCardStatus = React.forwardRef<HTMLSpanElement, SwipeCardStatus
       <span
         ref={ref}
         data-slot="swipe-card-status"
-        className={cn(TYPE.small, "inline-flex items-center gap-1.5 text-muted-foreground", className)}
+        className={cn(
+          TYPE.small,
+          "inline-flex items-center gap-1.5 text-muted-foreground",
+          className,
+        )}
         {...props}
       >
         <span aria-hidden="true" className={swipeCardStatusDotVariants({ tone })} />

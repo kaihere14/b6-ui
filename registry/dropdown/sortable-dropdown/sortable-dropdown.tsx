@@ -556,9 +556,7 @@ export const SortableDropdown = React.forwardRef<HTMLDivElement, SortableDropdow
         // that overflows on both sides still opens toward the bigger gap.
         const opensUp =
           contentHeight > 0 && spaceBelow < contentHeight + GAP && spaceAbove > spaceBelow;
-        const top = opensUp
-          ? Math.max(GAP, rect.top - contentHeight - GAP)
-          : rect.bottom + GAP;
+        const top = opensUp ? Math.max(GAP, rect.top - contentHeight - GAP) : rect.bottom + GAP;
         setPlacement(opensUp ? "top" : "bottom");
         setCoords(
           align === "start"
